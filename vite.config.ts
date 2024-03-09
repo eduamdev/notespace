@@ -8,6 +8,9 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "autoUpdate",
+      devOptions: {
+        enabled: true,
+      },
       manifest: {
         name: "NoteGuard",
         short_name: "NoteGuard",
