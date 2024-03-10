@@ -8,8 +8,14 @@ module.exports = {
     "plugin:react-hooks/recommended",
     "plugin:react/recommended",
     "plugin:react/jsx-runtime",
+    "plugin:tailwindcss/recommended",
   ],
-  ignorePatterns: ["dist", ".eslintrc.cjs"],
+  ignorePatterns: [
+    "dist",
+    ".eslintrc.cjs",
+    "postcss.config.js",
+    "tailwind.config.js",
+  ],
   parser: "@typescript-eslint/parser",
   plugins: ["react-refresh"],
   rules: {
@@ -17,6 +23,9 @@ module.exports = {
       "warn",
       { allowConstantExport: true },
     ],
+    "tailwindcss/classnames-order": "warn",
+    "tailwindcss/no-custom-classname": "warn",
+    "tailwindcss/no-contradicting-classname": "error",
   },
   parserOptions: {
     ecmaVersion: "latest",
