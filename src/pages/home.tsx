@@ -1,4 +1,4 @@
-function App() {
+function HomePage() {
   return (
     <div className="flex flex-col items-center">
       <div className="w-full max-w-none px-5 sm:max-w-[90%] sm:px-0">
@@ -47,4 +47,4 @@ function App() {
   );
 }
 
-export default App;
+export default HomePage;
