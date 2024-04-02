@@ -35,9 +35,9 @@ function NotePage() {
   return (
     <div>
       <h1>Note Page</h1>
-      <div>{encryptedNote}</div>
-      <div>{decryptedNote?.title}</div>
-      <div>{decryptedNote?.content}</div>
+      <div>Encrypted note: {encryptedNote}</div>
+      <div>Title: {decryptedNote?.title}</div>
+      <div>Note: {decryptedNote?.content}</div>
     </div>
   );
 }
