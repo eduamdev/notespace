@@ -1,20 +1,28 @@
-import { useState } from "react";
+import localforage from "localforage";
+import { useEffect, useState } from "react";
 import { Link } from "wouter";
 
+export interface Note {
+  id: string;
+  title: string;
+  content: string;
+}
+
 function HomePage() {
-  const [notes] = useState([
-    {
-      id: "noteeeeee1",
-      title: "Note 1",
-      content: "This is just a simple content for the note 1",
-    },
-    {
-      id: "noteeeeee2",
-      title: "Note 2",
-      content:
-        "This is just a another simple test content. This time, for note 2",
-    },
-  ]);
+  const [notes, setNotes] = useState<Note[]>([]);
+
+  useEffect(() => {
+    async function getNotes() {
+      try {
+        const value = await localforage.getItem<Note[]>("notes");
+        setNotes(value ?? []); // Initialize with an empty array if value is null
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    void getNotes();
+  }, []);
 
   return (
     <div className="flex flex-col items-center">
@@ -30,7 +38,7 @@ function HomePage() {
             {notes.map((note) => {
               return (
                 <li key={note.title}>
-                  <Link to={`/note/${note.id}`}>{note.title}</Link>
+                  <Link to={`/note/${note.content}`}>{note.title}</Link>
                 </li>
               );
             })}
