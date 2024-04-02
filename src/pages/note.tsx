@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { decryptNote, encryptNote, generateKeyPair } from "@/services/crypto";
+import { useParams } from "wouter";
 
 function NotePage() {
+  const params = useParams();
+  console.log("noteId:", params.id);
+
   const [encryptedNote, setEncryptedNote] = useState<string>("");
   const [decryptedNote, setDecryptedNote] = useState<{
     title: string;
@@ -33,11 +37,16 @@ function NotePage() {
   }, []);
 
   return (
-    <div>
-      <h1>Note Page</h1>
-      <div>Encrypted note: {encryptedNote}</div>
-      <div>Title: {decryptedNote?.title}</div>
-      <div>Note: {decryptedNote?.content}</div>
+    <div className="flex flex-col items-center">
+      <div className="w-full max-w-none px-5 sm:max-w-[90%] sm:px-0">
+        <h1 className="pt-6 text-2xl font-semibold">NoteGuard</h1>
+        <div className="pt-12">
+          <span>Note Page</span>
+          <div>Encrypted note: {encryptedNote}</div>
+          <div>Title: {decryptedNote?.title}</div>
+          <div>Note: {decryptedNote?.content}</div>
+        </div>
+      </div>
     </div>
   );
 }
