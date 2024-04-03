@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { decryptNote, encryptNote, generateKeyPair } from "@/services/crypto";
 import { useParams } from "wouter";
+import { v4 as uuidv4 } from "uuid";
 
 function NotePage() {
   const params = useParams();
@@ -20,7 +21,11 @@ function NotePage() {
       console.log("Private Key:", privateKey);
 
       // Dummy note
-      const dummyNote = { title: "Test Note", content: "This is a test note." };
+      const dummyNote = {
+        id: uuidv4(),
+        title: "Test Note",
+        content: "This is a test note.",
+      };
 
       // Encrypt the note
       const encrypted = await encryptNote(dummyNote, publicKey, privateKey);

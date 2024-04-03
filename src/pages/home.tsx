@@ -38,7 +38,7 @@ function HomePage() {
             {notes.map((note) => {
               return (
                 <li key={note.title}>
-                  <Link to={`/note/${note.content}`}>{note.title}</Link>
+                  <Link to={`/note/${note.id}`}>{note.title}</Link>
                 </li>
               );
             })}

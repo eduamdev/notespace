@@ -26,10 +26,10 @@ export const generateKeyPair = async (): Promise<{
 
 // Encrypt a note before storing it
 export const encryptNote = async (
-  note: { title: string; content: string },
+  note: { id: string; title: string; content: string },
   recipientPublicKey: string,
   senderPrivateKey: string
-): Promise<{ title: string; content: string; nonce: string }> => {
+): Promise<{ id: string; title: string; content: string; nonce: string }> => {
   await initializeSodium();
   const nonce = _sodium.randombytes_buf(_sodium.crypto_box_NONCEBYTES);
   const message = _sodium.from_string(JSON.stringify(note));
@@ -49,6 +49,7 @@ export const encryptNote = async (
     _sodium.base64_variants.ORIGINAL
   );
   return {
+    id: note.id,
     title: note.title,
     content: encryptedContentBase64,
     nonce: nonceBase64,
@@ -57,10 +58,10 @@ export const encryptNote = async (
 
 // Decrypt a note after retrieving it
 export const decryptNote = async (
-  encryptedNote: { title: string; content: string; nonce: string },
+  encryptedNote: { id: string; title: string; content: string; nonce: string },
   senderPublicKey: string,
   recipientPrivateKey: string
-): Promise<{ title: string; content: string }> => {
+): Promise<{ id: string; title: string; content: string }> => {
   await initializeSodium();
   const nonce = _sodium.from_base64(
     encryptedNote.nonce,
@@ -81,6 +82,7 @@ export const decryptNote = async (
     content: string;
   };
   return {
+    id: encryptedNote.id,
     title: encryptedNote.title,
     content: decryptedNote.content,
   };

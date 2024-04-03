@@ -1,6 +1,7 @@
+import { SetStateAction, useState } from "react";
 import { encryptNote, generateKeyPair } from "@/services/crypto";
 import localforage from "localforage";
-import { SetStateAction, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 export interface Note {
   id: string;
@@ -33,6 +34,7 @@ function NewPage() {
 
       const encryptedNote = await encryptNote(
         {
+          id: uuidv4(),
           title,
           content,
         },
