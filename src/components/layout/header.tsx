@@ -3,8 +3,8 @@ import { Link } from "wouter";
 function Header() {
   return (
     <>
-      <div>Header</div>
-      <nav className="flex flex-col py-12">
+      <div className="pt-6 text-2xl font-semibold">NoteGuard</div>
+      <nav className="flex flex-row gap-x-3 py-4">
         <Link href="/">Home</Link>
         <Link href="/login">Login</Link>
         <Link href="/register">Register</Link>

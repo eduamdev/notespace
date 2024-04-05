@@ -14,7 +14,7 @@ function App() {
         <Route path="/">
           {/* Home Page */}
           <div>
-            <h1>Home page</h1>
+            <h1 className="py-3 text-xl font-semibold">Home</h1>
           </div>
         </Route>
 

@@ -1,29 +1,40 @@
-import _sodium from "libsodium-wrappers";
+import sodium from "libsodium-wrappers";
 
 export const initializeEncryption = async () => {
-  await _sodium.ready;
+  await sodium.ready;
   console.log("Sodium initialized successfully");
 };
 
 export const encrypt = (message: string, key: Uint8Array): Uint8Array => {
-  console.log(key);
+  const nonce = sodium.randombytes_buf(sodium.crypto_secretbox_NONCEBYTES);
 
-  return _sodium.crypto_secretbox_easy(
-    _sodium.from_string(message),
-    _sodium.randombytes_buf(_sodium.crypto_secretbox_NONCEBYTES),
-    _sodium.crypto_secretbox_keygen()
+  return new Uint8Array(
+    Array.from(nonce).concat(
+      Array.from(sodium.crypto_secretbox_easy(message, nonce, key))
+    )
   );
 };
 
-export const decrypt = (ciphertext: Uint8Array, key: Uint8Array): string => {
-  const decrypted = _sodium.crypto_secretbox_open_easy(
-    ciphertext,
-    _sodium.randombytes_buf(_sodium.crypto_secretbox_NONCEBYTES),
-    key
-  );
+export const decrypt = (
+  nonce_and_ciphertext: Uint8Array,
+  key: Uint8Array
+): string => {
+  if (
+    nonce_and_ciphertext.length <
+    sodium.crypto_secretbox_NONCEBYTES + sodium.crypto_secretbox_MACBYTES
+  ) {
+    throw new Error("Short message");
+  }
+  const nonce = nonce_and_ciphertext.slice(
+      0,
+      sodium.crypto_secretbox_NONCEBYTES
+    ),
+    ciphertext = nonce_and_ciphertext.slice(sodium.crypto_secretbox_NONCEBYTES);
+  const decrypted = sodium.crypto_secretbox_open_easy(ciphertext, nonce, key);
+
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!decrypted) {
     throw new Error("Decryption failed");
   }
-  return _sodium.to_string(decrypted);
+  return sodium.to_string(decrypted);
 };

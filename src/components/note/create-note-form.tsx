@@ -8,38 +8,49 @@ function CreateNoteForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      // Create a new note using the title and content
       await createNote(title, content);
       // Reset form fields
       setTitle("");
       setContent("");
-      // Optionally, display a success message or navigate to another page
+
       alert("success!");
     } catch (error) {
       console.error("Error creating note:", error);
-      // Optionally, display an error message to the user
     }
   };
 
   return (
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        value={title}
-        onChange={(e) => {
-          setTitle(e.target.value);
-        }}
-        placeholder="Title"
-      />
-      <textarea
-        value={content}
-        onChange={(e) => {
-          setContent(e.target.value);
-        }}
-        placeholder="Content"
-      ></textarea>
-      <button type="submit">Create Note</button>
+      <div className="flex flex-col gap-2">
+        <h1 className="py-3 text-xl font-semibold">New note</h1>
+        <input
+          type="text"
+          value={title}
+          className="border p-2"
+          onChange={(e) => {
+            setTitle(e.target.value);
+          }}
+          placeholder="Title"
+        />
+        <textarea
+          className="border p-2"
+          rows={10}
+          value={content}
+          onChange={(e) => {
+            setContent(e.target.value);
+          }}
+          placeholder="Content"
+        ></textarea>
+        <div className="mt-4">
+          <button
+            type="submit"
+            className="inline-flex bg-black p-3 font-medium text-white"
+          >
+            Create Note
+          </button>
+        </div>
+      </div>
     </form>
   );
 }

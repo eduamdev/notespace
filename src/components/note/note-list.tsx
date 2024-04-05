@@ -7,7 +7,6 @@ function NoteList() {
   const [notes, setNotes] = useState<Note[]>([]);
 
   useEffect(() => {
-    // Fetch notes when component mounts
     void fetchNotes();
   }, []);
 
@@ -15,7 +14,6 @@ function NoteList() {
     try {
       console.log("fetching notes...");
       const fetchedNotes = await getNotes();
-      console.log(fetchNotes);
       setNotes(fetchedNotes);
     } catch (error) {
       console.error("Error fetching notes:", error);
@@ -24,13 +22,12 @@ function NoteList() {
 
   return (
     <div>
-      <h1>Note List</h1>
+      <h1 className="py-3 text-xl font-semibold">All notes</h1>
       <ul>
         {notes.map((note) => (
           <li key={note.id}>
             <Link to={`/notes/${note.id}`}>
-              <h3>{note.title}</h3>
-              <p>{note.content}</p>
+              <p>{note.title}</p>
             </Link>
           </li>
         ))}

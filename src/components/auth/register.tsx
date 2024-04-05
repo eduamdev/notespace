@@ -1,7 +1,7 @@
 function Register() {
   return (
     <>
-      <h1>Register</h1>
+      <h1 className="py-3 text-xl font-semibold">Register</h1>
     </>
   );
 }

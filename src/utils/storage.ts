@@ -1,40 +1,61 @@
-import localforage from "localforage";
+import PouchDB from "pouchdb";
 
-const noteStorage = localforage.createInstance({
-  name: "note_storage",
-});
+interface NoteDocument {
+  _id: string;
+  _rev?: string;
+  data: Uint8Array;
+}
 
-export const initializeStorage = async () => {
-  await noteStorage.ready();
-};
+const db = new PouchDB<NoteDocument>("notes");
 
-export const saveNote = async (id: string, encryptedNote: Uint8Array) => {
+export const retrieveNoteIds = async (): Promise<string[]> => {
   try {
-    await noteStorage.setItem(id, encryptedNote);
+    // Fetch all documents from the database
+    const result = await db.allDocs({ include_docs: false });
+    // Extract and return the IDs of all documents
+    return result.rows.map((row) => row.id);
   } catch (error) {
-    console.error("Error saving note:", error);
+    console.error("Error retrieving note IDs:", error);
     throw error;
   }
 };
 
 export const retrieveNote = async (id: string): Promise<Uint8Array | null> => {
   try {
-    return await noteStorage.getItem(id);
+    // Fetch the document with the specified ID from the database
+    const doc: NoteDocument = await db.get(id);
+    // Return the note data stored in the document
+    return doc.data;
   } catch (error) {
-    console.error("Error retrieving note:", error);
+    if (error.name === "not_found") {
+      // If the document is not found, return null
+      return null;
+    }
+    console.error(`Error retrieving note with ID ${id}:`, error);
     throw error;
   }
 };
 
-const noteIdsKey = "note_storage";
-
-export const retrieveNoteIds = async (): Promise<string[]> => {
+export const saveNote = async (id: string, data: Uint8Array): Promise<void> => {
   try {
-    // Retrieve note IDs from localforage
-    const noteIds = await localforage.getItem<string[]>(noteIdsKey);
-    return noteIds ?? [];
+    // Check if the document already exists in the database
+    const existingDoc: NoteDocument = await db.get(id);
+
+    // If the document exists, update its data
+    existingDoc.data = data;
+
+    // Save the updated document back to the database
+    await db.put(existingDoc);
   } catch (error) {
-    console.error("Error retrieving note IDs:", error);
-    throw error;
+    if (error.name === "not_found") {
+      // If the document does not exist, create a new one with the specified ID and data
+      await db.put<NoteDocument>({
+        _id: id,
+        data: data,
+      });
+    } else {
+      console.error(`Error saving note with ID ${id}:`, error);
+      throw error;
+    }
   }
 };
