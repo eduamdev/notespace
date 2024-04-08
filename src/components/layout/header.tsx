@@ -10,7 +10,6 @@ function Header() {
         <Link href="/register">Register</Link>
         <Link href="/notes/all">All notes</Link>
         <Link href="/notes/new">New note</Link>
-        <Link href="/notes/adasdsafas223qasd">Edit note</Link>
       </nav>
     </>
   );
