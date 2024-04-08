@@ -1,28 +1,62 @@
 import { encrypt, decrypt, getEncryptionKey } from "@/utils/encryption";
-import { saveNote, retrieveNote, retrieveNoteIds } from "@/utils/storage";
+import {
+  saveNote,
+  retrieveNote,
+  retrieveNoteIds,
+  saveNotebook,
+  retrieveNotebookIds,
+  retrieveNotebook,
+} from "@/utils/storage";
 import { generateUniqueId } from "@/utils/utils";
-import { Note } from "@/types";
+import { Folder, Note, Notebook } from "@/types";
 
 const key = getEncryptionKey();
 
+// Common Functions
+const encryptData = (data: unknown): Uint8Array => {
+  return encrypt(JSON.stringify(data), key);
+};
+
+const decryptData = (encryptedData: Uint8Array): unknown => {
+  const decryptedDataString = decrypt(encryptedData, key);
+  return JSON.parse(decryptedDataString);
+};
+
+const getDecryptedItems = async <T>(
+  retrieveIds: () => Promise<string[]>,
+  retrieveItem: (id: string) => Promise<Uint8Array | null>
+): Promise<T[]> => {
+  const items: T[] = [];
+  const encryptedIds = await retrieveIds();
+  for (const id of encryptedIds) {
+    const encryptedItem = await retrieveItem(id);
+    if (encryptedItem) {
+      try {
+        const decryptedItem = decryptData(encryptedItem) as T;
+        items.push(decryptedItem);
+      } catch (error) {
+        console.error(`Error decrypting item with ID ${id}:`, error);
+      }
+    }
+  }
+  return items;
+};
+
+// Notes
 export const createNote = async (
   title: string,
   content: string
 ): Promise<string> => {
   const id = generateUniqueId();
   const note: Note = { id, title, content };
-  const encryptedNote = encrypt(JSON.stringify(note), key);
+  const encryptedNote = encryptData(note);
   await saveNote(id, encryptedNote);
   return id;
 };
 
 export const getNote = async (id: string): Promise<Note | null> => {
   const encryptedNote = await retrieveNote(id);
-  if (!encryptedNote) return null;
-
-  const decryptedNoteString = decrypt(encryptedNote, key);
-  const decryptedNote = JSON.parse(decryptedNoteString) as Note;
-  return decryptedNote;
+  return encryptedNote ? (decryptData(encryptedNote) as Note) : null;
 };
 
 export const updateNote = async (
@@ -30,27 +64,27 @@ export const updateNote = async (
   title: string,
   content: string
 ): Promise<void> => {
-  const encryptedNote = encrypt(JSON.stringify({ id, title, content }), key);
+  const encryptedNote = encryptData({ id, title, content });
   await saveNote(id, encryptedNote);
 };
 
 export const getNotes = async (): Promise<Note[]> => {
-  const notes: Note[] = [];
-  const encryptedNoteIds = await retrieveNoteIds();
+  return getDecryptedItems<Note>(retrieveNoteIds, retrieveNote);
+};
 
-  // Decrypt and parse each note
-  for (const id of encryptedNoteIds) {
-    const encryptedNote = await retrieveNote(id);
-    if (encryptedNote) {
-      try {
-        const decryptedNoteString = decrypt(encryptedNote, key);
-        const decryptedNote = JSON.parse(decryptedNoteString) as Note;
-        notes.push(decryptedNote);
-      } catch (error) {
-        console.error("Error decrypting note:", error);
-      }
-    }
-  }
+// Notebooks
+export const createNotebook = async (
+  name: string,
+  folders: Folder[],
+  notes: Note[]
+): Promise<string> => {
+  const id = generateUniqueId();
+  const notebook: Notebook = { id, name, folders, notes };
+  const encryptedNotebook = encryptData(notebook);
+  await saveNotebook(id, encryptedNotebook);
+  return id;
+};
 
-  return notes;
+export const getNotebooks = async (): Promise<Notebook[]> => {
+  return getDecryptedItems<Notebook>(retrieveNotebookIds, retrieveNotebook);
 };

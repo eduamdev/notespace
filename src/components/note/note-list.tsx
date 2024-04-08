@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "wouter";
-import { getNotes } from "@/services/note-service";
-import { createNotebook, getNotebooks } from "@/services/notebook-service";
+import {
+  getNotes,
+  createNotebook,
+  getNotebooks,
+} from "@/services/note-service";
 import { Note, Notebook } from "@/types";
 
 function NoteList() {
