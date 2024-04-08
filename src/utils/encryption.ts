@@ -32,10 +32,6 @@ export const decrypt = (
     ciphertext = nonce_and_ciphertext.slice(sodium.crypto_secretbox_NONCEBYTES);
   const decrypted = sodium.crypto_secretbox_open_easy(ciphertext, nonce, key);
 
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (!decrypted) {
-    throw new Error("Decryption failed");
-  }
   return sodium.to_string(decrypted);
 };
 

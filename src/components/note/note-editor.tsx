@@ -20,8 +20,7 @@ function NoteEditor() {
   };
 
   return (
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={(event) => void handleSubmit(event)}>
       <div className="flex flex-col gap-2">
         <h1 className="py-3 text-xl font-semibold">New note</h1>
         <input

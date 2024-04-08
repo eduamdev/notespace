@@ -21,10 +21,7 @@ export const getNote = async (id: string): Promise<Note | null> => {
   if (!encryptedNote) return null;
 
   const decryptedNoteString = decrypt(encryptedNote, key);
-
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const decryptedNote: Note = JSON.parse(decryptedNoteString);
-
+  const decryptedNote = JSON.parse(decryptedNoteString) as Note;
   return decryptedNote;
 };
 
@@ -37,13 +34,8 @@ export const updateNote = async (
   await saveNote(id, encryptedNote);
 };
 
-// export const deleteNote = async (id: string): Promise<void> => {
-//   // Implement deletion logic here
-// };
-
 export const getNotes = async (): Promise<Note[]> => {
   const notes: Note[] = [];
-  // Retrieve encrypted notes from storage
   const encryptedNoteIds = await retrieveNoteIds();
 
   // Decrypt and parse each note
@@ -52,8 +44,7 @@ export const getNotes = async (): Promise<Note[]> => {
     if (encryptedNote) {
       try {
         const decryptedNoteString = decrypt(encryptedNote, key);
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        const decryptedNote: Note = JSON.parse(decryptedNoteString);
+        const decryptedNote = JSON.parse(decryptedNoteString) as Note;
         notes.push(decryptedNote);
       } catch (error) {
         console.error("Error decrypting note:", error);

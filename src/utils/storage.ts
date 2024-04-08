@@ -22,8 +22,10 @@ export const retrieveDocument = async (
     const doc = await db.get(id);
     return doc;
   } catch (error) {
-    if (error.name === "not_found") {
-      return null;
+    if (error instanceof Error) {
+      if (error.name === "not_found") {
+        return null;
+      }
     }
     console.error(`Error retrieving document with ID ${id}:`, error);
     throw error;

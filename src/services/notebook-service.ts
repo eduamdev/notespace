@@ -1,4 +1,3 @@
-import { Folder, Note, Notebook } from "@/types";
 import { decrypt, encrypt, getEncryptionKey } from "@/utils/encryption";
 import {
   retrieveNotebook,
@@ -6,6 +5,7 @@ import {
   saveNotebook,
 } from "@/utils/storage";
 import { generateUniqueId } from "@/utils/utils";
+import { Folder, Note, Notebook } from "@/types";
 
 const key = getEncryptionKey();
 
@@ -17,14 +17,12 @@ export const createNotebook = async (
   const id = generateUniqueId();
   const notebook: Notebook = { id, name, folders, notes };
   const encryptedNotebook = encrypt(JSON.stringify(notebook), key);
-  console.log(encryptedNotebook);
   await saveNotebook(id, encryptedNotebook);
   return id;
 };
 
 export const getNotebooks = async (): Promise<Notebook[]> => {
   const notebooks: Notebook[] = [];
-  // Retrieve encrypted notebooks from storage
   const encryptedNotebookIds = await retrieveNotebookIds();
 
   // Decrypt and parse each notebook
@@ -33,8 +31,9 @@ export const getNotebooks = async (): Promise<Notebook[]> => {
     if (encryptedNotebook) {
       try {
         const decryptedNotebookString = decrypt(encryptedNotebook, key);
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        const decryptedNotebook: Notebook = JSON.parse(decryptedNotebookString);
+        const decryptedNotebook = JSON.parse(
+          decryptedNotebookString
+        ) as Notebook;
         notebooks.push(decryptedNotebook);
       } catch (error) {
         console.error("Error decrypting notebook:", error);
