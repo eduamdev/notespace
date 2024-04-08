@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "wouter";
 import { getNote } from "@/services/note-service";
-import { Note } from "@/types/note";
+import { Note } from "@/types";
 
 function NoteDetail() {
   const { id } = useParams<{ id: string }>();

@@ -1,30 +1,15 @@
-import { v4 as uuidv4 } from "uuid";
-import { encrypt, decrypt } from "@/utils/encryption";
+import { encrypt, decrypt, getEncryptionKey } from "@/utils/encryption";
 import { saveNote, retrieveNote, retrieveNoteIds } from "@/utils/storage";
-import { Note } from "@/types/note";
+import { generateUniqueId } from "@/utils/utils";
+import { Note } from "@/types";
 
-const encryptionKey = import.meta.env.VITE_ENCRYPTION_KEY;
-
-if (!encryptionKey) {
-  throw new Error(
-    "Encryption key not found. Please set ENCRYPTION_KEY environment variable."
-  );
-}
-
-// Decode the Base64 string into binary data
-const binaryString = atob(encryptionKey);
-
-// Create a Uint8Array from the binary data
-const key = new Uint8Array(binaryString.length);
-for (let i = 0; i < binaryString.length; i++) {
-  key[i] = binaryString.charCodeAt(i);
-}
+const key = getEncryptionKey();
 
 export const createNote = async (
   title: string,
   content: string
 ): Promise<string> => {
-  const id = uuidv4();
+  const id = generateUniqueId();
   const note: Note = { id, title, content };
   const encryptedNote = encrypt(JSON.stringify(note), key);
   await saveNote(id, encryptedNote);

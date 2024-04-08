@@ -38,3 +38,24 @@ export const decrypt = (
   }
   return sodium.to_string(decrypted);
 };
+
+export const getEncryptionKey = () => {
+  const encryptionKey = import.meta.env.VITE_ENCRYPTION_KEY;
+
+  if (!encryptionKey) {
+    throw new Error(
+      "Encryption key not found. Please set ENCRYPTION_KEY environment variable."
+    );
+  }
+
+  // Decode the Base64 string into binary data
+  const binaryString = atob(encryptionKey);
+
+  // Create a Uint8Array from the binary data
+  const key = new Uint8Array(binaryString.length);
+  for (let i = 0; i < binaryString.length; i++) {
+    key[i] = binaryString.charCodeAt(i);
+  }
+
+  return key;
+};
