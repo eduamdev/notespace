@@ -27,7 +27,7 @@ function Login({ onLogin }: LoginProps) {
     <div className="relative flex h-dvh w-dvw flex-col items-center">
       <div className="absolute top-[20%] w-full max-w-sm">
         <div className="flex items-center justify-center pb-7">
-          <img src={Logo} alt="" height={42} width={42} className="grayscale" />
+          <img src={Logo} alt="" height={42} width={42} />
         </div>
         <h1 className="text-center text-xl font-semibold">
           Sign in to NoteGuard
