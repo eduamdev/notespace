@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "wouter";
+import Layout from "@/components/layout/layout";
 import {
   getNotes,
   createNotebook,
@@ -50,7 +51,7 @@ function NoteList() {
   };
 
   return (
-    <div>
+    <Layout>
       <h1 className="py-3 text-xl font-semibold">All notes</h1>
       <div className="my-4">
         <Link href="/notes/new">New note</Link>
@@ -128,7 +129,7 @@ function NoteList() {
           </ul>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 }
 

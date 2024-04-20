@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { Redirect, Route, Switch } from "wouter";
-import Layout from "@/components/layout/layout";
 
 import Login from "@/components/auth/login";
-import Register from "@/components/auth/register";
+import SignUp from "@/components/auth/sign-up";
 import NoteList from "@/components/note/note-list";
 import NoteEditor from "@/components/note/note-editor";
 import NoteDetail from "@/components/note/note-detail";
@@ -57,7 +56,7 @@ function App() {
   };
 
   return (
-    <Layout>
+    <>
       {isOnline ? null : (
         <div className="bg-yellow-100 py-1 text-center">
           No internet connection
@@ -70,7 +69,7 @@ function App() {
         <Route path="/login">
           <Login onLogin={handleLogin} />
         </Route>
-        <Route path="/register" component={Register} />
+        <Route path="/sign-up" component={SignUp} />
 
         {/* Private Routes */}
         <PrivateRoute path="/notes/all" component={NoteList} />
@@ -87,7 +86,7 @@ function App() {
           )}
         </Route>
       </Switch>
-    </Layout>
+    </>
   );
 }
 
