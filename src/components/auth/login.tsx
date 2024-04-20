@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "wouter";
+import Logo from "@/assets/logo.svg";
 
 interface LoginProps {
   onLogin: (username: string, password: string) => void;
@@ -25,12 +26,14 @@ function Login({ onLogin }: LoginProps) {
   return (
     <div className="relative flex h-dvh w-dvw flex-col items-center">
       <div className="absolute top-[20%] w-full max-w-sm">
-        <h1 className="pb-6 text-center text-xl font-semibold">
+        <div className="flex items-center justify-center pb-7">
+          <img src={Logo} alt="" height={48} width={48} className="grayscale" />
+        </div>
+        <h1 className="text-center text-xl font-semibold">
           Sign in to NoteGuard
         </h1>
-        {error && <div className="text-red-500">{error}</div>}
         <form onSubmit={handleSubmit}>
-          <div className="space-y-3.5 py-[30px]">
+          <div className="space-y-3 pt-10">
             <div>
               <label htmlFor="username" className="sr-only">
                 Username:
@@ -40,7 +43,7 @@ function Login({ onLogin }: LoginProps) {
                 id="username"
                 value={username}
                 placeholder="Username"
-                className="w-full border-b-[1.5px] py-2 text-[17px] placeholder:text-base focus-visible:border-b focus-visible:border-neutral-700 focus-visible:outline-none"
+                className="w-full border-b-[1.5px] py-2 text-[17px] transition-colors placeholder:text-base focus-visible:border-b focus-visible:border-neutral-700 focus-visible:outline-none"
                 onChange={(e) => {
                   setUsername(e.target.value);
                 }}
@@ -55,14 +58,19 @@ function Login({ onLogin }: LoginProps) {
                 id="password"
                 value={password}
                 placeholder="Password"
-                className="w-full border-b-[1.5px] py-2 text-[17px] placeholder:text-base focus-visible:border-b focus-visible:border-neutral-700 focus-visible:outline-none"
+                className="w-full border-b-[1.5px] py-2 text-[17px] transition-colors placeholder:text-base focus-visible:border-b focus-visible:border-neutral-700 focus-visible:outline-none"
                 onChange={(e) => {
                   setPassword(e.target.value);
                 }}
               />
             </div>
           </div>
-          <div>
+          {error && (
+            <div className="pt-4">
+              <span className="text-red-600">{error}</span>
+            </div>
+          )}
+          <div className="pt-7">
             <button
               type="submit"
               className="w-full rounded-lg bg-neutral-600 px-2 py-2.5 font-medium capitalize text-white"
