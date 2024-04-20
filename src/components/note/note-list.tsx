@@ -8,6 +8,8 @@ import {
 import { Note, Notebook } from "@/types";
 
 function NoteList() {
+  const [notebook, setNotebook] = useState("");
+
   const [notebooks, setNotebooks] = useState<Notebook[]>([]);
   const [notes, setNotes] = useState<Note[]>([]);
 
@@ -36,14 +38,23 @@ function NoteList() {
     }
   };
 
-  const handleNotebookClick = async (name: string) => {
-    await createNotebook(name, [], []);
-    alert(`New notebook created: ${name}`);
+  const handleNotebookCreation = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await createNotebook(notebook, [], []);
+      alert(`New notebook created: ${notebook}`);
+      setNotebook("");
+    } catch (error) {
+      console.error("Error creating notebook:", error);
+    }
   };
 
   return (
     <div>
       <h1 className="py-3 text-xl font-semibold">All notes</h1>
+      <div className="my-4">
+        <Link href="/notes/new">New note</Link>
+      </div>
       <ul>
         {notes.map((note) => (
           <li key={note.id}>
@@ -69,14 +80,20 @@ function NoteList() {
       </ul>
       <div className="py-6">
         <h2 className="py-3 text-xl font-semibold">Notebooks</h2>
-        <button
-          className="bg-gray-200 p-2"
-          onClick={() => {
-            void handleNotebookClick("New Notebook");
-          }}
-        >
-          Create notebook
-        </button>
+        <form onSubmit={(event) => void handleNotebookCreation(event)}>
+          <input
+            type="text"
+            value={notebook}
+            className="border p-2"
+            onChange={(e) => {
+              setNotebook(e.target.value);
+            }}
+            placeholder="Notebook"
+          />
+          <button type="submit" className="bg-gray-200 p-2">
+            Create notebook
+          </button>
+        </form>
         <div className="py-3">
           <ul>
             {notebooks.map((notebook) => (
