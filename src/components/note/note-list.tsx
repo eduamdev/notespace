@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "wouter";
-import Layout from "@/components/layout/layout";
+
 import {
   getNotes,
   createNotebook,
@@ -51,35 +51,68 @@ function NoteList() {
   };
 
   return (
-    <Layout>
-      <h1 className="py-3 text-xl font-semibold">All notes</h1>
-      <div className="my-4">
-        <Link href="/notes/new">New note</Link>
+    <div className="relative size-full after:absolute after:right-0 after:top-0 after:h-full after:w-px after:border-r after:border-neutral-200 after:content-['']">
+      <div className="flex items-center justify-between p-2">
+        <h1 className="py-1 text-xl font-semibold">Notes</h1>
+        <div className="flex items-center justify-center gap-4">
+          <button>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="size-5"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+              <path d="M21 21l-6 -6" />
+            </svg>
+          </button>
+          <Link
+            href="/notes/new"
+            className="flex items-center rounded-full bg-green-600 p-1.5 text-white"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="inline-block size-4"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M12 5l0 14" />
+              <path d="M5 12l14 0" />
+            </svg>
+            {/* <span className="pl-1.5 text-sm">New note</span> */}
+          </Link>
+        </div>
       </div>
-      <ul>
+      <div className="flex w-full items-center bg-neutral-50 px-2 py-2.5 text-sm font-semibold capitalize leading-none text-green-700">
+        recent
+      </div>
+      <ul className="space-y-4 px-2 py-4">
         {notes.map((note) => (
           <li key={note.id}>
             <Link to={`/notes/${note.id}`}>
-              <div className="flex items-center gap-2.5">
-                <svg
-                  aria-hidden="true"
-                  focusable="false"
-                  role="img"
-                  className="inline-block select-none overflow-visible align-text-bottom"
-                  viewBox="0 0 16 16"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                >
-                  <path d="M2 1.75C2 .784 2.784 0 3.75 0h6.586c.464 0 .909.184 1.237.513l2.914 2.914c.329.328.513.773.513 1.237v9.586A1.75 1.75 0 0 1 13.25 16h-9.5A1.75 1.75 0 0 1 2 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h9.5a.25.25 0 0 0 .25-.25V6h-2.75A1.75 1.75 0 0 1 9 4.25V1.5Zm6.75.062V4.25c0 .138.112.25.25.25h2.688l-.011-.013-2.914-2.914-.013-.011Z"></path>
-                </svg>
-                <span>{note.title}</span>
+              <div className="flex flex-col items-start">
+                <p className="font-medium text-black">{note.title}</p>
+                <p>{note.content}</p>
               </div>
             </Link>
           </li>
         ))}
       </ul>
-      <div className="py-6">
+      <div className="hidden py-6">
         <h2 className="py-3 text-xl font-semibold">Notebooks</h2>
         <form onSubmit={(event) => void handleNotebookCreation(event)}>
           <input
@@ -99,18 +132,6 @@ function NoteList() {
           <ul>
             {notebooks.map((notebook) => (
               <li key={notebook.id} className="flex items-center gap-2.5">
-                {/* <svg
-                  aria-hidden="true"
-                  focusable="false"
-                  role="img"
-                  viewBox="0 0 16 16"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  className="inline-block select-none overflow-visible align-text-bottom text-blue-400"
-                >
-                  <path d="M.513 1.513A1.75 1.75 0 0 1 1.75 1h3.5c.55 0 1.07.26 1.4.7l.9 1.2a.25.25 0 0 0 .2.1H13a1 1 0 0 1 1 1v.5H2.75a.75.75 0 0 0 0 1.5h11.978a1 1 0 0 1 .994 1.117L15 13.25A1.75 1.75 0 0 1 13.25 15H1.75A1.75 1.75 0 0 1 0 13.25V2.75c0-.464.184-.91.513-1.237Z"></path>
-                </svg> */}
                 <svg
                   aria-hidden="true"
                   focusable="false"
@@ -129,7 +150,7 @@ function NoteList() {
           </ul>
         </div>
       </div>
-    </Layout>
+    </div>
   );
 }
 

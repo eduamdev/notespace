@@ -1,11 +1,14 @@
-import Header from "@/components/layout/header";
+import Aside from "@/components/layout/aside";
 
-function Layout(props: { children: React.ReactNode }) {
+function Layout(props: { main: React.ReactNode; detail?: React.ReactNode }) {
   return (
     <div className="flex flex-col items-center">
-      <div className="h-screen w-full max-w-none px-5 sm:max-w-[90%] sm:px-0">
-        <Header />
-        {props.children}
+      <div className="flex h-dvh w-dvw flex-row">
+        <Aside />
+        <div className="grid w-full grid-cols-[1fr,3fr]">
+          <div>{props.main}</div>
+          <div>{props.detail}</div>
+        </div>
       </div>
     </div>
   );

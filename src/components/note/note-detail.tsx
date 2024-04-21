@@ -26,8 +26,8 @@ function NoteDetail() {
   }
 
   return (
-    <div>
-      <h2>{note.title}</h2>
+    <div className="p-2">
+      <h2 className="font-medium text-black">{note.title}</h2>
       <p>{note.content}</p>
     </div>
   );

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Redirect, Route, Switch } from "wouter";
 
+import Layout from "@/components/layout/layout";
 import Login from "@/components/auth/login";
 import SignUp from "@/components/auth/sign-up";
 import NoteList from "@/components/note/note-list";
@@ -36,18 +37,23 @@ function App() {
     }
   };
 
-  // Function to render private routes
   const PrivateRoute = ({
     component: Component,
+    children,
     ...rest
   }: {
-    component: React.ComponentType<unknown>;
+    component?: React.ComponentType<unknown>;
+    children?: React.ReactNode;
     [x: string]: unknown;
   }) => {
     return (
       <Route {...rest}>
         {AuthService.isAuthenticated() ? (
-          <Component />
+          Component ? (
+            <Component />
+          ) : (
+            children
+          )
         ) : (
           <Redirect to="/login" />
         )}
@@ -72,9 +78,15 @@ function App() {
         <Route path="/sign-up" component={SignUp} />
 
         {/* Private Routes */}
-        <PrivateRoute path="/notes/all" component={NoteList} />
-        <PrivateRoute path="/notes/new" component={NoteEditor} />
-        <PrivateRoute path="/notes/:id" component={NoteDetail} />
+        <PrivateRoute path="/notes/all">
+          <Layout main={<NoteList />} />
+        </PrivateRoute>
+        <PrivateRoute path="/notes/new">
+          <Layout main={<NoteList />} detail={<NoteEditor />} />
+        </PrivateRoute>
+        <PrivateRoute path="/notes/:id">
+          <Layout main={<NoteList />} detail={<NoteDetail />} />
+        </PrivateRoute>
 
         {/* Default Route (404) */}
         <Route>
