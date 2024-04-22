@@ -52,8 +52,8 @@ function NoteList() {
 
   return (
     <div className="relative size-full after:absolute after:right-0 after:top-0 after:h-full after:w-px after:border-r after:border-neutral-200 after:content-['']">
-      <div className="flex items-center justify-between p-2">
-        <h1 className="py-1 text-xl font-semibold">Notes</h1>
+      <div className="flex items-center justify-between p-3">
+        <h1 className="py-1 text-[22px] font-semibold">Notes</h1>
         <div className="flex items-center justify-center gap-4">
           <button>
             <svg
@@ -75,7 +75,7 @@ function NoteList() {
           </button>
           <Link
             href="/notes/new"
-            className="flex items-center rounded-full bg-green-600 p-1.5 text-white"
+            className="flex items-center rounded-full bg-green-700 p-1.5 text-white"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -97,10 +97,10 @@ function NoteList() {
           </Link>
         </div>
       </div>
-      <div className="flex w-full items-center bg-neutral-50 px-2 py-2.5 text-sm font-semibold capitalize leading-none text-green-700">
+      {/* <div className="flex w-full items-center bg-neutral-50 px-2 py-2.5 text-sm font-semibold capitalize leading-none text-green-700">
         recent
-      </div>
-      <ul className="space-y-4 px-2 py-4">
+      </div> */}
+      <ul className="space-y-4 px-3 py-4">
         {notes.map((note) => (
           <li key={note.id}>
             <Link to={`/notes/${note.id}`}>

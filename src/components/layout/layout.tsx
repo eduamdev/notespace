@@ -5,7 +5,7 @@ function Layout(props: { main: React.ReactNode; detail?: React.ReactNode }) {
     <div className="flex flex-col items-center">
       <div className="flex h-dvh w-dvw flex-row">
         <Aside />
-        <div className="grid w-full grid-cols-[1fr,3fr]">
+        <div className="grid w-full grid-cols-[380px,1fr]">
           <div>{props.main}</div>
           <div>{props.detail}</div>
         </div>
