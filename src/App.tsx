@@ -69,7 +69,7 @@ function App() {
         </div>
       )}
       <Switch>
-        <Route path="/" component={() => <Redirect to="/notes/all" />} />
+        <Route path="/" component={() => <Redirect to="/notes" />} />
 
         {/* Auth Routes */}
         <Route path="/login">
@@ -78,7 +78,7 @@ function App() {
         <Route path="/sign-up" component={SignUp} />
 
         {/* Private Routes */}
-        <PrivateRoute path="/notes/all">
+        <PrivateRoute path="/notes">
           <Layout main={<NoteList />} />
         </PrivateRoute>
         <PrivateRoute path="/notes/new">

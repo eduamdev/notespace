@@ -18,7 +18,7 @@ export const AuthService = {
     if (user) {
       const token = generateToken();
       localStorage.setItem("token", token);
-      navigate("/notes/all");
+      navigate("/notes");
       return token;
     } else {
       throw new Error("Invalid username or password");
