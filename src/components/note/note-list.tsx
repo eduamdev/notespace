@@ -51,9 +51,9 @@ function NoteList() {
   };
 
   return (
-    <div className="relative size-full after:absolute after:right-0 after:top-0 after:h-full after:w-px after:border-r after:border-neutral-200 after:content-['']">
-      <div className="flex items-center justify-between p-3">
-        <h1 className="py-1 text-[22px] font-semibold">Notes</h1>
+    <div className="relative size-full after:absolute after:right-0 after:top-0 after:h-full after:w-px after:border-r after:border-neutral-950/10 after:content-['']">
+      <div className="flex items-center justify-between px-6 py-4">
+        <h1 className="text-[20px] font-semibold">Notes</h1>
         <div className="flex items-center justify-center gap-4">
           <button>
             <svg
@@ -75,7 +75,7 @@ function NoteList() {
           </button>
           <Link
             href="/notes/new"
-            className="flex items-center rounded-full bg-green-700 p-1.5 text-white"
+            className="flex h-[34px] items-center rounded-lg bg-cyan-600 pl-1.5 pr-2.5 text-cyan-50"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -93,14 +93,14 @@ function NoteList() {
               <path d="M12 5l0 14" />
               <path d="M5 12l14 0" />
             </svg>
-            {/* <span className="pl-1.5 text-sm">New note</span> */}
+            <span className="pl-1.5 text-sm font-medium">Note</span>
           </Link>
         </div>
       </div>
       {/* <div className="flex w-full items-center bg-neutral-50 px-2 py-2.5 text-sm font-semibold capitalize leading-none text-green-700">
         recent
       </div> */}
-      <ul className="space-y-4 px-3 py-4">
+      <ul className="space-y-4 px-6 py-4">
         {notes.map((note) => (
           <li key={note.id}>
             <Link to={`/notes/${note.id}`}>
