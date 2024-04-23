@@ -28,3 +28,12 @@ body {
   margin: 0;
   min-width: 320px;
 }
+
+/* Placeholder (at the top) */
+.tiptap .is-editor-empty:first-child::before {
+  color: #adb5bd;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}

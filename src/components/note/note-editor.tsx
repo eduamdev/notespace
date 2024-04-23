@@ -1,29 +1,36 @@
-import React, { useState } from "react";
+// import React, { useState } from "react";
 
-import { createNote } from "@/services/note-service";
+// import { createNote } from "@/services/note-service";
+import Tiptap from "@/components/editor/tiptap";
 
 function NoteEditor() {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  // const [title, setTitle] = useState("");
+  // const [content, setContent] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      await createNote(title, content);
-      // Reset form fields
-      setTitle("");
-      setContent("");
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   try {
+  //     await createNote(title, content);
+  //     // Reset form fields
+  //     setTitle("");
+  //     setContent("");
 
-      alert("success!");
-    } catch (error) {
-      console.error("Error creating note:", error);
-    }
-  };
+  //     alert("success!");
+  //   } catch (error) {
+  //     console.error("Error creating note:", error);
+  //   }
+  // };
 
   return (
     <div className="px-6 py-10">
       <div className="mx-auto max-w-prose">
-        <form onSubmit={(event) => void handleSubmit(event)}>
+        <Tiptap
+          content={""}
+          onChange={() => {
+            console.log("on change...");
+          }}
+        />
+        {/* <form onSubmit={(event) => void handleSubmit(event)}>
           <div className="flex flex-col gap-5">
             <input
               type="text"
@@ -52,7 +59,7 @@ function NoteEditor() {
               </button>
             </div>
           </div>
-        </form>
+        </form> */}
       </div>
     </div>
   );
