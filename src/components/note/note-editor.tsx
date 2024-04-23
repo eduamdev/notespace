@@ -29,7 +29,7 @@ function NoteEditor() {
             <input
               type="text"
               value={title}
-              className="rounded-md p-2 text-4xl font-semibold text-black outline-none placeholder:font-medium"
+              className="rounded-md text-2xl font-semibold text-black outline-none placeholder:font-medium"
               onChange={(e) => {
                 setTitle(e.target.value);
               }}
