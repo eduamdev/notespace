@@ -4,17 +4,18 @@ import StarterKit from "@tiptap/starter-kit";
 import Toolbar from "@/components/editor/toolbar";
 
 interface TiptapProps {
+  placeholder: string;
   content: string;
   onChange: (richText: string) => void;
 }
 
-function Tiptap({ content, onChange }: TiptapProps) {
+function Tiptap({ placeholder, content, onChange }: TiptapProps) {
   const editor = useEditor({
     extensions: [
       StarterKit,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
       Placeholder.configure({
-        placeholder: "Start writing something ...",
+        placeholder: placeholder,
       }),
     ],
     content: content,

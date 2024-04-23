@@ -1,36 +1,30 @@
-// import React, { useState } from "react";
+import React, { useState } from "react";
 
-// import { createNote } from "@/services/note-service";
+import { createNote } from "@/services/note-service";
 import Tiptap from "@/components/editor/tiptap";
 
 function NoteEditor() {
-  // const [title, setTitle] = useState("");
-  // const [content, setContent] = useState("");
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
 
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   try {
-  //     await createNote(title, content);
-  //     // Reset form fields
-  //     setTitle("");
-  //     setContent("");
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await createNote(title, content);
+      // Reset form fields
+      setTitle("");
+      setContent("");
 
-  //     alert("success!");
-  //   } catch (error) {
-  //     console.error("Error creating note:", error);
-  //   }
-  // };
+      alert("success!");
+    } catch (error) {
+      console.error("Error creating note:", error);
+    }
+  };
 
   return (
     <div className="px-6 py-10">
       <div className="mx-auto max-w-prose">
-        <Tiptap
-          content={""}
-          onChange={() => {
-            console.log("on change...");
-          }}
-        />
-        {/* <form onSubmit={(event) => void handleSubmit(event)}>
+        <form onSubmit={(event) => void handleSubmit(event)}>
           <div className="flex flex-col gap-5">
             <input
               type="text"
@@ -41,15 +35,13 @@ function NoteEditor() {
               }}
               placeholder="Note title"
             />
-            <textarea
-              className="rounded-md p-2 outline-none"
-              rows={10}
-              value={content}
-              onChange={(e) => {
-                setContent(e.target.value);
+            <Tiptap
+              placeholder="Start writing something ..."
+              content={content}
+              onChange={(richText) => {
+                setContent(richText);
               }}
-              placeholder="Add a note..."
-            ></textarea>
+            />
             <div className="mt-4">
               <button
                 type="submit"
@@ -59,7 +51,7 @@ function NoteEditor() {
               </button>
             </div>
           </div>
-        </form> */}
+        </form>
       </div>
     </div>
   );
