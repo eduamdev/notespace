@@ -53,7 +53,7 @@ function NoteList() {
   return (
     <div className="relative size-full after:absolute after:right-0 after:top-0 after:h-full after:w-px after:border-r after:border-neutral-950/10 after:content-['']">
       <div className="flex items-center justify-between px-6 py-4">
-        <h1 className="text-lg font-semibold">Notes</h1>
+        <h1 className="text-lg font-semibold text-black">Notes</h1>
         <div className="flex items-center justify-center gap-4">
           <button>
             <svg

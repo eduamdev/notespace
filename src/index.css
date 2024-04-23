@@ -3,22 +3,21 @@
 @tailwind utilities;
 
 :root {
-  font-family: "Inter Variable", Inter, system-ui, Avenir, Helvetica, Arial,
-    sans-serif;
-
   color-scheme: light;
   color: #213547;
   background-color: #ffffff;
+}
 
+body {
+  font-family: "Public Sans Variable", Inter, system-ui, Helvetica, Arial,
+    sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   user-select: text;
   text-size-adjust: 100%;
-}
 
-body {
   overscroll-behavior-y: contain;
   overflow-x: hidden;
   font-size: 100%;
@@ -29,9 +28,17 @@ body {
   min-width: 320px;
 }
 
+p {
+  color: #111111;
+}
+
+strong {
+  color: black;
+}
+
 /* Placeholder (at the top) */
 .tiptap .is-editor-empty:first-child::before {
-  color: #adb5bd;
+  color: #a3a3a3;
   content: attr(data-placeholder);
   float: left;
   height: 0;

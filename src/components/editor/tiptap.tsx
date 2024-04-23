@@ -12,7 +12,13 @@ interface TiptapProps {
 
 function Tiptap({ placeholder, content, onChange }: TiptapProps) {
   const extensions = [
-    StarterKit,
+    StarterKit.configure({
+      paragraph: {
+        HTMLAttributes: {
+          class: "leading-8",
+        },
+      },
+    }),
     Placeholder.configure({
       placeholder: placeholder,
     }),
@@ -24,8 +30,8 @@ function Tiptap({ placeholder, content, onChange }: TiptapProps) {
           ? node.attrs.level
           : this.options.levels[0];
         const classes: Record<number, string> = {
-          2: "text-[20px] font-semibold",
-          3: "text-lg font-semibold",
+          2: "text-[20px] font-semibold text-black",
+          3: "text-lg font-semibold text-black",
         };
         return [
           // eslint-disable-next-line @typescript-eslint/restrict-template-expressions

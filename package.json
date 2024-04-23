@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fontsource-variable/public-sans": "^5.0.19",
     "@tiptap/extension-heading": "^2.3.0",
     "@tiptap/extension-placeholder": "^2.3.0",
     "@tiptap/pm": "^2.3.0",
@@ -18,11 +19,9 @@
     "libsodium-wrappers": "^0.7.13",
     "pouchdb": "^8.0.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "uuid": "^9.0.1"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@fontsource-variable/inter": "^5.0.17",
     "@types/libsodium-wrappers": "^0.7.14",
     "@types/pouchdb": "^6.4.2",
     "@types/react": "^18.2.79",
@@ -43,6 +42,7 @@
     "typescript": "^5.4.5",
     "vite": "^5.2.9",
     "vite-plugin-pwa": "^0.19.8",
-    "wouter": "^3.1.2"
+    "wouter": "^3.1.2",
+    "uuid": "^9.0.1"
   }
 }

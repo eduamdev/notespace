@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@fontsource-variable/public-sans':
+    specifier: ^5.0.19
+    version: 5.0.19
   '@tiptap/extension-heading':
     specifier: ^2.3.0
     version: 2.3.0(@tiptap/core@2.3.0)
@@ -32,14 +35,8 @@ dependencies:
   react-dom:
     specifier: ^18.2.0
     version: 18.2.0(react@18.2.0)
-  uuid:
-    specifier: ^9.0.1
-    version: 9.0.1
 
 devDependencies:
-  '@fontsource-variable/inter':
-    specifier: ^5.0.17
-    version: 5.0.17
   '@types/libsodium-wrappers':
     specifier: ^0.7.14
     version: 0.7.14
@@ -94,6 +91,9 @@ devDependencies:
   typescript:
     specifier: ^5.4.5
     version: 5.4.5
+  uuid:
+    specifier: ^9.0.1
+    version: 9.0.1
   vite:
     specifier: ^5.2.9
     version: 5.2.9
@@ -1557,9 +1557,9 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
 
-  /@fontsource-variable/inter@5.0.17:
-    resolution: {integrity: sha512-sa80nNnqF8kzhBvqusWiL9vlPMVpdmOwMmDBup46Jggsr1VBqo+YuzwB36Ls+X6uHJtb8Yv3ALBHL/zGmT862A==}
-    dev: true
+  /@fontsource-variable/public-sans@5.0.19:
+    resolution: {integrity: sha512-Tc1V139visg0xUgSe2vQy86OwHEGb0dO57vcrD6Cw2vDRf42sZ4fD7nTuY0Q0AjVNemT7RicmkR9qnB/MfJ6ug==}
+    dev: false
 
   /@humanwhocodes/config-array@0.11.14:
     resolution: {integrity: sha512-3T8LkOmg45BV5FICb15QQMsyUSWrQ8AygVfC7ZG32zOalnqrilm018ZVCw0eapXux8FtA33q8PSRSstjee3jSg==}
@@ -5766,7 +5766,7 @@ packages:
   /uuid@9.0.1:
     resolution: {integrity: sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==}
     hasBin: true
-    dev: false
+    dev: true
 
   /vite-plugin-pwa@0.19.8(vite@5.2.9)(workbox-build@7.0.0)(workbox-window@7.0.0):
     resolution: {integrity: sha512-e1oK0dfhzhDhY3VBuML6c0h8Xfx6EkOVYqolj7g+u8eRfdauZe5RLteCIA/c5gH0CBQ0CNFAuv/AFTx4Z7IXTw==}

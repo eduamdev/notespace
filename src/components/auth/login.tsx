@@ -29,7 +29,7 @@ function Login({ onLogin }: LoginProps) {
         <div className="flex items-center justify-center pb-7">
           <img src={Logo} alt="" height={38} width={38} />
         </div>
-        <h1 className="text-center text-xl font-semibold">
+        <h1 className="text-center text-xl font-semibold text-black">
           Sign in to NoteGuard
         </h1>
         <form onSubmit={handleSubmit}>
@@ -73,7 +73,7 @@ function Login({ onLogin }: LoginProps) {
           <div className="pt-7">
             <button
               type="submit"
-              className="w-full rounded-lg bg-neutral-950 px-2 py-2.5 font-medium capitalize text-white"
+              className="w-full rounded-lg bg-neutral-950 px-2 py-2.5 font-semibold capitalize text-white"
             >
               continue
             </button>
@@ -82,7 +82,7 @@ function Login({ onLogin }: LoginProps) {
         <div className="pt-7 text-center">
           <span className="text-[15px] text-neutral-500">
             Don&apos;t have an account?{" "}
-            <Link href="/sign-up" className="font-medium text-black">
+            <Link href="/sign-up" className="font-semibold text-black">
               Sign up
             </Link>
           </span>
