@@ -4,8 +4,8 @@ import "@fontsource-variable/public-sans/wght-italic.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "@/App";
-import "@/index.css";
-import { initializeEncryption } from "@/utils/encryption";
+import "@/styles/globals.css";
+import { initializeEncryption } from "@/lib/encryption";
 
 void initializeEncryption().then(() => {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

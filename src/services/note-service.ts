@@ -1,4 +1,4 @@
-import { encrypt, decrypt, getEncryptionKey } from "@/utils/encryption";
+import { encrypt, decrypt, getEncryptionKey } from "@/lib/encryption";
 import {
   saveNote,
   retrieveNote,
@@ -6,8 +6,8 @@ import {
   saveNotebook,
   retrieveNotebookIds,
   retrieveNotebook,
-} from "@/utils/storage";
-import { generateUniqueId } from "@/utils/utils";
+} from "@/lib/storage";
+import { generateUniqueId } from "@/lib/utils";
 import { Folder, Note, Notebook } from "@/types";
 
 const key = getEncryptionKey();
