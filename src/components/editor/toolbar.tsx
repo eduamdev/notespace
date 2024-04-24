@@ -1,4 +1,5 @@
 import { useCurrentEditor } from "@tiptap/react";
+import { Toggle } from "@/components/ui/toggle";
 
 function EditorToolbar() {
   const { editor } = useCurrentEditor();
@@ -8,13 +9,13 @@ function EditorToolbar() {
   }
 
   return (
-    <div className="flex items-center gap-4 border-y py-6">
+    <div className="flex items-center gap-3 border-y py-6">
       {/* H-2 */}
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-        className={
-          editor.isActive("heading", { level: 2 }) ? "bg-neutral-200" : ""
+      <Toggle
+        aria-label="Toggle heading level 2"
+        pressed={editor.isActive("heading", { level: 2 })}
+        onPressedChange={() =>
+          editor.chain().focus().toggleHeading({ level: 2 }).run()
         }
       >
         <svg
@@ -39,14 +40,14 @@ function EditorToolbar() {
           <path d="M3 6h2" />
           <path d="M11 6h2" />
         </svg>
-      </button>
+      </Toggle>
 
       {/* H-3 */}
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-        className={
-          editor.isActive("heading", { level: 3 }) ? "bg-neutral-200" : ""
+      <Toggle
+        aria-label="Toggle heading level 3"
+        pressed={editor.isActive("heading", { level: 3 })}
+        onPressedChange={() =>
+          editor.chain().focus().toggleHeading({ level: 3 }).run()
         }
       >
         <svg
@@ -72,14 +73,14 @@ function EditorToolbar() {
           <path d="M3 6h2" />
           <path d="M11 6h2" />
         </svg>
-      </button>
+      </Toggle>
 
       {/* Bold */}
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().toggleBold().run()}
+      <Toggle
+        aria-label="Toggle bold"
+        pressed={editor.isActive("bold")}
+        onPressedChange={() => editor.chain().focus().toggleBold().run()}
         disabled={!editor.can().chain().focus().toggleBold().run()}
-        className={editor.isActive("bold") ? "bg-neutral-200" : ""}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -97,14 +98,14 @@ function EditorToolbar() {
           <path d="M7 5h6a3.5 3.5 0 0 1 0 7h-6z" />
           <path d="M13 12h1a3.5 3.5 0 0 1 0 7h-7v-7" />
         </svg>
-      </button>
+      </Toggle>
 
       {/* Italic */}
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().toggleItalic().run()}
+      <Toggle
+        aria-label="Toggle italic"
+        pressed={editor.isActive("italic")}
+        onPressedChange={() => editor.chain().focus().toggleItalic().run()}
         disabled={!editor.can().chain().focus().toggleItalic().run()}
-        className={editor.isActive("italic") ? "bg-neutral-200" : ""}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -123,14 +124,14 @@ function EditorToolbar() {
           <path d="M7 19l6 0" />
           <path d="M14 5l-4 14" />
         </svg>
-      </button>
+      </Toggle>
 
       {/* Strike through */}
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().toggleStrike().run()}
+      <Toggle
+        aria-label="Toggle strike through"
+        pressed={editor.isActive("strike")}
+        onPressedChange={() => editor.chain().focus().toggleStrike().run()}
         disabled={!editor.can().chain().focus().toggleStrike().run()}
-        className={editor.isActive("strike") ? "bg-neutral-200" : ""}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -148,13 +149,13 @@ function EditorToolbar() {
           <path d="M5 12l14 0" />
           <path d="M16 6.5a4 2 0 0 0 -4 -1.5h-1a3.5 3.5 0 0 0 0 7h2a3.5 3.5 0 0 1 0 7h-1.5a4 2 0 0 1 -4 -1.5" />
         </svg>
-      </button>
+      </Toggle>
 
       {/* Bullet list */}
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().toggleBulletList().run()}
-        className={editor.isActive("bulletList") ? "bg-neutral-200" : ""}
+      <Toggle
+        aria-label="Toggle bullet list"
+        pressed={editor.isActive("bulletList")}
+        onPressedChange={() => editor.chain().focus().toggleBulletList().run()}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -176,13 +177,13 @@ function EditorToolbar() {
           <path d="M5 12l0 .01" />
           <path d="M5 18l0 .01" />
         </svg>
-      </button>
+      </Toggle>
 
       {/* Ordered list */}
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().toggleOrderedList().run()}
-        className={editor.isActive("orderedList") ? "bg-neutral-200" : ""}
+      <Toggle
+        aria-label="Toggle ordered list"
+        pressed={editor.isActive("orderedList")}
+        onPressedChange={() => editor.chain().focus().toggleOrderedList().run()}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -203,13 +204,13 @@ function EditorToolbar() {
           <path d="M4 16a2 2 0 1 1 4 0c0 .591 -.5 1 -1 1.5l-3 2.5h4" />
           <path d="M6 10v-6l-2 2" />
         </svg>
-      </button>
+      </Toggle>
 
       {/* Code block */}
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-        className={editor.isActive("codeBlock") ? "bg-neutral-200" : ""}
+      <Toggle
+        aria-label="Toggle code block"
+        pressed={editor.isActive("codeBlock")}
+        onPressedChange={() => editor.chain().focus().toggleCodeBlock().run()}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -228,12 +229,12 @@ function EditorToolbar() {
           <path d="M17 8l4 4l-4 4" />
           <path d="M14 4l-4 16" />
         </svg>
-      </button>
+      </Toggle>
 
       {/* Horizontal rule */}
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().setHorizontalRule().run()}
+      <Toggle
+        aria-label="Toggle horizontal rule"
+        onPressedChange={() => editor.chain().focus().setHorizontalRule().run()}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -266,12 +267,12 @@ function EditorToolbar() {
           <path d="M16 20l0 .01" />
           <path d="M20 20l0 .01" />
         </svg>
-      </button>
+      </Toggle>
 
       {/* Undo */}
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().undo().run()}
+      <Toggle
+        aria-label="Toggle undo action"
+        onPressedChange={() => editor.chain().focus().undo().run()}
         disabled={!editor.can().chain().focus().undo().run()}
       >
         <svg
@@ -290,12 +291,12 @@ function EditorToolbar() {
           <path d="M9 14l-4 -4l4 -4" />
           <path d="M5 10h11a4 4 0 1 1 0 8h-1" />
         </svg>
-      </button>
+      </Toggle>
 
       {/* Redo */}
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().redo().run()}
+      <Toggle
+        aria-label="Toggle redo action"
+        onPressedChange={() => editor.chain().focus().redo().run()}
         disabled={!editor.can().chain().focus().redo().run()}
       >
         <svg
@@ -314,7 +315,7 @@ function EditorToolbar() {
           <path d="M15 14l4 -4l-4 -4" />
           <path d="M19 10h-11a4 4 0 1 0 0 8h1" />
         </svg>
-      </button>
+      </Toggle>
     </div>
   );
 }
