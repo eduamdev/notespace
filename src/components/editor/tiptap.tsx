@@ -2,7 +2,7 @@ import Placeholder from "@tiptap/extension-placeholder";
 import Heading from "@tiptap/extension-heading";
 import { EditorProvider, mergeAttributes } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import EditorToolbar from "@/components/editor/toolbar";
+import EditorToolbar from "@/components/editor/editor-toolbar";
 
 interface TiptapProps {
   placeholder: string;

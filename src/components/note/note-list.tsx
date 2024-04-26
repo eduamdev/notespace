@@ -6,6 +6,8 @@ import {
   createNotebook,
   getNotebooks,
 } from "@/services/note-service";
+import { PlusIcon } from "@/components/icons/plus-icon";
+import { SearchIcon } from "@/components/icons/search-icon";
 import { Note, Notebook } from "@/types";
 
 function NoteList() {
@@ -56,50 +58,17 @@ function NoteList() {
         <h1 className="text-lg font-semibold text-black">Notes</h1>
         <div className="flex items-center justify-center gap-4">
           <button>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="size-5"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
-              <path d="M21 21l-6 -6" />
-            </svg>
+            <SearchIcon className="size-5" />
           </button>
           <Link
             href="/notes/new"
             className="flex h-[34px] items-center rounded-lg bg-cyan-600 pl-1.5 pr-2.5 text-cyan-50"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="inline-block size-4"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M12 5l0 14" />
-              <path d="M5 12l14 0" />
-            </svg>
+            <PlusIcon className="inline-block size-4" />
             <span className="pl-1.5 text-sm font-medium">Note</span>
           </Link>
         </div>
       </div>
-      {/* <div className="flex w-full items-center bg-neutral-50 px-2 py-2.5 text-sm font-semibold capitalize leading-none text-green-700">
-        recent
-      </div> */}
       <ul className="space-y-4 px-6 py-4">
         {notes.map((note) => (
           <li key={note.id}>
