@@ -13,6 +13,7 @@ interface TiptapProps {
 function Tiptap({ placeholder, content, onChange }: TiptapProps) {
   const extensions = [
     StarterKit.configure({
+      heading: false,
       paragraph: {
         HTMLAttributes: {
           class: "leading-8",
