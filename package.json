@@ -17,6 +17,7 @@
     "@tiptap/react": "^2.3.1",
     "@tiptap/starter-kit": "^2.3.1",
     "libsodium-wrappers": "^0.7.13",
+    "libsodium-wrappers-sumo": "^0.7.13",
     "pouchdb": "^8.0.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
@@ -24,6 +25,7 @@
   "devDependencies": {
     "@fontsource-variable/public-sans": "^5.0.19",
     "@types/libsodium-wrappers": "^0.7.14",
+    "@types/libsodium-wrappers-sumo": "^0.7.8",
     "@types/pouchdb": "^6.4.2",
     "@types/react": "^18.3.1",
     "@types/react-dom": "^18.3.0",
