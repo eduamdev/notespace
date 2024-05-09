@@ -78,7 +78,7 @@ function Login() {
         <div className="pt-7 text-center">
           <span className="text-[15px] text-neutral-500">
             Don&apos;t have an account?{" "}
-            <Link href="/sign-up" className="font-semibold text-black">
+            <Link href="/signup" className="font-semibold text-black">
               Sign up
             </Link>
           </span>

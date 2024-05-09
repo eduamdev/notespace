@@ -12,7 +12,7 @@ function SignUp() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      AuthService.register(username, password, confirmPassword);
+      AuthService.signup(username, password, confirmPassword);
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);

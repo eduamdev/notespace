@@ -3,7 +3,7 @@ import { Redirect, Route, Switch } from "wouter";
 
 import Layout from "@/components/layout/layout";
 import Login from "@/components/auth/login";
-import SignUp from "@/components/auth/sign-up";
+import SignUp from "@/components/auth/signup";
 import NoteList from "@/components/note/note-list";
 import NoteEditor from "@/components/note/note-editor";
 import NoteDetail from "@/components/note/note-detail";
@@ -65,7 +65,7 @@ function App() {
         <Route path="/login">
           <Login />
         </Route>
-        <Route path="/sign-up" component={SignUp} />
+        <Route path="/signup" component={SignUp} />
 
         {/* Private Routes */}
         <PrivateRoute path="/notes">

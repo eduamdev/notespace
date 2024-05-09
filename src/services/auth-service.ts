@@ -5,7 +5,7 @@ import { encryptWithUserKey, decryptWithUserKey } from "@/lib/encryption-new";
 const generateToken = () => "blablablabla";
 
 export const AuthService = {
-  register: (username: string, password: string, confirmPassword: string) => {
+  signup: (username: string, password: string, confirmPassword: string) => {
     // Basic validation
     if (!username || !password || password !== confirmPassword) {
       throw new Error("Please fill in all fields correctly");
