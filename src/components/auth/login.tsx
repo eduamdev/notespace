@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "wouter";
-import Logo from "@/assets/logo.svg";
 import { AuthService } from "@/services/auth-service";
+import Logo from "@/assets/logo.svg";
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -26,7 +26,7 @@ function Login() {
           <img src={Logo} alt="" height={38} width={38} />
         </div>
         <h1 className="text-center text-xl font-semibold text-black">
-          Sign in to NoteGuard
+          Log in to NoteGuard
         </h1>
         <form onSubmit={handleSubmit}>
           <div className="space-y-3 pt-10">
