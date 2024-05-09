@@ -1,10 +1,24 @@
 import { navigate } from "wouter/use-browser-location";
-import { decryptWithUserKey } from "@/lib/encryption-new";
+import { encryptWithUserKey, decryptWithUserKey } from "@/lib/encryption-new";
 
 // Simulated token generation
 const generateToken = () => "blablablabla";
 
 export const AuthService = {
+  register: (username: string, password: string, confirmPassword: string) => {
+    // Basic validation
+    if (!username || !password || password !== confirmPassword) {
+      throw new Error("Please fill in all fields correctly");
+    }
+
+    // Here you would handle user registration, for demonstration, let's assume we store user data in localStorage
+    const encryptedPassword = encryptWithUserKey(password, confirmPassword);
+    localStorage.setItem("username", username);
+    localStorage.setItem("password", encryptedPassword);
+
+    // Registration successful, redirect to login page
+    navigate("/login");
+  },
   login: (username: string, password: string) => {
     // Simulated login logic
 

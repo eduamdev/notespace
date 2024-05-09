@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "wouter";
-import { navigate } from "wouter/use-browser-location";
-import { encryptWithUserKey } from "@/lib/encryption-new";
+import { AuthService } from "@/services/auth-service";
 import Logo from "@/assets/logo.svg";
 
 function SignUp() {
@@ -12,19 +11,13 @@ function SignUp() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Basic validation
-    if (!username || !password || password !== confirmPassword) {
-      setError("Please fill in all fields correctly");
-      return;
+    try {
+      AuthService.register(username, password, confirmPassword);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      }
     }
-
-    // Here you would handle user registration, for demonstration, let's assume we store user data in localStorage
-    const encryptedPassword = encryptWithUserKey(password, confirmPassword);
-    localStorage.setItem("username", username);
-    localStorage.setItem("password", encryptedPassword);
-
-    // Registration successful, redirect to login page
-    navigate("/login");
   };
 
   return (
