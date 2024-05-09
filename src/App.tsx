@@ -27,16 +27,6 @@ function App() {
     };
   }, []);
 
-  const handleLogin = (username: string, password: string) => {
-    try {
-      AuthService.login(username, password);
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error("Login failed:", error.message);
-      }
-    }
-  };
-
   const PrivateRoute = ({
     component: Component,
     children,
@@ -73,7 +63,7 @@ function App() {
 
         {/* Auth Routes */}
         <Route path="/login">
-          <Login onLogin={handleLogin} />
+          <Login />
         </Route>
         <Route path="/sign-up" component={SignUp} />
 

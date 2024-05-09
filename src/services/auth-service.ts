@@ -1,28 +1,35 @@
 import { navigate } from "wouter/use-browser-location";
-
-// Simulated user database
-const users = [
-  { username: "user1", password: "password1" },
-  { username: "user2", password: "password2" },
-];
+import { decryptWithUserKey } from "@/lib/encryption-new";
 
 // Simulated token generation
-const generateToken = () => "this_is_a_random_text";
+const generateToken = () => "blablablabla";
 
 export const AuthService = {
   login: (username: string, password: string) => {
     // Simulated login logic
-    const user = users.find(
-      (user) => user.username === username && user.password === password
+
+    // Here you would perform authentication, for demonstration, let's assume the user data is stored in localStorage
+    const storedUsername = localStorage.getItem("username");
+    const storedEncryptedPassword = localStorage.getItem("password");
+
+    if (!storedUsername || !storedEncryptedPassword) {
+      throw new Error("User not found");
+    }
+
+    const storedPassword = decryptWithUserKey(
+      storedEncryptedPassword,
+      password
     );
-    if (user) {
-      const token = generateToken();
-      localStorage.setItem("token", token);
-      navigate("/notes");
-      return token;
-    } else {
+
+    if (username !== storedUsername || password !== storedPassword) {
       throw new Error("Invalid username or password");
     }
+
+    const token = generateToken();
+    // Authentication successful, redirect to dashboard
+    localStorage.setItem("token", token);
+    navigate("/notes");
+    return token;
   },
   logout: () => {
     localStorage.removeItem("token");

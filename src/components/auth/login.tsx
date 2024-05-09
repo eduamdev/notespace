@@ -1,26 +1,22 @@
 import { useState } from "react";
 import { Link } from "wouter";
 import Logo from "@/assets/logo.svg";
+import { AuthService } from "@/services/auth-service";
 
-interface LoginProps {
-  onLogin: (username: string, password: string) => void;
-}
-
-function Login({ onLogin }: LoginProps) {
+function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    // Perform validation
-    if (!username || !password) {
-      setError("Please enter both username and password.");
-      return;
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      AuthService.login(username, password);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      }
     }
-
-    onLogin(username, password);
   };
 
   return (
