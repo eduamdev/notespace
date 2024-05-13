@@ -83,22 +83,6 @@ function NotebookList() {
           </li>
         ))}
       </ul>
-      <div className="hidden py-6">
-        <form onSubmit={(event) => void handleNotebookCreation(event)}>
-          <input
-            type="text"
-            value={notebook}
-            className="border p-2"
-            onChange={(e) => {
-              setNotebook(e.target.value);
-            }}
-            placeholder="Notebook"
-          />
-          <button type="submit" className="bg-gray-200 p-2">
-            Create notebook
-          </button>
-        </form>
-      </div>
     </div>
   );
 }

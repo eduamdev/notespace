@@ -45,9 +45,12 @@ function Sidenav() {
               <div className="flex items-center justify-center p-1">
                 <StarIcon className="size-6 shrink-0 text-neutral-700" />
               </div>
-              <div className="flex items-center justify-center p-1">
+              <Link
+                href="/tags"
+                className="flex items-center justify-center p-1"
+              >
                 <TagsIcon className="size-6 shrink-0 text-neutral-700" />
-              </div>
+              </Link>
             </div>
           </nav>
         </div>

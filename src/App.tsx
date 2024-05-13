@@ -8,6 +8,7 @@ import NotebookList from "@/components/dashboard/notebook/notebook-list";
 import NoteList from "@/components/dashboard/note/note-list";
 import NoteEditor from "@/components/dashboard/note/note-editor";
 import NoteDetail from "@/components/dashboard/note/note-detail";
+import TagList from "@/components/dashboard/tags/tag-list";
 
 import { AuthService } from "@/services/auth-service";
 
@@ -81,6 +82,10 @@ function App() {
 
         <PrivateRoute path="/notebooks">
           <Dashboard leftPanel={<NotebookList />} />
+        </PrivateRoute>
+
+        <PrivateRoute path="/tags">
+          <Dashboard leftPanel={<TagList />} />
         </PrivateRoute>
 
         {/* Default Route (404) */}
