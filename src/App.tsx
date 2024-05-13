@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Redirect, Route, Switch } from "wouter";
 
-import Layout from "@/components/layout/layout";
 import Login from "@/components/auth/login";
 import SignUp from "@/components/auth/signup";
+import Dashboard from "@/components/dashboard";
 import NoteList from "@/components/note/note-list";
 import NoteEditor from "@/components/note/note-editor";
 import NoteDetail from "@/components/note/note-detail";
@@ -69,13 +69,13 @@ function App() {
 
         {/* Private Routes */}
         <PrivateRoute path="/notes">
-          <Layout main={<NoteList />} />
+          <Dashboard leftPanel={<NoteList />} />
         </PrivateRoute>
         <PrivateRoute path="/notes/new">
-          <Layout main={<NoteList />} detail={<NoteEditor />} />
+          <Dashboard leftPanel={<NoteList />} rightPanel={<NoteEditor />} />
         </PrivateRoute>
         <PrivateRoute path="/notes/:id">
-          <Layout main={<NoteList />} detail={<NoteDetail />} />
+          <Dashboard leftPanel={<NoteList />} rightPanel={<NoteDetail />} />
         </PrivateRoute>
 
         {/* Default Route (404) */}

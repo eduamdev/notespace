@@ -7,7 +7,7 @@ import { StarIcon } from "@/components/icons/star-icon";
 import { TagsIcon } from "@/components/icons/tags-icon";
 import { LogoutIcon } from "@/components/icons/logout-icon";
 
-function Aside() {
+function Sidenav() {
   const isAuthenticated = AuthService.isAuthenticated();
 
   const handleLogout = () => {
@@ -63,4 +63,4 @@ function Aside() {
   );
 }
 
-export default Aside;
+export default Sidenav;
