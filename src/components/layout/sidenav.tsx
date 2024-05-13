@@ -36,9 +36,12 @@ function Sidenav() {
               >
                 <NoteIcon className="size-6 shrink-0 text-neutral-700" />
               </Link>
-              <div className="flex items-center justify-center p-1">
+              <Link
+                href="/notebooks"
+                className="flex items-center justify-center p-1"
+              >
                 <NotebookIcon className="size-6 shrink-0 text-neutral-700" />
-              </div>
+              </Link>
               <div className="flex items-center justify-center p-1">
                 <StarIcon className="size-6 shrink-0 text-neutral-700" />
               </div>

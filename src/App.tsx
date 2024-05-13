@@ -4,6 +4,7 @@ import { Redirect, Route, Switch } from "wouter";
 import Login from "@/components/auth/login";
 import SignUp from "@/components/auth/signup";
 import Dashboard from "@/components/dashboard";
+import NotebookList from "@/components/notebook/notebook-list";
 import NoteList from "@/components/note/note-list";
 import NoteEditor from "@/components/note/note-editor";
 import NoteDetail from "@/components/note/note-detail";
@@ -76,6 +77,10 @@ function App() {
         </PrivateRoute>
         <PrivateRoute path="/notes/:id">
           <Dashboard leftPanel={<NoteList />} rightPanel={<NoteDetail />} />
+        </PrivateRoute>
+
+        <PrivateRoute path="/notebooks">
+          <Dashboard leftPanel={<NotebookList />} />
         </PrivateRoute>
 
         {/* Default Route (404) */}
