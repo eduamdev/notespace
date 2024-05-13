@@ -3,11 +3,11 @@ import { Redirect, Route, Switch } from "wouter";
 
 import Login from "@/components/auth/login";
 import SignUp from "@/components/auth/signup";
-import Dashboard from "@/components/dashboard";
-import NotebookList from "@/components/notebook/notebook-list";
-import NoteList from "@/components/note/note-list";
-import NoteEditor from "@/components/note/note-editor";
-import NoteDetail from "@/components/note/note-detail";
+import Dashboard from "@/components/dashboard/dashboard-layout";
+import NotebookList from "@/components/dashboard/notebook/notebook-list";
+import NoteList from "@/components/dashboard/note/note-list";
+import NoteEditor from "@/components/dashboard/note/note-editor";
+import NoteDetail from "@/components/dashboard/note/note-detail";
 
 import { AuthService } from "@/services/auth-service";
 

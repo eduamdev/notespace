@@ -1,6 +1,6 @@
-import Sidenav from "@/components/layout/sidenav";
+import Sidenav from "@/components/sidenav";
 
-function Dashboard({
+function DashboardLayout({
   leftPanel,
   rightPanel,
 }: {
@@ -22,4 +22,4 @@ function Dashboard({
   );
 }
 
-export default Dashboard;
+export default DashboardLayout;
