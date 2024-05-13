@@ -45,6 +45,16 @@ function NotebookList() {
           </button>
         </div>
       </div>
+      <div className="px-6 py-2">
+        <button className="grid h-10 w-full grid-cols-[18px_1fr] items-center justify-center gap-x-3 rounded-md border border-black/[0.12] px-3 shadow-sm shadow-black/[0.08]">
+          <SearchIcon className="size-[18px]" />
+          <input
+            type="text"
+            placeholder="Search notebook..."
+            className="outline-none"
+          />
+        </button>
+      </div>
       <div className="px-6 py-3">
         <form onSubmit={(event) => void handleNotebookCreation(event)}>
           <input
@@ -60,16 +70,6 @@ function NotebookList() {
             Create notebook
           </button>
         </form>
-      </div>
-      <div className="px-6 py-2">
-        <button className="grid h-10 w-full grid-cols-[18px_1fr] items-center justify-center gap-x-3 rounded-md border border-black/[0.12] px-3 shadow-sm shadow-black/[0.08]">
-          <SearchIcon className="size-[18px]" />
-          <input
-            type="text"
-            placeholder="Search notebook..."
-            className="outline-none"
-          />
-        </button>
       </div>
       <ul className="divide-y py-4">
         {notebooks.map((notebook) => (
