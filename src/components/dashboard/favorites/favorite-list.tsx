@@ -24,12 +24,12 @@ function FavoriteList() {
 
   return (
     <div className="relative size-full after:absolute after:right-0 after:top-0 after:h-full after:w-px after:border-r after:border-neutral-950/10 after:content-['']">
-      <div className="flex h-[66px] items-center justify-between px-6 py-4">
+      <div className="flex h-[68px] items-center justify-between px-6 py-4">
         <h1 className="text-lg font-semibold text-black">Favorites</h1>
       </div>
       <div className="px-6 py-2">
         <button className="grid h-10 w-full grid-cols-[18px_1fr] items-center justify-center gap-x-3 rounded-md border border-black/[0.12] px-3 shadow-sm shadow-black/[0.08]">
-          <SearchIcon className="size-[18px]" />
+          <SearchIcon className="size-[18px] text-neutral-600" />
           <input
             type="text"
             placeholder="Search favorite notes..."
