@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Redirect, Route, Switch } from "wouter";
 
+import { Toaster } from "@/components/ui/sonner";
 import Login from "@/components/auth/login";
 import SignUp from "@/components/auth/signup";
 import Dashboard from "@/components/dashboard/dashboard-layout";
@@ -103,6 +104,7 @@ function App() {
           )}
         </Route>
       </Switch>
+      <Toaster richColors />
     </>
   );
 }

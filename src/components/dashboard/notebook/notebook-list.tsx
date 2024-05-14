@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-
-import { createNotebook, getNotebooks } from "@/services/note-service";
+import { toast } from "sonner";
 import {
   Dialog,
   DialogContent,
@@ -11,11 +10,13 @@ import {
 } from "@/components/ui/dialog";
 import { PlusIcon } from "@/components/icons/plus-icon";
 import { SearchIcon } from "@/components/icons/search-icon";
+import { createNotebook, getNotebooks } from "@/services/note-service";
 import { Notebook } from "@/types";
 
 function NotebookList() {
-  const [notebook, setNotebook] = useState("");
+  const [newNotebook, setNewNotebook] = useState("");
   const [notebooks, setNotebooks] = useState<Notebook[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     void fetchNotebooks();
@@ -27,6 +28,7 @@ function NotebookList() {
       const fetchedNotebooks = await getNotebooks();
       setNotebooks(fetchedNotebooks);
     } catch (error) {
+      toast.error(`There was an error when trying to load notebooks`);
       console.log("Error fetching notebooks:", error);
     }
   };
@@ -34,9 +36,11 @@ function NotebookList() {
   const handleNotebookCreation = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await createNotebook(notebook, [], []);
-      alert(`New notebook created: ${notebook}`);
-      setNotebook("");
+      await createNotebook(newNotebook, [], []);
+
+      setIsModalOpen(false);
+      setNewNotebook("");
+      toast.success(`Notebook has been created`);
     } catch (error) {
       console.error("Error creating notebook:", error);
     }
@@ -47,7 +51,7 @@ function NotebookList() {
       <div className="flex items-center justify-between px-6 py-4">
         <h1 className="text-lg font-semibold text-black">Notebooks</h1>
         <div className="flex items-center justify-center gap-4">
-          <Dialog>
+          <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
             <DialogTrigger asChild>
               <button className="flex h-9 items-center justify-center rounded-lg bg-cyan-600 pl-1.5 pr-2.5 text-cyan-50">
                 <PlusIcon className="inline-block size-4" />
@@ -67,11 +71,11 @@ function NotebookList() {
                     <input
                       type="text"
                       id="notebookTxt"
-                      value={notebook}
+                      value={newNotebook}
                       placeholder="Notebook"
                       className="h-10 w-full items-center justify-center rounded-md border border-black/[0.12] px-3 shadow-sm shadow-black/[0.08] outline-none"
                       onChange={(e) => {
-                        setNotebook(e.target.value);
+                        setNewNotebook(e.target.value);
                       }}
                     />
                   </div>

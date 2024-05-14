@@ -1,21 +1,22 @@
 import React, { useState } from "react";
+import { toast } from "sonner";
 
 import { createNote } from "@/services/note-service";
 import Tiptap from "@/components/editor/tiptap";
 
 function NoteEditor() {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [noteTitle, setNoteTitle] = useState("");
+  const [noteContent, setNoteContent] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await createNote(title, content);
+      await createNote(noteTitle, noteContent);
       // Reset form fields
-      setTitle("");
-      setContent("");
+      setNoteTitle("");
+      setNoteContent("");
 
-      alert("success!");
+      toast.success("Note has been created");
     } catch (error) {
       console.error("Error creating note:", error);
     }
@@ -28,18 +29,18 @@ function NoteEditor() {
           <div className="flex flex-col gap-5">
             <input
               type="text"
-              value={title}
+              value={noteTitle}
               className="rounded-md text-2xl font-semibold text-black outline-none placeholder:font-medium"
               onChange={(e) => {
-                setTitle(e.target.value);
+                setNoteTitle(e.target.value);
               }}
               placeholder="Note title"
             />
             <Tiptap
               placeholder="Start writing something ..."
-              content={content}
+              content={noteContent}
               onChange={(richText) => {
-                setContent(richText);
+                setNoteContent(richText);
               }}
             />
             <div className="mt-4">
