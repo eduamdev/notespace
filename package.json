@@ -12,6 +12,7 @@
   "dependencies": {
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-toggle": "^1.0.3",
+    "@radix-ui/react-tooltip": "^1.0.7",
     "@tiptap/extension-heading": "^2.4.0",
     "@tiptap/extension-placeholder": "^2.4.0",
     "@tiptap/pm": "^2.4.0",
