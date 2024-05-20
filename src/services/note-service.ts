@@ -6,9 +6,12 @@ import {
   saveNotebook,
   retrieveNotebookIds,
   retrieveNotebook,
+  retrieveTagIds,
+  retrieveTag,
+  saveTag,
 } from "@/lib/storage";
 import { generateUniqueId } from "@/lib/utils";
-import { Folder, Note, Notebook } from "@/types";
+import { Folder, Note, Notebook, Tag } from "@/types";
 
 const key = getEncryptionKey();
 
@@ -87,4 +90,20 @@ export const createNotebook = async (
 
 export const getNotebooks = async (): Promise<Notebook[]> => {
   return getDecryptedItems<Notebook>(retrieveNotebookIds, retrieveNotebook);
+};
+
+// Tags
+export const createTag = async (
+  name: string,
+  notes: Note[]
+): Promise<string> => {
+  const id = generateUniqueId();
+  const tag: Tag = { id, name, notes };
+  const encryptedNotebook = encryptData(tag);
+  await saveTag(id, encryptedNotebook);
+  return id;
+};
+
+export const getTags = async (): Promise<Tag[]> => {
+  return getDecryptedItems<Tag>(retrieveTagIds, retrieveTag);
 };

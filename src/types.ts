@@ -12,6 +12,12 @@ export interface Notebook {
   notes: Note[];
 }
 
+export interface Tag {
+  id: string;
+  name: string;
+  notes: Note[];
+}
+
 export interface Folder {
   id: string;
   name: string;

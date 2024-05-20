@@ -84,3 +84,24 @@ export const saveNotebook = async (
     data: encryptedNotebook,
   });
 };
+
+// Functions for tags
+export const retrieveTagIds = async (): Promise<string[]> => {
+  return retrieveDocumentIds("tag");
+};
+
+export const retrieveTag = async (id: string): Promise<Uint8Array | null> => {
+  const document = await retrieveDocument(id);
+  return document ? document.data : null;
+};
+
+export const saveTag = async (
+  id: string,
+  encryptedTag: Uint8Array
+): Promise<void> => {
+  await saveDocument({
+    _id: id,
+    type: "tag",
+    data: encryptedTag,
+  });
+};
