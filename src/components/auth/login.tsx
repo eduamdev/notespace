@@ -13,6 +13,7 @@ function Login() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     try {
       // AuthService.login(username, password);
       await login(username, password);
@@ -48,6 +49,7 @@ function Login() {
                 onChange={(e) => {
                   setUsername(e.target.value);
                 }}
+                required
               />
             </div>
             <div>
@@ -63,6 +65,7 @@ function Login() {
                 onChange={(e) => {
                   setPassword(e.target.value);
                 }}
+                required
               />
             </div>
           </div>

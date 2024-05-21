@@ -12,6 +12,18 @@ function SignUp() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Basic validation
+    if (!username || !password || !confirmPassword) {
+      setError("All fields are required. Please complete the form");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match. Please re-enter your password");
+      return;
+    }
+
     try {
       await register(username, password);
       alert("registered!");
@@ -47,6 +59,7 @@ function SignUp() {
                 onChange={(e) => {
                   setUsername(e.target.value);
                 }}
+                required
               />
             </div>
             <div>
@@ -62,6 +75,7 @@ function SignUp() {
                 onChange={(e) => {
                   setPassword(e.target.value);
                 }}
+                required
               />
             </div>
             <div>
@@ -77,6 +91,7 @@ function SignUp() {
                 onChange={(e) => {
                   setConfirmPassword(e.target.value);
                 }}
+                required
               />
             </div>
           </div>
