@@ -5,20 +5,20 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { AuthService } from "@/services/auth-service";
+// import { AuthService } from "@/services/auth-service";
 import Logo from "@/assets/logo.svg";
 import { NoteIcon } from "@/components/icons/note-icon";
 import { NotebookIcon } from "@/components/icons/notebook-icon";
 import { StarIcon } from "@/components/icons/star-icon";
 import { TagsIcon } from "@/components/icons/tags-icon";
-import { LogoutIcon } from "@/components/icons/logout-icon";
+// import { LogoutIcon } from "@/components/icons/logout-icon";
 
 function Sidenav() {
-  const isAuthenticated = AuthService.isAuthenticated();
+  // const isAuthenticated = AuthService.isAuthenticated();
 
-  const handleLogout = () => {
-    AuthService.logout();
-  };
+  // const handleLogout = () => {
+  //   AuthService.logout();
+  // };
 
   return (
     <aside className="w-16 p-3">
@@ -109,14 +109,14 @@ function Sidenav() {
           </nav>
         </div>
         <div className="pb-4">
-          {isAuthenticated && (
+          {/* {isAuthenticated && (
             <button
               onClick={handleLogout}
               className="flex items-center justify-center p-1"
             >
               <LogoutIcon className="size-6 shrink-0 text-neutral-700" />
             </button>
-          )}
+          )} */}
         </div>
       </div>
     </aside>

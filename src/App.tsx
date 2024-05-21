@@ -12,7 +12,9 @@ import NoteDetail from "@/components/dashboard/note/note-detail";
 import FavoriteList from "@/components/dashboard/favorites/favorite-list";
 import TagList from "@/components/dashboard/tags/tag-list";
 
-import { AuthService } from "@/services/auth-service";
+// import { AuthService } from "@/services/auth-service";
+import { AuthProvider, useAuth } from "@/contexts/auth-context";
+import { EncryptionProvider } from "@/contexts/encryption-context";
 
 function App() {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
@@ -31,6 +33,30 @@ function App() {
     };
   }, []);
 
+  // const PrivateRoute = ({
+  //   component: Component,
+  //   children,
+  //   ...rest
+  // }: {
+  //   component?: React.ComponentType<unknown>;
+  //   children?: React.ReactNode;
+  //   [x: string]: unknown;
+  // }) => {
+  //   return (
+  //     <Route {...rest}>
+  //       {AuthService.isAuthenticated() ? (
+  //         Component ? (
+  //           <Component />
+  //         ) : (
+  //           children
+  //         )
+  //       ) : (
+  //         <Redirect to="/login" />
+  //       )}
+  //     </Route>
+  //   );
+  // };
+
   const PrivateRoute = ({
     component: Component,
     children,
@@ -40,72 +66,70 @@ function App() {
     children?: React.ReactNode;
     [x: string]: unknown;
   }) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const { user } = useAuth();
     return (
       <Route {...rest}>
-        {AuthService.isAuthenticated() ? (
-          Component ? (
-            <Component />
-          ) : (
-            children
-          )
-        ) : (
-          <Redirect to="/login" />
-        )}
+        {user ? Component ? <Component /> : children : <Redirect to="/login" />}
       </Route>
     );
   };
 
   return (
-    <>
-      {isOnline ? null : (
-        <div className="bg-yellow-100 py-1 text-center">
-          No internet connection
-        </div>
-      )}
-      <Switch>
-        <Route path="/" component={() => <Redirect to="/notes" />} />
-
-        {/* Auth Routes */}
-        <Route path="/login">
-          <Login />
-        </Route>
-        <Route path="/signup" component={SignUp} />
-
-        {/* Private Routes */}
-        <PrivateRoute path="/notes">
-          <Dashboard leftPanel={<NoteList />} />
-        </PrivateRoute>
-        <PrivateRoute path="/notes/new">
-          <Dashboard leftPanel={<NoteList />} rightPanel={<NoteEditor />} />
-        </PrivateRoute>
-        <PrivateRoute path="/notes/:id">
-          <Dashboard leftPanel={<NoteList />} rightPanel={<NoteDetail />} />
-        </PrivateRoute>
-
-        <PrivateRoute path="/notebooks">
-          <Dashboard leftPanel={<NotebookList />} />
-        </PrivateRoute>
-
-        <PrivateRoute path="/favorites">
-          <Dashboard leftPanel={<FavoriteList />} />
-        </PrivateRoute>
-
-        <PrivateRoute path="/tags">
-          <Dashboard leftPanel={<TagList />} />
-        </PrivateRoute>
-
-        {/* Default Route (404) */}
-        <Route>
-          {(params: { "*": string }) => (
-            <center>
-              <b>404:</b> Sorry, this page{" "}
-              <code>&quot;/{params["*"]}&quot;</code> isn&apos;t ready yet!
-            </center>
+    <AuthProvider>
+      <EncryptionProvider>
+        <>
+          {isOnline ? null : (
+            <div className="bg-yellow-100 py-1 text-center">
+              No internet connection
+            </div>
           )}
-        </Route>
-      </Switch>
-      <Toaster richColors />
-    </>
+          <Switch>
+            <Route path="/" component={() => <Redirect to="/notes" />} />
+
+            {/* Auth Routes */}
+            <Route path="/login">
+              <Login />
+            </Route>
+            <Route path="/signup" component={SignUp} />
+
+            {/* Private Routes */}
+            <PrivateRoute path="/notes">
+              <Dashboard leftPanel={<NoteList />} />
+            </PrivateRoute>
+            <PrivateRoute path="/notes/new">
+              <Dashboard leftPanel={<NoteList />} rightPanel={<NoteEditor />} />
+            </PrivateRoute>
+            <PrivateRoute path="/notes/:id">
+              <Dashboard leftPanel={<NoteList />} rightPanel={<NoteDetail />} />
+            </PrivateRoute>
+
+            <PrivateRoute path="/notebooks">
+              <Dashboard leftPanel={<NotebookList />} />
+            </PrivateRoute>
+
+            <PrivateRoute path="/favorites">
+              <Dashboard leftPanel={<FavoriteList />} />
+            </PrivateRoute>
+
+            <PrivateRoute path="/tags">
+              <Dashboard leftPanel={<TagList />} />
+            </PrivateRoute>
+
+            {/* Default Route (404) */}
+            <Route>
+              {(params: { "*": string }) => (
+                <center>
+                  <b>404:</b> Sorry, this page{" "}
+                  <code>&quot;/{params["*"]}&quot;</code> isn&apos;t ready yet!
+                </center>
+              )}
+            </Route>
+          </Switch>
+          <Toaster richColors />
+        </>
+      </EncryptionProvider>
+    </AuthProvider>
   );
 }
 

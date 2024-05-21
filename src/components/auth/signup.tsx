@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "wouter";
-import { AuthService } from "@/services/auth-service";
+// import { AuthService } from "@/services/auth-service";
+import { register } from "@/services/auth-service";
 import Logo from "@/assets/logo.svg";
 
 function SignUp() {
@@ -9,10 +10,12 @@ function SignUp() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      AuthService.signup(username, password, confirmPassword);
+      await register(username, password);
+      alert("registered!");
+      // AuthService.signup(username, password, confirmPassword);
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
@@ -29,7 +32,7 @@ function SignUp() {
         <h1 className="text-center text-xl font-semibold text-black">
           Sign up to NoteGuard
         </h1>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={(event) => void handleSubmit(event)}>
           <div className="space-y-3 pt-10">
             <div>
               <label htmlFor="username" className="sr-only">

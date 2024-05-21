@@ -1,17 +1,22 @@
 import { useState } from "react";
 import { Link } from "wouter";
-import { AuthService } from "@/services/auth-service";
+// import { AuthService } from "@/services/auth-service";
+import { useAuth } from "@/contexts/auth-context";
 import Logo from "@/assets/logo.svg";
+import { navigate } from "wouter/use-browser-location";
 
 function Login() {
+  const { login } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      AuthService.login(username, password);
+      // AuthService.login(username, password);
+      await login(username, password);
+      navigate("/notes");
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
@@ -28,7 +33,7 @@ function Login() {
         <h1 className="text-center text-xl font-semibold text-black">
           Log in to NoteGuard
         </h1>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={(event) => void handleSubmit(event)}>
           <div className="space-y-3 pt-10">
             <div>
               <label htmlFor="username" className="sr-only">
