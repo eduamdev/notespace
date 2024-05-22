@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "wouter";
-// import { AuthService } from "@/services/auth-service";
+import { navigate } from "wouter/use-browser-location";
 import { register } from "@/services/auth-service";
 import Logo from "@/assets/logo.svg";
 
@@ -26,8 +26,8 @@ function SignUp() {
 
     try {
       await register(username, password);
-      alert("registered!");
-      // AuthService.signup(username, password, confirmPassword);
+      console.log("new user registered!");
+      navigate("/login");
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);

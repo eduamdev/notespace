@@ -1,58 +1,3 @@
-// import { navigate } from "wouter/use-browser-location";
-// import { encryptWithUserKey, decryptWithUserKey } from "@/lib/encryption-new";
-
-// // Simulated token generation
-// const generateToken = () => "blablablabla";
-
-// export const AuthService = {
-//   signup: (username: string, password: string, confirmPassword: string) => {
-//     // Basic validation
-//     if (!username || !password || password !== confirmPassword) {
-//       throw new Error("Please fill in all fields correctly");
-//     }
-
-//     // Here you would handle user registration, for demonstration, let's assume we store user data in localStorage
-//     const encryptedPassword = encryptWithUserKey(password, confirmPassword);
-//     localStorage.setItem("username", username);
-//     localStorage.setItem("password", encryptedPassword);
-
-//     // Registration successful, redirect to login page
-//     navigate("/login");
-//   },
-//   login: (username: string, password: string) => {
-//     // Simulated login logic
-
-//     // Here you would perform authentication, for demonstration, let's assume the user data is stored in localStorage
-//     const storedUsername = localStorage.getItem("username");
-//     const storedEncryptedPassword = localStorage.getItem("password");
-
-//     if (!storedUsername || !storedEncryptedPassword) {
-//       throw new Error("User not found");
-//     }
-
-//     const storedPassword = decryptWithUserKey(
-//       storedEncryptedPassword,
-//       password
-//     );
-
-//     if (username !== storedUsername || password !== storedPassword) {
-//       throw new Error("Invalid username or password");
-//     }
-
-//     const token = generateToken();
-//     // Authentication successful, redirect to dashboard
-//     localStorage.setItem("token", token);
-//     navigate("/notes");
-//     return token;
-//   },
-//   logout: () => {
-//     localStorage.removeItem("token");
-//     navigate("/login");
-//   },
-//   isAuthenticated: () => {
-//     return !!localStorage.getItem("token");
-//   },
-// };
 import {
   initDB,
   addItem,
@@ -65,30 +10,24 @@ import {
   decryptData,
   generateEncryptionKey,
 } from "@/services/encryption-service";
+import { Session } from "@/models/session";
+import { User } from "@/models/user";
 
 const USERS_STORE = "users";
 const SESSION_STORE = "session";
 
-interface User {
-  id: string;
-  username: string;
-  password: string; // Ideally, this should be a hashed password
-  encryptionKey: string;
-  salt: string;
-}
-
-const getCurrentUser = async () => {
+const getCurrentUser = async (): Promise<User | null> => {
   await initDB();
-  const session = await getItem(SESSION_STORE, "current");
+  const session = await getItem<Session>(SESSION_STORE, "current");
   if (!session) return null;
 
-  const user = await getItem(USERS_STORE, session.userId);
-  return user;
+  const user = await getItem<User>(USERS_STORE, session.userId);
+  return user ?? null;
 };
 
-const login = async (username: string, password: string) => {
+const login = async (username: string, password: string): Promise<User> => {
   await initDB();
-  const users = await getAllItems(USERS_STORE);
+  const users = await getAllItems<User>(USERS_STORE);
   const user = users.find((user: User) => user.username === username);
 
   if (!user) {
@@ -103,21 +42,22 @@ const login = async (username: string, password: string) => {
     throw new Error("Incorrect password");
   }
 
-  const session = { id: "current", userId: user.id };
+  const session: Session = { id: "current", userId: user.id };
   await addItem(SESSION_STORE, session);
 
   return user;
 };
 
-const logout = async () => {
+const logout = async (): Promise<void> => {
+  console.log("log out...");
   await initDB();
   await deleteItem(SESSION_STORE, "current");
 };
 
-const register = async (username: string, password: string) => {
+const register = async (username: string, password: string): Promise<void> => {
   console.log("registering user...");
   await initDB();
-  const users = await getAllItems(USERS_STORE);
+  const users = await getAllItems<User>(USERS_STORE);
 
   if (users.find((user: User) => user.username === username)) {
     throw new Error("User already exists");

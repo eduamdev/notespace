@@ -1,54 +1,10 @@
-// import sodium from "libsodium-wrappers";
-
-// const generateKey = async (password: string) => {
-//   await sodium.ready;
-//   const salt = sodium.randombytes_buf(sodium.crypto_pwhash_SALTBYTES);
-//   const key = sodium.crypto_pwhash(
-//     sodium.crypto_secretbox_KEYBYTES,
-//     password,
-//     salt,
-//     sodium.crypto_pwhash_OPSLIMIT_MODERATE,
-//     sodium.crypto_pwhash_MEMLIMIT_MODERATE,
-//     sodium.crypto_pwhash_ALG_DEFAULT
-//   );
-//   return { key, salt };
-// };
-
-// const encryptData = async (key: Uint8Array, data: string) => {
-//   await sodium.ready;
-//   const nonce = sodium.randombytes_buf(sodium.crypto_secretbox_NONCEBYTES);
-//   const cipherText = sodium.crypto_secretbox_easy(data, nonce, key);
-//   return { cipherText, nonce };
-// };
-
-// const decryptData = async (
-//   key: Uint8Array,
-//   cipherText: Uint8Array,
-//   nonce: Uint8Array
-// ) => {
-//   await sodium.ready;
-//   const decrypted = sodium.crypto_secretbox_open_easy(cipherText, nonce, key);
-//   return sodium.to_string(decrypted);
-// };
-
-// export { generateKey, encryptData, decryptData };
-
 import sodium from "libsodium-wrappers-sumo";
 
 const generateEncryptionKey = async (password: string) => {
   console.log("generating encryption key...");
   await sodium.ready;
   console.log("sodium is ready");
-  console.log(sodium.crypto_pwhash_SALTBYTES);
   const salt = sodium.randombytes_buf(sodium.crypto_pwhash_SALTBYTES);
-  console.log({
-    secret: sodium.crypto_secretbox_KEYBYTES,
-    password,
-    salt,
-    ops: sodium.crypto_pwhash_OPSLIMIT_INTERACTIVE,
-    mem: sodium.crypto_pwhash_MEMLIMIT_INTERACTIVE,
-    alg: sodium.crypto_pwhash_ALG_DEFAULT,
-  });
   const key = sodium.crypto_pwhash(
     sodium.crypto_secretbox_KEYBYTES,
     password,

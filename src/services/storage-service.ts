@@ -1,96 +1,72 @@
 import { openDB, IDBPDatabase } from "idb";
+import {
+  DATABASE_NAME,
+  DATABASE_VERSION,
+  NOTEBOOKS_STORE,
+  NOTES_STORE,
+  SESSION_STORE,
+  TAGS_STORE,
+  TOPICS_STORE,
+  USERS_STORE,
+} from "@/utils/constants";
 
-interface Note {
-  id: string;
-  title: string;
-  content: string;
-  tags: string[];
-  notebookId: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
+let db: IDBPDatabase | null = null;
 
-interface Notebook {
-  id: string;
-  title: string;
-  topicIds: string[];
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-interface Tag {
-  id: string;
-  name: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-interface Topic {
-  id: string;
-  title: string;
-  notebookId: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-const DATABASE_NAME = "NoteGuard";
-const DATABASE_VERSION = 1;
-
-const STORE_NAMES = {
-  USERS: "users",
-  SESSION: "session",
-  NOTES: "notes",
-  NOTEBOOKS: "notebooks",
-  TAGS: "tags",
-  TOPICS: "topics",
+const initDB = async (): Promise<void> => {
+  if (!db) {
+    db = await openDB(DATABASE_NAME, DATABASE_VERSION, {
+      upgrade(database) {
+        if (!database.objectStoreNames.contains(USERS_STORE)) {
+          database.createObjectStore(USERS_STORE, { keyPath: "id" });
+        }
+        if (!database.objectStoreNames.contains(SESSION_STORE)) {
+          database.createObjectStore(SESSION_STORE, { keyPath: "id" });
+        }
+        if (!database.objectStoreNames.contains(NOTES_STORE)) {
+          database.createObjectStore(NOTES_STORE, { keyPath: "id" });
+        }
+        if (!database.objectStoreNames.contains(NOTEBOOKS_STORE)) {
+          database.createObjectStore(NOTEBOOKS_STORE, { keyPath: "id" });
+        }
+        if (!database.objectStoreNames.contains(TAGS_STORE)) {
+          database.createObjectStore(TAGS_STORE, { keyPath: "id" });
+        }
+        if (!database.objectStoreNames.contains(TOPICS_STORE)) {
+          database.createObjectStore(TOPICS_STORE, { keyPath: "id" });
+        }
+      },
+    });
+  }
 };
 
-let db: IDBPDatabase;
-
-const initDB = async () => {
-  db = await openDB(DATABASE_NAME, DATABASE_VERSION, {
-    upgrade(db) {
-      if (!db.objectStoreNames.contains(STORE_NAMES.USERS)) {
-        db.createObjectStore(STORE_NAMES.USERS, { keyPath: "id" });
-      }
-      if (!db.objectStoreNames.contains(STORE_NAMES.SESSION)) {
-        db.createObjectStore(STORE_NAMES.SESSION, { keyPath: "id" });
-      }
-      if (!db.objectStoreNames.contains(STORE_NAMES.NOTES)) {
-        db.createObjectStore(STORE_NAMES.NOTES, { keyPath: "id" });
-      }
-      if (!db.objectStoreNames.contains(STORE_NAMES.NOTEBOOKS)) {
-        db.createObjectStore(STORE_NAMES.NOTEBOOKS, { keyPath: "id" });
-      }
-      if (!db.objectStoreNames.contains(STORE_NAMES.TAGS)) {
-        db.createObjectStore(STORE_NAMES.TAGS, { keyPath: "id" });
-      }
-      if (!db.objectStoreNames.contains(STORE_NAMES.TOPICS)) {
-        db.createObjectStore(STORE_NAMES.TOPICS, { keyPath: "id" });
-      }
-    },
-  });
-};
-
-const addItem = async (storeName: string, item: unknown) => {
-  if (!db) await initDB();
+const addItem = async <T>(storeName: string, item: T): Promise<void> => {
+  if (!db) {
+    throw new Error("Database is not initialized");
+  }
   const tx = db.transaction(storeName, "readwrite");
   const store = tx.objectStore(storeName);
   await store.put(item);
   await tx.done;
 };
 
-const getItem = async (storeName: string, id: string) => {
-  if (!db) await initDB();
+const getItem = async <T>(
+  storeName: string,
+  key: string
+): Promise<T | undefined> => {
+  if (!db) {
+    throw new Error("Database is not initialized");
+  }
   const tx = db.transaction(storeName, "readonly");
   const store = tx.objectStore(storeName);
-  const item = await store.get(id);
+  const item = await store.get(key);
   await tx.done;
   return item;
 };
 
-const getAllItems = async (storeName: string) => {
-  if (!db) await initDB();
+const getAllItems = async <T>(storeName: string): Promise<T[]> => {
+  if (!db) {
+    throw new Error("Database is not initialized");
+  }
   const tx = db.transaction(storeName, "readonly");
   const store = tx.objectStore(storeName);
   const items = await store.getAll();
@@ -98,20 +74,14 @@ const getAllItems = async (storeName: string) => {
   return items;
 };
 
-const deleteItem = async (storeName: string, id: string) => {
-  if (!db) await initDB();
+const deleteItem = async (storeName: string, key: string): Promise<void> => {
+  if (!db) {
+    throw new Error("Database is not initialized");
+  }
   const tx = db.transaction(storeName, "readwrite");
   const store = tx.objectStore(storeName);
-  await store.delete(id);
+  await store.delete(key);
   await tx.done;
 };
 
-const updateItem = async (storeName: string, item: unknown) => {
-  if (!db) await initDB();
-  const tx = db.transaction(storeName, "readwrite");
-  const store = tx.objectStore(storeName);
-  await store.put(item);
-  await tx.done;
-};
-
-export { initDB, addItem, getItem, getAllItems, deleteItem, updateItem };
+export { initDB, addItem, getItem, getAllItems, deleteItem };

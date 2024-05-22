@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { Link } from "wouter";
-// import { AuthService } from "@/services/auth-service";
+import { navigate } from "wouter/use-browser-location";
 import { useAuth } from "@/contexts/auth-context";
 import Logo from "@/assets/logo.svg";
-import { navigate } from "wouter/use-browser-location";
 
 function Login() {
   const { login } = useAuth();
@@ -15,7 +14,6 @@ function Login() {
     e.preventDefault();
 
     try {
-      // AuthService.login(username, password);
       await login(username, password);
       navigate("/notes");
     } catch (error) {

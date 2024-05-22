@@ -12,9 +12,9 @@ import NoteDetail from "@/components/dashboard/note/note-detail";
 import FavoriteList from "@/components/dashboard/favorites/favorite-list";
 import TagList from "@/components/dashboard/tags/tag-list";
 
-// import { AuthService } from "@/services/auth-service";
-import { AuthProvider, useAuth } from "@/contexts/auth-context";
+import { AuthProvider } from "@/contexts/auth-context";
 import { EncryptionProvider } from "@/contexts/encryption-context";
+import ProtectedRoute from "@/components/protected-route";
 
 function App() {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
@@ -32,48 +32,6 @@ function App() {
       window.removeEventListener("offline", handleOnlineStatus);
     };
   }, []);
-
-  // const PrivateRoute = ({
-  //   component: Component,
-  //   children,
-  //   ...rest
-  // }: {
-  //   component?: React.ComponentType<unknown>;
-  //   children?: React.ReactNode;
-  //   [x: string]: unknown;
-  // }) => {
-  //   return (
-  //     <Route {...rest}>
-  //       {AuthService.isAuthenticated() ? (
-  //         Component ? (
-  //           <Component />
-  //         ) : (
-  //           children
-  //         )
-  //       ) : (
-  //         <Redirect to="/login" />
-  //       )}
-  //     </Route>
-  //   );
-  // };
-
-  const PrivateRoute = ({
-    component: Component,
-    children,
-    ...rest
-  }: {
-    component?: React.ComponentType<unknown>;
-    children?: React.ReactNode;
-    [x: string]: unknown;
-  }) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const { user } = useAuth();
-    return (
-      <Route {...rest}>
-        {user ? Component ? <Component /> : children : <Redirect to="/login" />}
-      </Route>
-    );
-  };
 
   return (
     <AuthProvider>
@@ -93,28 +51,43 @@ function App() {
             </Route>
             <Route path="/signup" component={SignUp} />
 
-            {/* Private Routes */}
-            <PrivateRoute path="/notes">
-              <Dashboard leftPanel={<NoteList />} />
-            </PrivateRoute>
-            <PrivateRoute path="/notes/new">
-              <Dashboard leftPanel={<NoteList />} rightPanel={<NoteEditor />} />
-            </PrivateRoute>
-            <PrivateRoute path="/notes/:id">
-              <Dashboard leftPanel={<NoteList />} rightPanel={<NoteDetail />} />
-            </PrivateRoute>
-
-            <PrivateRoute path="/notebooks">
-              <Dashboard leftPanel={<NotebookList />} />
-            </PrivateRoute>
-
-            <PrivateRoute path="/favorites">
-              <Dashboard leftPanel={<FavoriteList />} />
-            </PrivateRoute>
-
-            <PrivateRoute path="/tags">
-              <Dashboard leftPanel={<TagList />} />
-            </PrivateRoute>
+            {/* Protected Routes */}
+            <Route path="/notes">
+              <ProtectedRoute>
+                <Dashboard leftPanel={<NoteList />} />
+              </ProtectedRoute>
+            </Route>
+            <Route path="/notes/new">
+              <ProtectedRoute>
+                <Dashboard
+                  leftPanel={<NoteList />}
+                  rightPanel={<NoteEditor />}
+                />
+              </ProtectedRoute>
+            </Route>
+            <Route path="/notes/:id">
+              <ProtectedRoute>
+                <Dashboard
+                  leftPanel={<NoteList />}
+                  rightPanel={<NoteDetail />}
+                />
+              </ProtectedRoute>
+            </Route>
+            <Route path="/notebooks">
+              <ProtectedRoute>
+                <Dashboard leftPanel={<NotebookList />} />
+              </ProtectedRoute>
+            </Route>
+            <Route path="/favorites">
+              <ProtectedRoute>
+                <Dashboard leftPanel={<FavoriteList />} />
+              </ProtectedRoute>
+            </Route>
+            <Route path="/tags">
+              <ProtectedRoute>
+                <Dashboard leftPanel={<TagList />} />
+              </ProtectedRoute>
+            </Route>
 
             {/* Default Route (404) */}
             <Route>
