@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "wouter";
 import { navigate } from "wouter/use-browser-location";
-import { useAuth } from "@/contexts/auth-context";
+import { useAuth } from "@/hooks/use-auth";
 import Logo from "@/assets/logo.svg";
 
 function Login() {

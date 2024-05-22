@@ -1,24 +1,16 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import { encryptData, decryptData } from "@/services/encryption-service";
-import { useAuth } from "@/contexts/auth-context";
+import { useAuth } from "@/hooks/use-auth";
 
-interface EncryptionContextType {
+export interface EncryptionContextType {
   encryptionKey: string | null;
   encrypt: (data: string) => Promise<string>;
   decrypt: (encryptedData: string) => Promise<string>;
 }
 
-const EncryptionContext = createContext<EncryptionContextType | undefined>(
-  undefined
-);
-
-export const useEncryption = (): EncryptionContextType => {
-  const context = useContext(EncryptionContext);
-  if (!context) {
-    throw new Error("useEncryption must be used within an EncryptionProvider");
-  }
-  return context;
-};
+export const EncryptionContext = createContext<
+  EncryptionContextType | undefined
+>(undefined);
 
 export const EncryptionProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
