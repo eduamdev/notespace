@@ -9,11 +9,11 @@ import Login from "@/components/auth/login";
 import SignUp from "@/components/auth/signup";
 import Dashboard from "@/components/dashboard/dashboard-layout";
 import { NotebooksPage } from "@/pages/notebooks";
+import { TagsPage } from "@/pages/tags";
 import NoteList from "@/components/dashboard/note/note-list";
 import NoteEditor from "@/components/dashboard/note/note-editor";
 import NoteDetail from "@/components/dashboard/note/note-detail";
 import FavoriteList from "@/components/dashboard/favorites/favorite-list";
-import TagList from "@/components/dashboard/tags/tag-list";
 
 function App() {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
@@ -84,7 +84,7 @@ function App() {
             </Route>
             <Route path="/tags">
               <ProtectedRoute>
-                <Dashboard leftPanel={<TagList />} />
+                <TagsPage />
               </ProtectedRoute>
             </Route>
 
