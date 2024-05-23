@@ -1,20 +1,19 @@
 import { useEffect, useState } from "react";
 import { Redirect, Route, Switch } from "wouter";
-
 import { Toaster } from "@/components/ui/sonner";
+import { AuthProvider } from "@/contexts/auth-context";
+import { EncryptionProvider } from "@/contexts/encryption-context";
+
+import ProtectedRoute from "@/components/protected-route";
 import Login from "@/components/auth/login";
 import SignUp from "@/components/auth/signup";
 import Dashboard from "@/components/dashboard/dashboard-layout";
-import NotebookList from "@/components/dashboard/notebook/notebook-list";
+import { NotebooksPage } from "@/pages/notebooks";
 import NoteList from "@/components/dashboard/note/note-list";
 import NoteEditor from "@/components/dashboard/note/note-editor";
 import NoteDetail from "@/components/dashboard/note/note-detail";
 import FavoriteList from "@/components/dashboard/favorites/favorite-list";
 import TagList from "@/components/dashboard/tags/tag-list";
-
-import { AuthProvider } from "@/contexts/auth-context";
-import { EncryptionProvider } from "@/contexts/encryption-context";
-import ProtectedRoute from "@/components/protected-route";
 
 function App() {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
@@ -75,7 +74,7 @@ function App() {
             </Route>
             <Route path="/notebooks">
               <ProtectedRoute>
-                <Dashboard leftPanel={<NotebookList />} />
+                <NotebooksPage />
               </ProtectedRoute>
             </Route>
             <Route path="/favorites">
