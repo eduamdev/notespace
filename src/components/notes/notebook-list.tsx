@@ -25,16 +25,12 @@ function NotebookList() {
       const encryptedNotebooks: Notebook[] = await getAllItems("notebooks");
 
       const decryptedNotebooks = await Promise.all(
-        encryptedNotebooks.map(async (encNotebook) => {
-          const decryptedNotebookName = await decrypt(encNotebook.name);
-          const notebook: Notebook = {
-            id: encNotebook.id,
-            name: decryptedNotebookName,
-            topicIds: encNotebook.topicIds,
-            createdAt: encNotebook.createdAt,
-            updatedAt: encNotebook.updatedAt,
+        encryptedNotebooks.map(async (encryptedNotebook) => {
+          const decryptedNotebook: Notebook = {
+            ...encryptedNotebook,
+            name: await decrypt(encryptedNotebook.name),
           };
-          return notebook;
+          return decryptedNotebook;
         })
       );
       setNotebooks(decryptedNotebooks);

@@ -8,10 +8,11 @@ import ProtectedRoute from "@/components/protected-route";
 import Login from "@/components/auth/login";
 import SignUp from "@/components/auth/signup";
 import Dashboard from "@/components/dashboard/dashboard-layout";
+import { NotesPage } from "@/pages/notes";
+import { NewNotePage } from "@/pages/new-note";
 import { NotebooksPage } from "@/pages/notebooks";
 import { TagsPage } from "@/pages/tags";
 import NoteList from "@/components/dashboard/note/note-list";
-import NoteEditor from "@/components/dashboard/note/note-editor";
 import NoteDetail from "@/components/dashboard/note/note-detail";
 import FavoriteList from "@/components/dashboard/favorites/favorite-list";
 
@@ -53,15 +54,12 @@ function App() {
             {/* Protected Routes */}
             <Route path="/notes">
               <ProtectedRoute>
-                <Dashboard leftPanel={<NoteList />} />
+                <NotesPage />
               </ProtectedRoute>
             </Route>
             <Route path="/notes/new">
               <ProtectedRoute>
-                <Dashboard
-                  leftPanel={<NoteList />}
-                  rightPanel={<NoteEditor />}
-                />
+                <NewNotePage />
               </ProtectedRoute>
             </Route>
             <Route path="/notes/:id">

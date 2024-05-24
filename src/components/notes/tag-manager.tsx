@@ -25,15 +25,12 @@ const TagManager = () => {
       const encryptedTags: Tag[] = await getAllItems("tags");
 
       const decryptedTags = await Promise.all(
-        encryptedTags.map(async (encTag) => {
-          const decryptedTagName = await decrypt(encTag.name);
-          const tag: Tag = {
-            id: encTag.id,
-            name: decryptedTagName,
-            createdAt: encTag.createdAt,
-            updatedAt: encTag.updatedAt,
+        encryptedTags.map(async (encryptedTag) => {
+          const decryptedTag: Tag = {
+            ...encryptedTag,
+            name: await decrypt(encryptedTag.name),
           };
-          return tag;
+          return decryptedTag;
         })
       );
       setTags(decryptedTags);
