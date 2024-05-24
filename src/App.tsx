@@ -7,14 +7,11 @@ import { EncryptionProvider } from "@/contexts/encryption-context";
 import ProtectedRoute from "@/components/protected-route";
 import Login from "@/components/auth/login";
 import SignUp from "@/components/auth/signup";
-import Dashboard from "@/components/dashboard/dashboard-layout";
 import { NotesPage } from "@/pages/notes";
 import { NewNotePage } from "@/pages/new-note";
+import { NotePage } from "@/pages/note";
 import { NotebooksPage } from "@/pages/notebooks";
 import { TagsPage } from "@/pages/tags";
-import NoteList from "@/components/dashboard/note/note-list";
-import NoteDetail from "@/components/dashboard/note/note-detail";
-import FavoriteList from "@/components/dashboard/favorites/favorite-list";
 
 function App() {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
@@ -64,10 +61,7 @@ function App() {
             </Route>
             <Route path="/notes/:id">
               <ProtectedRoute>
-                <Dashboard
-                  leftPanel={<NoteList />}
-                  rightPanel={<NoteDetail />}
-                />
+                <NotePage />
               </ProtectedRoute>
             </Route>
             <Route path="/notebooks">
@@ -77,7 +71,7 @@ function App() {
             </Route>
             <Route path="/favorites">
               <ProtectedRoute>
-                <Dashboard leftPanel={<FavoriteList />} />
+                <NotesPage />
               </ProtectedRoute>
             </Route>
             <Route path="/tags">

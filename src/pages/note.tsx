@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useParams } from "wouter";
 import { useEncryption } from "@/hooks/use-encryption";
 import { getAllItems } from "@/services/storage-service";
 import Dashboard from "@/components/dashboard/dashboard-layout";
@@ -6,7 +7,8 @@ import NoteList from "@/components/notes/note-list";
 import NoteEditor from "@/components/notes/note-editor";
 import { Note } from "@/models/note";
 
-export function NewNotePage() {
+export function NotePage() {
+  const { id } = useParams<{ id: string }>();
   const { decrypt } = useEncryption();
   const [notes, setNotes] = useState<Note[]>([]);
 
@@ -26,18 +28,22 @@ export function NewNotePage() {
       );
       setNotes(decryptedNotes);
     };
+
     void fetchNotes();
   }, [decrypt]);
 
   const handleSaveNote = (newNote: Note) => {
-    setNotes([...notes, { ...newNote }]);
+    setNotes([
+      ...notes.filter((note) => note.id !== newNote.id),
+      { ...newNote },
+    ]);
   };
 
   return (
     <>
       <Dashboard
         leftPanel={<NoteList notes={notes} />}
-        rightPanel={<NoteEditor onSave={handleSaveNote} />}
+        rightPanel={<NoteEditor onSave={handleSaveNote} noteId={id} />}
       />
     </>
   );

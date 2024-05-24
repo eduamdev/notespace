@@ -1,23 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { EditorContent, mergeAttributes, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import Heading from "@tiptap/extension-heading";
 import EditorToolbar from "@/components/notes/editor-toolbar";
-import { addItem } from "@/services/storage-service";
+import { addItem, getItem } from "@/services/storage-service";
 import { useEncryption } from "@/hooks/use-encryption";
 import { Note } from "@/models/note";
-import { toast } from "sonner";
+import { NOTES_STORE } from "@/utils/constants";
 
 const NoteEditor = ({
   onSave,
-  placeholder,
+  noteId,
 }: {
   onSave: (newNote: Note) => void;
-  placeholder?: string;
+  noteId?: string;
 }) => {
-  const { encrypt } = useEncryption();
+  const { encrypt, decrypt } = useEncryption();
   const [title, setTitle] = useState("");
+  const [currentNote, setCurrentNote] = useState<Note>();
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -29,7 +32,7 @@ const NoteEditor = ({
         },
       }),
       Placeholder.configure({
-        placeholder,
+        placeholder: "Start writing something ...",
       }),
       Heading.extend({
         levels: [2, 3],
@@ -57,7 +60,29 @@ const NoteEditor = ({
     content: "",
   });
 
-  const handleAddNote = async (e: React.FormEvent) => {
+  useEffect(() => {
+    const fetchNote = async () => {
+      if (noteId) {
+        const encryptedNote = await getItem<Note>(NOTES_STORE, noteId);
+        if (encryptedNote) {
+          setCurrentNote(encryptedNote);
+          const decryptedNote: Note = {
+            ...encryptedNote,
+            title: await decrypt(encryptedNote.title),
+            content: await decrypt(encryptedNote.content),
+          };
+          if (editor) {
+            setTitle(decryptedNote.title);
+            editor.commands.setContent(decryptedNote.content);
+          }
+        }
+      }
+    };
+
+    void fetchNote();
+  }, [decrypt, editor, noteId]);
+
+  const handleAddNote = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
@@ -65,26 +90,39 @@ const NoteEditor = ({
         const encryptedNote = await encrypt(editor.getHTML());
         const encryptedNoteTitle = await encrypt(title);
 
-        const newNote: Note = {
-          id: Date.now().toString(),
-          title: encryptedNoteTitle,
-          content: encryptedNote,
-          tags: [],
-          notebookId: "",
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        };
-        console.log(newNote);
+        if (currentNote) {
+          await addItem(NOTES_STORE, {
+            ...currentNote,
+            title: encryptedNoteTitle,
+            content: encryptedNote,
+          });
+          onSave({
+            ...currentNote,
+            title,
+            content: editor.getHTML(),
+          });
+          toast.success(`Note has been updated`);
+        } else {
+          const newNote: Note = {
+            id: Date.now().toString(),
+            title: encryptedNoteTitle,
+            content: encryptedNote,
+            tags: [],
+            notebookId: "",
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          };
 
-        await addItem("notes", { ...newNote });
-        onSave({
-          ...newNote,
-          title,
-          content: editor.getHTML(),
-        });
-        setTitle("");
-        editor.commands.clearContent();
-        toast.success(`Notebook has been created`);
+          await addItem(NOTES_STORE, { ...newNote });
+          onSave({
+            ...newNote,
+            title,
+            content: editor.getHTML(),
+          });
+          setTitle("");
+          editor.commands.clearContent();
+          toast.success(`Note has been created`);
+        }
       }
     } catch (error) {
       console.error("Error creating note:", error);
@@ -96,20 +134,20 @@ const NoteEditor = ({
       <input
         type="text"
         value={title}
-        className="rounded-md px-4 py-3 text-2xl font-semibold text-black outline-none placeholder:font-medium"
+        className="rounded-md px-6 py-5 text-2xl font-semibold text-black outline-none placeholder:font-medium"
         onChange={(e) => {
           setTitle(e.target.value);
         }}
         placeholder="Note title"
       />
       <EditorToolbar editor={editor} />
-      <div className="p-4">
+      <div className="px-6 py-4">
         <EditorContent
           editor={editor}
           className="focus-visible:[&>.tiptap]:outline-none"
         />
       </div>
-      <div className="mt-4 px-4">
+      <div className="mt-4 px-6">
         <button
           type="submit"
           className="inline-flex rounded-lg bg-black p-3 font-medium text-white "

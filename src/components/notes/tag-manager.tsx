@@ -13,6 +13,7 @@ import {
 import { PlusIcon } from "@/components/icons/plus-icon";
 import { SearchIcon } from "@/components/icons/search-icon";
 import { Tag } from "@/models/tag";
+import { TAGS_STORE } from "@/utils/constants";
 
 const TagManager = () => {
   const { encrypt, decrypt } = useEncryption();
@@ -50,7 +51,7 @@ const TagManager = () => {
         createdAt: new Date(),
         updatedAt: new Date(),
       };
-      await addItem("tags", { ...encryptedTag });
+      await addItem(TAGS_STORE, { ...encryptedTag });
       setTags([...tags, { ...encryptedTag, name: newTagName }]);
       setNewTagName("");
       setIsModalOpen(false);

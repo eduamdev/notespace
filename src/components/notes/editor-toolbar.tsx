@@ -19,7 +19,7 @@ function EditorToolbar({ editor }: { editor: Editor | null }) {
   }
 
   return (
-    <div className="flex items-center gap-3 border-y px-3 py-6">
+    <div className="flex items-center gap-3 border-y px-4 py-6">
       {/* H-2 */}
       <Toggle
         aria-label="Toggle heading level 2"
