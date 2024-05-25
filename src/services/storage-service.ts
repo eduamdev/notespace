@@ -8,7 +8,7 @@ import {
   TAGS_STORE,
   TOPICS_STORE,
   USERS_STORE,
-} from "@/utils/constants";
+} from "@/lib/constants";
 
 let db: IDBPDatabase | null = null;
 

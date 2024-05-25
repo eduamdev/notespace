@@ -1,10 +1,10 @@
-import Dashboard from "@/components/dashboard/dashboard-layout";
+import DesktopLayout from "@/components/layout/desktop-layout";
 import NotebookList from "@/components/notes/notebook-list";
 
 export function NotebooksPage() {
   return (
     <>
-      <Dashboard leftPanel={<NotebookList />} />;
+      <DesktopLayout leftPanel={<NotebookList />} />;
     </>
   );
 }

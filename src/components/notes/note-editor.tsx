@@ -8,7 +8,7 @@ import EditorToolbar from "@/components/notes/editor-toolbar";
 import { addItem, getItem } from "@/services/storage-service";
 import { useEncryption } from "@/hooks/use-encryption";
 import { Note } from "@/models/note";
-import { NOTES_STORE } from "@/utils/constants";
+import { NOTES_STORE } from "@/lib/constants";
 
 const NoteEditor = ({
   onSave,

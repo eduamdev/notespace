@@ -1,4 +1,4 @@
-import { APP_LOG_PREFIX } from "./constants";
+import { APP_LOG_PREFIX } from "@/lib/constants";
 
 const log = (message: string): void => {
   console.log(`${APP_LOG_PREFIX} ${message}`);

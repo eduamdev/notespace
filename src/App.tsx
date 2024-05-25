@@ -5,8 +5,8 @@ import { AuthProvider } from "@/contexts/auth-context";
 import { EncryptionProvider } from "@/contexts/encryption-context";
 
 import ProtectedRoute from "@/components/protected-route";
-import Login from "@/components/auth/login";
-import SignUp from "@/components/auth/signup";
+import { LoginPage } from "@/pages/login";
+import { SignupPage } from "@/pages/signup";
 import { NotesPage } from "@/pages/notes";
 import { NewNotePage } from "@/pages/new-note";
 import { NotePage } from "@/pages/note";
@@ -43,10 +43,8 @@ function App() {
             <Route path="/" component={() => <Redirect to="/notes" />} />
 
             {/* Auth Routes */}
-            <Route path="/login">
-              <Login />
-            </Route>
-            <Route path="/signup" component={SignUp} />
+            <Route path="/login" component={LoginPage} />
+            <Route path="/signup" component={SignupPage} />
 
             {/* Protected Routes */}
             <Route path="/notes">

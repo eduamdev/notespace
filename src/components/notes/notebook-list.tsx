@@ -13,7 +13,7 @@ import { useEncryption } from "@/hooks/use-encryption";
 import { PlusIcon } from "@/components/icons/plus-icon";
 import { SearchIcon } from "@/components/icons/search-icon";
 import { Notebook } from "@/models/notebook";
-import { NOTEBOOKS_STORE } from "@/utils/constants";
+import { NOTEBOOKS_STORE } from "@/lib/constants";
 
 function NotebookList() {
   const { encrypt, decrypt } = useEncryption();

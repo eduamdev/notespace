@@ -13,7 +13,7 @@ import {
 import { PlusIcon } from "@/components/icons/plus-icon";
 import { SearchIcon } from "@/components/icons/search-icon";
 import { Tag } from "@/models/tag";
-import { TAGS_STORE } from "@/utils/constants";
+import { TAGS_STORE } from "@/lib/constants";
 
 const TagManager = () => {
   const { encrypt, decrypt } = useEncryption();

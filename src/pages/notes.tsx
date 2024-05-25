@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useEncryption } from "@/hooks/use-encryption";
 import { getAllItems } from "@/services/storage-service";
-import Dashboard from "@/components/dashboard/dashboard-layout";
+import DesktopLayout from "@/components/layout/desktop-layout";
 import NoteList from "@/components/notes/note-list";
 import { Note } from "@/models/note";
 
@@ -30,7 +30,7 @@ export function NotesPage() {
 
   return (
     <>
-      <Dashboard leftPanel={<NoteList notes={notes} />} />;
+      <DesktopLayout leftPanel={<NoteList notes={notes} />} />;
     </>
   );
 }

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "wouter";
 import { useEncryption } from "@/hooks/use-encryption";
 import { getAllItems } from "@/services/storage-service";
-import Dashboard from "@/components/dashboard/dashboard-layout";
+import DesktopLayout from "@/components/layout/desktop-layout";
 import NoteList from "@/components/notes/note-list";
 import NoteEditor from "@/components/notes/note-editor";
 import { Note } from "@/models/note";
@@ -41,7 +41,7 @@ export function NotePage() {
 
   return (
     <>
-      <Dashboard
+      <DesktopLayout
         leftPanel={<NoteList notes={notes} />}
         rightPanel={<NoteEditor onSave={handleSaveNote} noteId={id} />}
       />
