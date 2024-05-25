@@ -1,11 +1,11 @@
 import Sidenav from "@/components/layout/sidenav";
 
 function DesktopLayout({
-  leftPanel,
-  rightPanel,
+  mainContent,
+  sideContent,
 }: {
-  leftPanel: React.ReactNode;
-  rightPanel?: React.ReactNode;
+  mainContent: React.ReactNode;
+  sideContent?: React.ReactNode;
 }) {
   return (
     <div className="flex h-dvh w-dvw flex-col items-center">
@@ -13,8 +13,8 @@ function DesktopLayout({
         <Sidenav />
         <div className="flex size-full items-center">
           <div className="z-10 grid h-[calc(100dvh_-_20px)] w-[calc(100%_-_10px)] grid-cols-[420px,1fr] rounded-[10px] border border-neutral-950/[0.12] bg-white shadow-sm">
-            <div>{leftPanel}</div>
-            <div>{rightPanel}</div>
+            <div>{mainContent}</div>
+            <div>{sideContent}</div>
           </div>
         </div>
       </div>

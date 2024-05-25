@@ -36,8 +36,8 @@ export function NewNotePage() {
   return (
     <>
       <DesktopLayout
-        leftPanel={<NoteList notes={notes} />}
-        rightPanel={<NoteEditor onSave={handleSaveNote} />}
+        mainContent={<NoteList notes={notes} />}
+        sideContent={<NoteEditor onSave={handleSaveNote} />}
       />
     </>
   );

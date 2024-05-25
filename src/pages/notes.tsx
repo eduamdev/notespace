@@ -30,7 +30,7 @@ export function NotesPage() {
 
   return (
     <>
-      <DesktopLayout leftPanel={<NoteList notes={notes} />} />;
+      <DesktopLayout mainContent={<NoteList notes={notes} />} />;
     </>
   );
 }

@@ -4,7 +4,7 @@ import TagManager from "@/components/notes/tag-manager";
 export function TagsPage() {
   return (
     <>
-      <DesktopLayout leftPanel={<TagManager />} />;
+      <DesktopLayout mainContent={<TagManager />} />;
     </>
   );
 }
