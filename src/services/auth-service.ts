@@ -12,22 +12,20 @@ import {
 } from "@/services/encryption-service";
 import { Session } from "@/models/session";
 import { User } from "@/models/user";
-
-const USERS_STORE = "users";
-const SESSION_STORE = "session";
+import { STORE_NAMES } from "@/lib/constants";
 
 const getCurrentUser = async (): Promise<User | null> => {
   await initDB();
-  const session = await getItem<Session>(SESSION_STORE, "current");
+  const session = await getItem<Session>(STORE_NAMES.SESSION, "current");
   if (!session) return null;
 
-  const user = await getItem<User>(USERS_STORE, session.userId);
+  const user = await getItem<User>(STORE_NAMES.USERS, session.userId);
   return user ?? null;
 };
 
 const login = async (username: string, password: string): Promise<User> => {
   await initDB();
-  const users = await getAllItems<User>(USERS_STORE);
+  const users = await getAllItems<User>(STORE_NAMES.USERS);
   const user = users.find((user: User) => user.username === username);
 
   if (!user) {
@@ -43,7 +41,7 @@ const login = async (username: string, password: string): Promise<User> => {
   }
 
   const session: Session = { id: "current", userId: user.id };
-  await addItem(SESSION_STORE, session);
+  await addItem(STORE_NAMES.SESSION, session);
 
   return user;
 };
@@ -51,13 +49,13 @@ const login = async (username: string, password: string): Promise<User> => {
 const logout = async (): Promise<void> => {
   console.log("log out...");
   await initDB();
-  await deleteItem(SESSION_STORE, "current");
+  await deleteItem(STORE_NAMES.SESSION, "current");
 };
 
 const register = async (username: string, password: string): Promise<void> => {
   console.log("registering user...");
   await initDB();
-  const users = await getAllItems<User>(USERS_STORE);
+  const users = await getAllItems<User>(STORE_NAMES.USERS);
 
   if (users.find((user: User) => user.username === username)) {
     throw new Error("User already exists");
@@ -81,7 +79,7 @@ const register = async (username: string, password: string): Promise<void> => {
 
   console.log(newUser);
 
-  await addItem(USERS_STORE, newUser);
+  await addItem(STORE_NAMES.USERS, newUser);
 };
 
 export { getCurrentUser, login, logout, register };

@@ -1,14 +1,5 @@
 import { openDB, IDBPDatabase } from "idb";
-import {
-  DATABASE_NAME,
-  DATABASE_VERSION,
-  NOTEBOOKS_STORE,
-  NOTES_STORE,
-  SESSION_STORE,
-  TAGS_STORE,
-  TOPICS_STORE,
-  USERS_STORE,
-} from "@/lib/constants";
+import { DATABASE_NAME, DATABASE_VERSION, STORE_NAMES } from "@/lib/constants";
 
 let db: IDBPDatabase | null = null;
 
@@ -16,23 +7,23 @@ const initDB = async (): Promise<void> => {
   if (!db) {
     db = await openDB(DATABASE_NAME, DATABASE_VERSION, {
       upgrade(database) {
-        if (!database.objectStoreNames.contains(USERS_STORE)) {
-          database.createObjectStore(USERS_STORE, { keyPath: "id" });
+        if (!database.objectStoreNames.contains(STORE_NAMES.USERS)) {
+          database.createObjectStore(STORE_NAMES.USERS, { keyPath: "id" });
         }
-        if (!database.objectStoreNames.contains(SESSION_STORE)) {
-          database.createObjectStore(SESSION_STORE, { keyPath: "id" });
+        if (!database.objectStoreNames.contains(STORE_NAMES.SESSION)) {
+          database.createObjectStore(STORE_NAMES.SESSION, { keyPath: "id" });
         }
-        if (!database.objectStoreNames.contains(NOTES_STORE)) {
-          database.createObjectStore(NOTES_STORE, { keyPath: "id" });
+        if (!database.objectStoreNames.contains(STORE_NAMES.NOTES)) {
+          database.createObjectStore(STORE_NAMES.NOTES, { keyPath: "id" });
         }
-        if (!database.objectStoreNames.contains(NOTEBOOKS_STORE)) {
-          database.createObjectStore(NOTEBOOKS_STORE, { keyPath: "id" });
+        if (!database.objectStoreNames.contains(STORE_NAMES.NOTEBOOKS)) {
+          database.createObjectStore(STORE_NAMES.NOTEBOOKS, { keyPath: "id" });
         }
-        if (!database.objectStoreNames.contains(TAGS_STORE)) {
-          database.createObjectStore(TAGS_STORE, { keyPath: "id" });
+        if (!database.objectStoreNames.contains(STORE_NAMES.TAGS)) {
+          database.createObjectStore(STORE_NAMES.TAGS, { keyPath: "id" });
         }
-        if (!database.objectStoreNames.contains(TOPICS_STORE)) {
-          database.createObjectStore(TOPICS_STORE, { keyPath: "id" });
+        if (!database.objectStoreNames.contains(STORE_NAMES.TOPICS)) {
+          database.createObjectStore(STORE_NAMES.TOPICS, { keyPath: "id" });
         }
       },
     });

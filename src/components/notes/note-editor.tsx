@@ -8,7 +8,7 @@ import EditorToolbar from "@/components/notes/editor-toolbar";
 import { addItem, getItem } from "@/services/storage-service";
 import { useEncryption } from "@/hooks/use-encryption";
 import { Note } from "@/models/note";
-import { NOTES_STORE } from "@/lib/constants";
+import { STORE_NAMES } from "@/lib/constants";
 
 const NoteEditor = ({
   onSave,
@@ -63,7 +63,7 @@ const NoteEditor = ({
   useEffect(() => {
     const fetchNote = async () => {
       if (noteId) {
-        const encryptedNote = await getItem<Note>(NOTES_STORE, noteId);
+        const encryptedNote = await getItem<Note>(STORE_NAMES.NOTES, noteId);
         if (encryptedNote) {
           setCurrentNote(encryptedNote);
           const decryptedNote: Note = {
@@ -91,7 +91,7 @@ const NoteEditor = ({
         const encryptedNoteTitle = await encrypt(title);
 
         if (currentNote) {
-          await addItem(NOTES_STORE, {
+          await addItem(STORE_NAMES.NOTES, {
             ...currentNote,
             title: encryptedNoteTitle,
             content: encryptedNote,
@@ -113,7 +113,7 @@ const NoteEditor = ({
             updatedAt: new Date(),
           };
 
-          await addItem(NOTES_STORE, { ...newNote });
+          await addItem(STORE_NAMES.NOTES, { ...newNote });
           onSave({
             ...newNote,
             title,

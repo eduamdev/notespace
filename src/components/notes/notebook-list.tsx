@@ -13,7 +13,7 @@ import { useEncryption } from "@/hooks/use-encryption";
 import { PlusIcon } from "@/components/icons/plus-icon";
 import { SearchIcon } from "@/components/icons/search-icon";
 import { Notebook } from "@/models/notebook";
-import { NOTEBOOKS_STORE } from "@/lib/constants";
+import { STORE_NAMES } from "@/lib/constants";
 
 function NotebookList() {
   const { encrypt, decrypt } = useEncryption();
@@ -52,7 +52,7 @@ function NotebookList() {
         createdAt: new Date(),
         updatedAt: new Date(),
       };
-      await addItem(NOTEBOOKS_STORE, { ...encryptedNotebook });
+      await addItem(STORE_NAMES.NOTEBOOKS, { ...encryptedNotebook });
       setNotebooks([
         ...notebooks,
         { ...encryptedNotebook, name: newNotebookName },
