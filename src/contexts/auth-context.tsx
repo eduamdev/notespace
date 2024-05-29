@@ -1,57 +1,51 @@
-import React, { createContext, useState, useEffect, ReactNode } from "react";
-import {
-  getCurrentUser,
-  login as loginUser,
-  logout as logoutUser,
-  register as registerUser,
-} from "@/services/auth-service";
+import { createContext, useState, useEffect, ReactNode } from "react";
+import * as authService from "@/services/auth-service";
 import { User } from "@/models/user";
 
 export interface AuthContextType {
   user: User | null;
   login: (username: string, password: string) => Promise<void>;
-  logout: () => void;
   register: (username: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(
   undefined
 );
 
-interface AuthProviderProps {
-  children: ReactNode;
-}
-
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const fetchUser = async () => {
-      const currentUser = await getCurrentUser();
+      const currentUser = await authService.getCurrentUser();
+      console.log("current user is: ", currentUser);
       setUser(currentUser);
     };
-
     void fetchUser();
   }, []);
 
   const login = async (username: string, password: string) => {
-    const loggedInUser = await loginUser(username, password);
+    const loggedInUser = await authService.login(username, password);
+    console.log("loggedInUser:", loggedInUser);
     setUser(loggedInUser);
   };
 
-  const logout = () => {
-    void logoutUser();
+  useEffect(() => {
+    console.log("User state in AuthProvider:", user);
+  }, [user]);
+
+  const register = async (username: string, password: string) => {
+    await authService.register(username, password);
+  };
+
+  const logout = async () => {
+    await authService.logout();
     setUser(null);
   };
 
-  const register = async (username: string, password: string) => {
-    await registerUser(username, password);
-    const newUser = await loginUser(username, password);
-    setUser(newUser);
-  };
-
   return (
-    <AuthContext.Provider value={{ user, login, logout, register }}>
+    <AuthContext.Provider value={{ user, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );

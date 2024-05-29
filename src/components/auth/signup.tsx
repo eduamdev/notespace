@@ -1,16 +1,17 @@
 import React, { useState } from "react";
-import { Link } from "wouter";
-import { navigate } from "wouter/use-browser-location";
-import { register } from "@/services/auth-service";
+import { Link, useLocation } from "wouter";
+import { useAuth } from "@/hooks/use-auth";
 import Logo from "@/assets/logo.svg";
 
 function SignUp() {
+  const { register } = useAuth();
+  const [, setLocation] = useLocation();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
 
     // Basic validation
@@ -27,7 +28,7 @@ function SignUp() {
     try {
       await register(username, password);
       console.log("new user registered!");
-      navigate("/login");
+      setLocation("/login");
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
@@ -44,7 +45,7 @@ function SignUp() {
         <h1 className="text-center text-xl font-semibold text-black">
           Sign up to NoteGuard
         </h1>
-        <form onSubmit={(event) => void handleSubmit(event)}>
+        <form onSubmit={(event) => void handleRegister(event)}>
           <div className="space-y-3 pt-10">
             <div>
               <label htmlFor="username" className="sr-only">
@@ -54,11 +55,11 @@ function SignUp() {
                 type="text"
                 id="username"
                 value={username}
-                placeholder="Username"
-                className="w-full border-b-[1.5px] py-2 text-[17px] transition-colors placeholder:text-base focus-visible:border-b focus-visible:border-neutral-700 focus-visible:outline-none"
                 onChange={(e) => {
                   setUsername(e.target.value);
                 }}
+                placeholder="Username"
+                className="w-full border-b-[1.5px] py-2 text-[17px] transition-colors placeholder:text-base focus-visible:border-b focus-visible:border-neutral-700 focus-visible:outline-none"
                 required
               />
             </div>
@@ -70,11 +71,11 @@ function SignUp() {
                 type="password"
                 id="password"
                 value={password}
-                placeholder="Password"
-                className="w-full border-b-[1.5px] py-2 text-[17px] transition-colors placeholder:text-base focus-visible:border-b focus-visible:border-neutral-700 focus-visible:outline-none"
                 onChange={(e) => {
                   setPassword(e.target.value);
                 }}
+                placeholder="Password"
+                className="w-full border-b-[1.5px] py-2 text-[17px] transition-colors placeholder:text-base focus-visible:border-b focus-visible:border-neutral-700 focus-visible:outline-none"
                 required
               />
             </div>
@@ -86,11 +87,11 @@ function SignUp() {
                 type="password"
                 id="confirmPassword"
                 value={confirmPassword}
-                placeholder="Confirm Password"
-                className="w-full border-b-[1.5px] py-2 text-[17px] transition-colors placeholder:text-base focus-visible:border-b focus-visible:border-neutral-700 focus-visible:outline-none"
                 onChange={(e) => {
                   setConfirmPassword(e.target.value);
                 }}
+                placeholder="Confirm Password"
+                className="w-full border-b-[1.5px] py-2 text-[17px] transition-colors placeholder:text-base focus-visible:border-b focus-visible:border-neutral-700 focus-visible:outline-none"
                 required
               />
             </div>

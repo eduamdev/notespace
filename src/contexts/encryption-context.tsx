@@ -1,51 +1,27 @@
-import React, { createContext, useState, useEffect } from "react";
-import { encryptData, decryptData } from "@/services/encryption-service";
-import { useAuth } from "@/hooks/use-auth";
+import { createContext, ReactNode } from "react";
+import * as encryptionService from "@/services/encryption-service";
 
 export interface EncryptionContextType {
-  encryptionKey: string | null;
-  encrypt: (data: string) => Promise<string>;
-  decrypt: (encryptedData: string) => Promise<string>;
+  generateEncryptionKey: (
+    password: string
+  ) => Promise<{ key: string; salt: string }>;
+  encryptData: (key: string, data: string) => Promise<string>;
+  decryptData: (key: string, encryptedData: string) => Promise<string>;
 }
 
 export const EncryptionContext = createContext<
   EncryptionContextType | undefined
 >(undefined);
 
-export const EncryptionProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  const { user } = useAuth();
-  const [encryptionKey, setEncryptionKey] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchEncryptionKey = () => {
-      if (user) {
-        setEncryptionKey(user.encryptionKey);
-      } else {
-        setEncryptionKey(null);
-      }
-    };
-
-    fetchEncryptionKey();
-  }, [user]);
-
-  const encrypt = async (data: string): Promise<string> => {
-    if (!encryptionKey) {
-      throw new Error("No encryption key available");
-    }
-    return await encryptData(encryptionKey, data);
-  };
-
-  const decrypt = async (encryptedData: string): Promise<string> => {
-    if (!encryptionKey) {
-      throw new Error("No encryption key available");
-    }
-    return await decryptData(encryptionKey, encryptedData);
-  };
-
+export const EncryptionProvider = ({ children }: { children: ReactNode }) => {
   return (
-    <EncryptionContext.Provider value={{ encryptionKey, encrypt, decrypt }}>
+    <EncryptionContext.Provider
+      value={{
+        generateEncryptionKey: encryptionService.generateEncryptionKey,
+        encryptData: encryptionService.encryptData,
+        decryptData: encryptionService.decryptData,
+      }}
+    >
       {children}
     </EncryptionContext.Provider>
   );

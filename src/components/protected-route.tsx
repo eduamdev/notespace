@@ -1,20 +1,17 @@
 import React from "react";
-import { Redirect } from "wouter";
+import { Redirect, Route, RouteProps } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
 
-interface ProtectedRouteProps {
-  children: React.ReactNode;
-}
+type ProtectedRouteProps = RouteProps;
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
+  children,
+  ...rest
+}) => {
   const { user } = useAuth();
   console.log("user", user);
 
-  if (!user) {
-    return <Redirect to="/login" />;
-  }
-
-  return <>{children}</>;
+  return <Route {...rest}>{user ? children : <Redirect to="/login" />}</Route>;
 };
 
 export default ProtectedRoute;

@@ -8,58 +8,70 @@ import {
   DialogTrigger,
   DialogClose,
 } from "@/components/ui/dialog";
-import { addItem, getAllItems } from "@/services/storage-service";
+import { useAuth } from "@/hooks/use-auth";
 import { useEncryption } from "@/hooks/use-encryption";
+import { addItem, getAllItems } from "@/services/database-service";
 import { PlusIcon } from "@/components/icons/plus-icon";
 import { SearchIcon } from "@/components/icons/search-icon";
 import { Notebook } from "@/models/notebook";
 import { STORE_NAMES } from "@/lib/constants";
 
 function NotebookList() {
-  const { encrypt, decrypt } = useEncryption();
+  const { user } = useAuth();
+  const { encryptData, decryptData } = useEncryption();
   const [newNotebookName, setNewNotebookName] = useState("");
   const [notebooks, setNotebooks] = useState<Notebook[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchNotebooks = async () => {
-      const encryptedNotebooks: Notebook[] = await getAllItems("notebooks");
+      if (user) {
+        const encryptedNotebooks: Notebook[] = await getAllItems("notebooks");
 
-      const decryptedNotebooks = await Promise.all(
-        encryptedNotebooks.map(async (encryptedNotebook) => {
-          const decryptedNotebook: Notebook = {
-            ...encryptedNotebook,
-            name: await decrypt(encryptedNotebook.name),
-          };
-          return decryptedNotebook;
-        })
-      );
-      setNotebooks(decryptedNotebooks);
+        const decryptedNotebooks = await Promise.all(
+          encryptedNotebooks.map(async (encryptedNotebook) => {
+            const decryptedNotebook: Notebook = {
+              ...encryptedNotebook,
+              name: await decryptData(
+                user.encryptionKey,
+                encryptedNotebook.name
+              ),
+            };
+            return decryptedNotebook;
+          })
+        );
+        setNotebooks(decryptedNotebooks);
+      }
     };
     void fetchNotebooks();
-  }, [decrypt]);
+  }, [decryptData, user]);
 
   const handleAddNotebook = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      const encryptedNotebookName = await encrypt(newNotebookName);
+      if (user) {
+        const encryptedNotebookName = await encryptData(
+          user.encryptionKey,
+          newNotebookName
+        );
 
-      const encryptedNotebook: Notebook = {
-        id: new Date().toISOString(),
-        name: encryptedNotebookName,
-        topicIds: [],
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
-      await addItem(STORE_NAMES.NOTEBOOKS, { ...encryptedNotebook });
-      setNotebooks([
-        ...notebooks,
-        { ...encryptedNotebook, name: newNotebookName },
-      ]);
-      setNewNotebookName("");
-      setIsModalOpen(false);
-      toast.success(`Notebook has been created`);
+        const encryptedNotebook: Notebook = {
+          id: new Date().toISOString(),
+          name: encryptedNotebookName,
+          topicIds: [],
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        };
+        await addItem(STORE_NAMES.NOTEBOOKS, { ...encryptedNotebook });
+        setNotebooks([
+          ...notebooks,
+          { ...encryptedNotebook, name: newNotebookName },
+        ]);
+        setNewNotebookName("");
+        setIsModalOpen(false);
+        toast.success(`Notebook has been created`);
+      }
     } catch (error) {
       console.error("Error creating notebook:", error);
     }

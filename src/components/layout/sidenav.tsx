@@ -17,8 +17,8 @@ import { LogoutIcon } from "@/components/icons/logout-icon";
 function Sidenav() {
   const { user, logout } = useAuth();
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await logout();
   };
 
   return (
@@ -113,7 +113,7 @@ function Sidenav() {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <button
-                    onClick={handleLogout}
+                    onClick={() => void handleLogout()}
                     className="flex items-center justify-center p-1"
                   >
                     <LogoutIcon className="size-6 shrink-0 text-neutral-700" />

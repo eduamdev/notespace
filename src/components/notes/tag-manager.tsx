@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { useAuth } from "@/hooks/use-auth";
 import { useEncryption } from "@/hooks/use-encryption";
-import { addItem, getAllItems } from "@/services/storage-service";
+import { addItem, getAllItems } from "@/services/database-service";
 import {
   Dialog,
   DialogContent,
@@ -16,46 +17,54 @@ import { Tag } from "@/models/tag";
 import { STORE_NAMES } from "@/lib/constants";
 
 const TagManager = () => {
-  const { encrypt, decrypt } = useEncryption();
+  const { user } = useAuth();
+  const { encryptData, decryptData } = useEncryption();
   const [tags, setTags] = useState<Tag[]>([]);
   const [newTagName, setNewTagName] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchTags = async () => {
-      const encryptedTags: Tag[] = await getAllItems("tags");
+      if (user) {
+        const encryptedTags: Tag[] = await getAllItems("tags");
 
-      const decryptedTags = await Promise.all(
-        encryptedTags.map(async (encryptedTag) => {
-          const decryptedTag: Tag = {
-            ...encryptedTag,
-            name: await decrypt(encryptedTag.name),
-          };
-          return decryptedTag;
-        })
-      );
-      setTags(decryptedTags);
+        const decryptedTags = await Promise.all(
+          encryptedTags.map(async (encryptedTag) => {
+            const decryptedTag: Tag = {
+              ...encryptedTag,
+              name: await decryptData(user.encryptionKey, encryptedTag.name),
+            };
+            return decryptedTag;
+          })
+        );
+        setTags(decryptedTags);
+      }
     };
     void fetchTags();
-  }, [decrypt]);
+  }, [decryptData, user]);
 
   const handleAddTag = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      const encryptedTagName = await encrypt(newTagName);
+      if (user) {
+        const encryptedTagName = await encryptData(
+          user.encryptionKey,
+          newTagName
+        );
 
-      const encryptedTag: Tag = {
-        id: new Date().toISOString(),
-        name: encryptedTagName,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
-      await addItem(STORE_NAMES.TAGS, { ...encryptedTag });
-      setTags([...tags, { ...encryptedTag, name: newTagName }]);
-      setNewTagName("");
-      setIsModalOpen(false);
-      toast.success(`Tag has been created`);
+        const encryptedTag: Tag = {
+          id: new Date().toISOString(),
+          name: encryptedTagName,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        };
+        await addItem(STORE_NAMES.TAGS, { ...encryptedTag });
+        setTags([...tags, { ...encryptedTag, name: newTagName }]);
+        setNewTagName("");
+        setIsModalOpen(false);
+        toast.success(`Tag has been created`);
+      }
     } catch (error) {
       console.error("Error creating tag:", error);
     }

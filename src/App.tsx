@@ -47,36 +47,24 @@ function App() {
             <Route path="/signup" component={SignupPage} />
 
             {/* Protected Routes */}
-            <Route path="/notes">
-              <ProtectedRoute>
-                <NotesPage />
-              </ProtectedRoute>
-            </Route>
-            <Route path="/notes/new">
-              <ProtectedRoute>
-                <NewNotePage />
-              </ProtectedRoute>
-            </Route>
-            <Route path="/notes/:id">
-              <ProtectedRoute>
-                <NotePage />
-              </ProtectedRoute>
-            </Route>
-            <Route path="/notebooks">
-              <ProtectedRoute>
-                <NotebooksPage />
-              </ProtectedRoute>
-            </Route>
-            <Route path="/favorites">
-              <ProtectedRoute>
-                <NotesPage />
-              </ProtectedRoute>
-            </Route>
-            <Route path="/tags">
-              <ProtectedRoute>
-                <TagsPage />
-              </ProtectedRoute>
-            </Route>
+            <ProtectedRoute path="/notes">
+              <NotesPage />
+            </ProtectedRoute>
+            <ProtectedRoute path="/notes/new">
+              <NewNotePage />
+            </ProtectedRoute>
+            <ProtectedRoute path="/notes/:id">
+              <NotePage />
+            </ProtectedRoute>
+            <ProtectedRoute path="/notebooks">
+              <NotebooksPage />
+            </ProtectedRoute>
+            <ProtectedRoute path="/favorites">
+              <NotesPage />
+            </ProtectedRoute>
+            <ProtectedRoute path="/tags">
+              <TagsPage />
+            </ProtectedRoute>
 
             {/* Default Route (404) */}
             <Route>

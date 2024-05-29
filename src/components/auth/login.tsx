@@ -1,21 +1,21 @@
 import { useState } from "react";
-import { Link } from "wouter";
-import { navigate } from "wouter/use-browser-location";
+import { Link, useLocation } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
 import Logo from "@/assets/logo.svg";
 
 function Login() {
   const { login } = useAuth();
+  const [, setLocation] = useLocation();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
       await login(username, password);
-      navigate("/notes");
+      setLocation("/");
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
@@ -32,7 +32,7 @@ function Login() {
         <h1 className="text-center text-xl font-semibold text-black">
           Log in to NoteGuard
         </h1>
-        <form onSubmit={(event) => void handleSubmit(event)}>
+        <form onSubmit={(event) => void handleLogin(event)}>
           <div className="space-y-3 pt-10">
             <div>
               <label htmlFor="username" className="sr-only">
@@ -42,11 +42,11 @@ function Login() {
                 type="text"
                 id="username"
                 value={username}
-                placeholder="Username"
-                className="w-full border-b-[1.5px] py-2 text-[17px] transition-colors placeholder:text-base focus-visible:border-b focus-visible:border-neutral-700 focus-visible:outline-none"
                 onChange={(e) => {
                   setUsername(e.target.value);
                 }}
+                placeholder="Username"
+                className="w-full border-b-[1.5px] py-2 text-[17px] transition-colors placeholder:text-base focus-visible:border-b focus-visible:border-neutral-700 focus-visible:outline-none"
                 required
               />
             </div>
@@ -58,11 +58,11 @@ function Login() {
                 type="password"
                 id="password"
                 value={password}
-                placeholder="Password"
-                className="w-full border-b-[1.5px] py-2 text-[17px] transition-colors placeholder:text-base focus-visible:border-b focus-visible:border-neutral-700 focus-visible:outline-none"
                 onChange={(e) => {
                   setPassword(e.target.value);
                 }}
+                placeholder="Password"
+                className="w-full border-b-[1.5px] py-2 text-[17px] transition-colors placeholder:text-base focus-visible:border-b focus-visible:border-neutral-700 focus-visible:outline-none"
                 required
               />
             </div>

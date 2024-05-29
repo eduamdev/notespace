@@ -4,9 +4,10 @@ import { EditorContent, mergeAttributes, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import Heading from "@tiptap/extension-heading";
-import EditorToolbar from "@/components/notes/editor-toolbar";
-import { addItem, getItem } from "@/services/storage-service";
+import { useAuth } from "@/hooks/use-auth";
 import { useEncryption } from "@/hooks/use-encryption";
+import { addItem, getItem, updateItem } from "@/services/database-service";
+import EditorToolbar from "@/components/notes/editor-toolbar";
 import { Note } from "@/models/note";
 import { STORE_NAMES } from "@/lib/constants";
 
@@ -17,7 +18,8 @@ const NoteEditor = ({
   onSave: (newNote: Note) => void;
   noteId?: string;
 }) => {
-  const { encrypt, decrypt } = useEncryption();
+  const { user } = useAuth();
+  const { encryptData, decryptData } = useEncryption();
   const [title, setTitle] = useState("");
   const [currentNote, setCurrentNote] = useState<Note>();
 
@@ -62,66 +64,79 @@ const NoteEditor = ({
 
   useEffect(() => {
     const fetchNote = async () => {
-      if (noteId) {
-        const encryptedNote = await getItem<Note>(STORE_NAMES.NOTES, noteId);
-        if (encryptedNote) {
-          setCurrentNote(encryptedNote);
-          const decryptedNote: Note = {
-            ...encryptedNote,
-            title: await decrypt(encryptedNote.title),
-            content: await decrypt(encryptedNote.content),
-          };
-          if (editor) {
-            setTitle(decryptedNote.title);
-            editor.commands.setContent(decryptedNote.content);
+      if (user) {
+        if (noteId) {
+          const encryptedNote = await getItem<Note>(STORE_NAMES.NOTES, noteId);
+          if (encryptedNote) {
+            setCurrentNote(encryptedNote);
+            const decryptedNote: Note = {
+              ...encryptedNote,
+              title: await decryptData(user.encryptionKey, encryptedNote.title),
+              content: await decryptData(
+                user.encryptionKey,
+                encryptedNote.content
+              ),
+            };
+            if (editor) {
+              setTitle(decryptedNote.title);
+              editor.commands.setContent(decryptedNote.content);
+            }
           }
         }
       }
     };
 
     void fetchNote();
-  }, [decrypt, editor, noteId]);
+  }, [decryptData, editor, noteId, user]);
 
   const handleAddNote = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-      if (editor?.getHTML()) {
-        const encryptedNote = await encrypt(editor.getHTML());
-        const encryptedNoteTitle = await encrypt(title);
+      if (user) {
+        if (editor?.getHTML()) {
+          const encryptedNote = await encryptData(
+            user.encryptionKey,
+            editor.getHTML()
+          );
+          const encryptedNoteTitle = await encryptData(
+            user.encryptionKey,
+            title
+          );
 
-        if (currentNote) {
-          await addItem(STORE_NAMES.NOTES, {
-            ...currentNote,
-            title: encryptedNoteTitle,
-            content: encryptedNote,
-          });
-          onSave({
-            ...currentNote,
-            title,
-            content: editor.getHTML(),
-          });
-          toast.success(`Note has been updated`);
-        } else {
-          const newNote: Note = {
-            id: Date.now().toString(),
-            title: encryptedNoteTitle,
-            content: encryptedNote,
-            tags: [],
-            notebookId: "",
-            createdAt: new Date(),
-            updatedAt: new Date(),
-          };
+          if (currentNote) {
+            await updateItem(STORE_NAMES.NOTES, {
+              ...currentNote,
+              title: encryptedNoteTitle,
+              content: encryptedNote,
+            });
+            onSave({
+              ...currentNote,
+              title,
+              content: editor.getHTML(),
+            });
+            toast.success(`Note has been updated`);
+          } else {
+            const newNote: Note = {
+              id: Date.now().toString(),
+              title: encryptedNoteTitle,
+              content: encryptedNote,
+              tags: [],
+              notebookId: "",
+              createdAt: new Date(),
+              updatedAt: new Date(),
+            };
 
-          await addItem(STORE_NAMES.NOTES, { ...newNote });
-          onSave({
-            ...newNote,
-            title,
-            content: editor.getHTML(),
-          });
-          setTitle("");
-          editor.commands.clearContent();
-          toast.success(`Note has been created`);
+            await addItem(STORE_NAMES.NOTES, { ...newNote });
+            onSave({
+              ...newNote,
+              title,
+              content: editor.getHTML(),
+            });
+            setTitle("");
+            editor.commands.clearContent();
+            toast.success(`Note has been created`);
+          }
         }
       }
     } catch (error) {
