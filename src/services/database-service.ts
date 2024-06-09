@@ -7,6 +7,9 @@ export const initDB = async (): Promise<void> => {
   if (!db) {
     db = await openDB(DATABASE_NAME, DATABASE_VERSION, {
       upgrade(db) {
+        if (!db.objectStoreNames.contains(STORE_NAMES.AUTH)) {
+          db.createObjectStore(STORE_NAMES.AUTH, { keyPath: "id" });
+        }
         if (!db.objectStoreNames.contains(STORE_NAMES.USERS)) {
           db.createObjectStore(STORE_NAMES.USERS, { keyPath: "id" });
         }

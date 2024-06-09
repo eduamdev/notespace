@@ -4,6 +4,7 @@ export const DATABASE_VERSION = 1;
 
 // Store names
 export const STORE_NAMES = {
+  AUTH: "auth",
   USERS: "users",
   SESSION: "session",
   NOTES: "notes",
