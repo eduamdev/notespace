@@ -1,11 +1,11 @@
 import { Link } from "wouter";
+import { useAuth, useLogout } from "@/hooks/use-auth-new";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useAuth } from "@/hooks/use-auth";
 
 import Logo from "@/assets/logo.svg";
 import { NoteIcon } from "@/components/icons/note-icon";
@@ -15,10 +15,11 @@ import { TagsIcon } from "@/components/icons/tags-icon";
 import { LogoutIcon } from "@/components/icons/logout-icon";
 
 function Sidenav() {
-  const { user, logout } = useAuth();
+  const auth = useAuth();
+  const logoutMutation = useLogout();
 
   const handleLogout = async () => {
-    await logout();
+    await logoutMutation();
   };
 
   return (
@@ -109,11 +110,13 @@ function Sidenav() {
             </nav>
           </div>
           <div className="pb-4">
-            {user && (
+            {auth && (
               <Tooltip>
                 <TooltipTrigger asChild>
                   <button
-                    onClick={() => void handleLogout()}
+                    onClick={() => {
+                      void handleLogout();
+                    }}
                     className="flex items-center justify-center p-1"
                   >
                     <LogoutIcon className="size-6 shrink-0 text-neutral-700" />

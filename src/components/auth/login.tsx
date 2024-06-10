@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { useAuth } from "@/hooks/use-auth";
+// import { useAuth } from "@/hooks/use-auth";
+import { useLogin, useAuth } from "@/hooks/use-auth-new";
 import Logo from "@/assets/logo.svg";
 
 function Login() {
-  const { login } = useAuth();
+  // const { login } = useAuth();
+  const auth = useAuth();
+  const loginMutation = useLogin();
   const [, setLocation] = useLocation();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -13,13 +16,18 @@ function Login() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    try {
-      await login(username, password);
-      setLocation("/");
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
+    if (navigator.onLine) {
+      try {
+        await loginMutation.mutateAsync({ username, password });
+        setLocation("/");
+      } catch (error) {
+        if (error instanceof Error) {
+          setError(error.message);
+        }
       }
+    } else if (auth) {
+      // Handle offline login
+      console.log("Using cached credentials");
     }
   };
 

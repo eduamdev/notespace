@@ -1,5 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { addItem, getItem, deleteItem } from "@/services/database-service";
+import {
+  initDB,
+  addItem,
+  getItem,
+  deleteItem,
+} from "@/services/database-service";
 import { STORE_NAMES } from "@/lib/constants";
 
 interface AuthResponse {
@@ -7,7 +12,7 @@ interface AuthResponse {
 }
 
 const fetchToken = async (data: {
-  email: string;
+  username: string;
   password: string;
 }): Promise<AuthResponse> => {
   //   const response = await fetch("/api/login", {
@@ -42,7 +47,7 @@ const fetchToken = async (data: {
   };
 };
 
-const fetchSignup = async (data: { email: string; password: string }) => {
+const fetchSignup = async (data: { username: string; password: string }) => {
   const response = await fetch("/api/signup", {
     method: "POST",
     headers: {
@@ -58,16 +63,20 @@ const fetchSignup = async (data: { email: string; password: string }) => {
 
 export const useLogin = () => {
   const queryClient = useQueryClient();
-  return useMutation(fetchToken, {
-    onSuccess: async (data: { token: unknown }) => {
-      await addItem(STORE_NAMES.AUTH, { id: "token", data: data.token });
-      queryClient.setQueryData(["auth"], data.token);
+  return useMutation({
+    mutationFn: fetchToken,
+    onSuccess: async ({ token }: AuthResponse) => {
+      await initDB();
+      await addItem(STORE_NAMES.AUTH, { id: "token", data: token });
+      queryClient.setQueryData(["auth"], token);
     },
   });
 };
 
 export const useSignup = () => {
-  return useMutation(fetchSignup);
+  return useMutation({
+    mutationFn: fetchSignup,
+  });
 };
 
 export const useAuth = () => {
@@ -78,6 +87,7 @@ export const useAuth = () => {
 export const useLogout = () => {
   const queryClient = useQueryClient();
   return async () => {
+    await initDB();
     await deleteItem(STORE_NAMES.AUTH, "token");
     queryClient.setQueryData(["auth"], null);
   };
@@ -86,6 +96,7 @@ export const useLogout = () => {
 export const useLoadAuthFromStorage = () => {
   const queryClient = useQueryClient();
   return async () => {
+    await initDB();
     const token = await getItem(STORE_NAMES.AUTH, "token");
     console.log("token", token);
     if (token) {
