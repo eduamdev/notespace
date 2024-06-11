@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import * as dbService from "@/services/database-service";
+import * as dbService from "@/services/idb-service";
 
-export const useDatabase = () => {
+export const useIDB = () => {
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {

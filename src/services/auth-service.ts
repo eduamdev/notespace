@@ -4,7 +4,7 @@ import {
   getItem,
   getAllItems,
   deleteItem,
-} from "@/services/database-service";
+} from "@/services/idb-service";
 import {
   encryptData,
   decryptData,

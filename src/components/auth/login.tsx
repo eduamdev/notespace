@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
-// import { useAuth } from "@/hooks/use-auth";
-import { useLogin, useAuth } from "@/hooks/use-auth-new";
+import { useAuth, useLogin } from "@/hooks/use-auth";
 import Logo from "@/assets/logo.svg";
 
 function Login() {
-  // const { login } = useAuth();
   const auth = useAuth();
   const loginMutation = useLogin();
   const [, setLocation] = useLocation();
@@ -28,6 +26,7 @@ function Login() {
     } else if (auth) {
       // Handle offline login
       console.log("Using cached credentials");
+      setLocation("/");
     }
   };
 

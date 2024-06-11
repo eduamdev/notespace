@@ -6,7 +6,7 @@ import Placeholder from "@tiptap/extension-placeholder";
 import Heading from "@tiptap/extension-heading";
 import { useAuth } from "@/hooks/use-auth";
 import { useEncryption } from "@/hooks/use-encryption";
-import { addItem, getItem, updateItem } from "@/services/database-service";
+import { addItem, getItem, updateItem } from "@/services/idb-service";
 import EditorToolbar from "@/components/notes/editor-toolbar";
 import { Note } from "@/models/note";
 import { STORE_NAMES } from "@/lib/constants";

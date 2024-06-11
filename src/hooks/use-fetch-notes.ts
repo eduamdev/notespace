@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { useEncryption } from "@/hooks/use-encryption";
-import { useDatabase } from "@/hooks/use-database";
+import { useIDB } from "@/hooks/use-idb";
 import { STORE_NAMES } from "@/lib/constants";
 import { Note } from "@/models/note";
 
 const useFetchNotes = () => {
   const { user } = useAuth();
   const { decryptData } = useEncryption();
-  const { isInitialized, getAllItems } = useDatabase();
+  const { isInitialized, getAllItems } = useIDB();
   const [notes, setNotes] = useState<Note[]>([]);
 
   useEffect(() => {

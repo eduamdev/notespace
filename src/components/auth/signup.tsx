@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { useAuth } from "@/hooks/use-auth";
+import { useSignup } from "@/hooks/use-auth";
 import Logo from "@/assets/logo.svg";
 
 function SignUp() {
-  const { register } = useAuth();
+  const signupMutation = useSignup();
   const [, setLocation] = useLocation();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -26,7 +26,7 @@ function SignUp() {
     }
 
     try {
-      await register(username, password);
+      await signupMutation.mutateAsync({ username, password });
       console.log("new user registered!");
       setLocation("/login");
     } catch (error) {

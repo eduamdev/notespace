@@ -1,6 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Redirect, Route, Switch } from "wouter";
-import { useLoadAuthFromStorage } from "@/hooks/use-auth-new";
+import { useLoadAuthFromStorage } from "@/hooks/use-auth";
 import { Toaster } from "@/components/ui/sonner";
 
 import ProtectedRoute from "@/components/protected-route";
@@ -13,22 +13,22 @@ import { NotebooksPage } from "@/pages/notebooks";
 import { TagsPage } from "@/pages/tags";
 
 function App() {
-  // const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
   const loadAuthFromStorage = useLoadAuthFromStorage();
 
-  // useEffect(() => {
-  //   const handleOnlineStatus = () => {
-  //     setIsOnline(navigator.onLine);
-  //   };
+  useEffect(() => {
+    const handleOnlineStatus = () => {
+      setIsOnline(navigator.onLine);
+    };
 
-  //   window.addEventListener("online", handleOnlineStatus);
-  //   window.addEventListener("offline", handleOnlineStatus);
+    window.addEventListener("online", handleOnlineStatus);
+    window.addEventListener("offline", handleOnlineStatus);
 
-  //   return () => {
-  //     window.removeEventListener("online", handleOnlineStatus);
-  //     window.removeEventListener("offline", handleOnlineStatus);
-  //   };
-  // }, []);
+    return () => {
+      window.removeEventListener("online", handleOnlineStatus);
+      window.removeEventListener("offline", handleOnlineStatus);
+    };
+  }, []);
 
   useEffect(() => {
     void loadAuthFromStorage();
@@ -36,11 +36,11 @@ function App() {
 
   return (
     <>
-      {/* {isOnline ? null : (
-              <div className="bg-yellow-100 py-1 text-center">
-                No internet connection
-              </div>
-            )} */}
+      {isOnline ? null : (
+        <div className="bg-yellow-100 py-1 text-center">
+          No internet connection
+        </div>
+      )}
       <Switch>
         <Route path="/" component={() => <Redirect to="/notes" />} />
 

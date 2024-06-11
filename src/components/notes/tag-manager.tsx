@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/use-auth";
 import { useEncryption } from "@/hooks/use-encryption";
-import { addItem, getAllItems } from "@/services/database-service";
+import { addItem, getAllItems } from "@/services/idb-service";
 import {
   Dialog,
   DialogContent,

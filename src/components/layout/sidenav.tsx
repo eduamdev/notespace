@@ -1,5 +1,5 @@
-import { Link } from "wouter";
-import { useAuth, useLogout } from "@/hooks/use-auth-new";
+import { Link, useLocation } from "wouter";
+import { useAuth, useLogout } from "@/hooks/use-auth";
 import {
   Tooltip,
   TooltipContent,
@@ -17,9 +17,11 @@ import { LogoutIcon } from "@/components/icons/logout-icon";
 function Sidenav() {
   const auth = useAuth();
   const logoutMutation = useLogout();
+  const [, setLocation] = useLocation();
 
   const handleLogout = async () => {
     await logoutMutation();
+    setLocation("/login");
   };
 
   return (
