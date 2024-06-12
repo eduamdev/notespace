@@ -4,22 +4,14 @@ import { EditorContent, mergeAttributes, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import Heading from "@tiptap/extension-heading";
-import { useAuth } from "@/hooks/use-auth";
-import { useEncryption } from "@/hooks/use-encryption";
-import { addItem, getItem, updateItem } from "@/services/idb-service";
+import { useNotes } from "@/hooks/use-notes";
+import { getItem } from "@/services/idb-service";
 import EditorToolbar from "@/components/notes/editor-toolbar";
 import { Note } from "@/models/note";
 import { STORE_NAMES } from "@/lib/constants";
 
-const NoteEditor = ({
-  onSave,
-  noteId,
-}: {
-  onSave: (newNote: Note) => void;
-  noteId?: string;
-}) => {
-  const { user } = useAuth();
-  const { encryptData, decryptData } = useEncryption();
+const NoteEditor = ({ noteId }: { noteId?: string }) => {
+  const { addNote, updateNote } = useNotes();
   const [title, setTitle] = useState("");
   const [currentNote, setCurrentNote] = useState<Note>();
 
@@ -64,88 +56,61 @@ const NoteEditor = ({
 
   useEffect(() => {
     const fetchNote = async () => {
-      if (user) {
-        if (noteId) {
-          const encryptedNote = await getItem<Note>(STORE_NAMES.NOTES, noteId);
-          if (encryptedNote) {
-            setCurrentNote(encryptedNote);
-            const decryptedNote: Note = {
-              ...encryptedNote,
-              title: await decryptData(user.encryptionKey, encryptedNote.title),
-              content: await decryptData(
-                user.encryptionKey,
-                encryptedNote.content
-              ),
-            };
-            if (editor) {
-              setTitle(decryptedNote.title);
-              editor.commands.setContent(decryptedNote.content);
-            }
+      if (noteId) {
+        const note = await getItem<Note>(STORE_NAMES.NOTES, noteId);
+        if (note) {
+          setCurrentNote(note);
+          if (editor) {
+            setTitle(note.title);
+            editor.commands.setContent(note.content);
           }
         }
       }
     };
 
     void fetchNote();
-  }, [decryptData, editor, noteId, user]);
+  }, [editor, noteId]);
 
-  const handleAddNote = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleUpsertNote = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-      if (user) {
-        if (editor?.getHTML()) {
-          const encryptedNote = await encryptData(
-            user.encryptionKey,
-            editor.getHTML()
-          );
-          const encryptedNoteTitle = await encryptData(
-            user.encryptionKey,
-            title
-          );
+      if (editor?.getHTML()) {
+        if (currentNote) {
+          updateNote({
+            ...currentNote,
+            title,
+            content: editor.getHTML(),
+          });
 
-          if (currentNote) {
-            await updateItem(STORE_NAMES.NOTES, {
-              ...currentNote,
-              title: encryptedNoteTitle,
-              content: encryptedNote,
-            });
-            onSave({
-              ...currentNote,
-              title,
-              content: editor.getHTML(),
-            });
-            toast.success(`Note has been updated`);
-          } else {
-            const newNote: Note = {
-              id: Date.now().toString(),
-              title: encryptedNoteTitle,
-              content: encryptedNote,
-              tags: [],
-              notebookId: "",
-              createdAt: new Date(),
-              updatedAt: new Date(),
-            };
+          toast.success(`Note has been updated`);
+        } else {
+          addNote({
+            id: Date.now().toString(),
+            title,
+            content: editor.getHTML(),
+            tags: [],
+            notebookId: "",
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          });
 
-            await addItem(STORE_NAMES.NOTES, { ...newNote });
-            onSave({
-              ...newNote,
-              title,
-              content: editor.getHTML(),
-            });
-            setTitle("");
-            editor.commands.clearContent();
-            toast.success(`Note has been created`);
-          }
+          setTitle("");
+          editor.commands.clearContent();
+          toast.success(`Note has been created`);
         }
       }
     } catch (error) {
-      console.error("Error creating note:", error);
+      console.error("Error creating or editing a note:", error);
     }
   };
 
   return (
-    <form onSubmit={(event) => void handleAddNote(event)}>
+    <form
+      onSubmit={(event) => {
+        handleUpsertNote(event);
+      }}
+    >
       <input
         type="text"
         value={title}

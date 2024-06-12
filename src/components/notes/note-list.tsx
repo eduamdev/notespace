@@ -1,9 +1,11 @@
 import { Link } from "wouter";
 import { PlusIcon } from "@/components/icons/plus-icon";
 import { SearchIcon } from "@/components/icons/search-icon";
-import { Note } from "@/models/note";
+import { useNotes } from "@/hooks/use-notes";
 
-function NoteList({ notes }: { notes: Note[] }) {
+function NoteList() {
+  const { notes } = useNotes();
+
   return (
     <div className="relative size-full after:absolute after:right-0 after:top-0 after:h-full after:w-px after:border-r after:border-neutral-950/10 after:content-['']">
       <div className="flex items-center justify-between px-6 py-4">
@@ -29,7 +31,7 @@ function NoteList({ notes }: { notes: Note[] }) {
         </button>
       </div>
       <ul className="divide-y py-4">
-        {notes.map((note) => (
+        {notes?.map((note) => (
           <li key={note.id} className="py-2">
             <Link to={`/notes/${note.id}`} className="block w-full px-6">
               <p className="truncate text-[15px] font-medium text-black">
