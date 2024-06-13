@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useTags } from "@/hooks/use-tags";
 import { toast } from "sonner";
-import { useAuth } from "@/hooks/use-auth";
-import { useEncryption } from "@/hooks/use-encryption";
-import { addItem, getAllItems } from "@/services/idb-service";
 import {
   Dialog,
   DialogContent,
@@ -14,57 +12,26 @@ import {
 import { PlusIcon } from "@/components/icons/plus-icon";
 import { SearchIcon } from "@/components/icons/search-icon";
 import { Tag } from "@/models/tag";
-import { STORE_NAMES } from "@/lib/constants";
 
 const TagManager = () => {
-  const { user } = useAuth();
-  const { encryptData, decryptData } = useEncryption();
-  const [tags, setTags] = useState<Tag[]>([]);
+  const { tags, addTag } = useTags();
   const [newTagName, setNewTagName] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  useEffect(() => {
-    const fetchTags = async () => {
-      if (user) {
-        const encryptedTags: Tag[] = await getAllItems("tags");
-
-        const decryptedTags = await Promise.all(
-          encryptedTags.map(async (encryptedTag) => {
-            const decryptedTag: Tag = {
-              ...encryptedTag,
-              name: await decryptData(user.encryptionKey, encryptedTag.name),
-            };
-            return decryptedTag;
-          })
-        );
-        setTags(decryptedTags);
-      }
-    };
-    void fetchTags();
-  }, [decryptData, user]);
-
-  const handleAddTag = async (e: React.FormEvent) => {
+  const handleAddTag = (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      if (user) {
-        const encryptedTagName = await encryptData(
-          user.encryptionKey,
-          newTagName
-        );
+      addTag({
+        id: new Date().toISOString(),
+        name: newTagName,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      } as Tag);
 
-        const encryptedTag: Tag = {
-          id: new Date().toISOString(),
-          name: encryptedTagName,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        };
-        await addItem(STORE_NAMES.TAGS, { ...encryptedTag });
-        setTags([...tags, { ...encryptedTag, name: newTagName }]);
-        setNewTagName("");
-        setIsModalOpen(false);
-        toast.success(`Tag has been created`);
-      }
+      setNewTagName("");
+      setIsModalOpen(false);
+      toast.success(`Tag has been created`);
     } catch (error) {
       console.error("Error creating tag:", error);
     }
@@ -86,7 +53,11 @@ const TagManager = () => {
               <DialogHeader>
                 <DialogTitle>Create a Tag</DialogTitle>
               </DialogHeader>
-              <form onSubmit={(event) => void handleAddTag(event)}>
+              <form
+                onSubmit={(event) => {
+                  handleAddTag(event);
+                }}
+              >
                 <div className="py-5">
                   <div className="flex flex-col">
                     <label htmlFor="tagTxt" className="sr-only">
@@ -138,7 +109,7 @@ const TagManager = () => {
         </button>
       </div>
       <ul className="divide-y py-4">
-        {tags.map((tag) => (
+        {tags?.map((tag) => (
           <li key={tag.id} className="py-2">
             <span className="block w-full px-6">
               <p className="truncate text-[15px] font-medium text-black">

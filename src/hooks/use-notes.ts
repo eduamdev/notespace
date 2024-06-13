@@ -9,14 +9,14 @@ import {
 import { STORE_NAMES } from "@/lib/constants";
 import { Note } from "@/models/note";
 
-const getNotes = async () => {
-  await initDB();
-  return await getAllItems<Note>(STORE_NAMES.NOTES);
-};
-
 const addNote = async (note: Note) => {
   await initDB();
   await addItem(STORE_NAMES.NOTES, note);
+};
+
+const getNotes = async () => {
+  await initDB();
+  return await getAllItems<Note>(STORE_NAMES.NOTES);
 };
 
 const updateNote = async (note: Note) => {
@@ -24,9 +24,9 @@ const updateNote = async (note: Note) => {
   await updateItem(STORE_NAMES.NOTES, note);
 };
 
-const deleteNote = async (noteId: string) => {
+const deleteNote = async (id: string) => {
   await initDB();
-  await deleteItem(STORE_NAMES.NOTES, noteId);
+  await deleteItem(STORE_NAMES.NOTES, id);
 };
 
 export const useNotes = () => {

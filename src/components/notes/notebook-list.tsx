@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useNotebooks } from "@/hooks/use-notebooks";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -8,70 +9,29 @@ import {
   DialogTrigger,
   DialogClose,
 } from "@/components/ui/dialog";
-import { useAuth } from "@/hooks/use-auth";
-import { useEncryption } from "@/hooks/use-encryption";
-import { addItem, getAllItems } from "@/services/idb-service";
 import { PlusIcon } from "@/components/icons/plus-icon";
 import { SearchIcon } from "@/components/icons/search-icon";
 import { Notebook } from "@/models/notebook";
-import { STORE_NAMES } from "@/lib/constants";
 
 function NotebookList() {
-  const { user } = useAuth();
-  const { encryptData, decryptData } = useEncryption();
+  const { notebooks, addNotebook } = useNotebooks();
   const [newNotebookName, setNewNotebookName] = useState("");
-  const [notebooks, setNotebooks] = useState<Notebook[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  useEffect(() => {
-    const fetchNotebooks = async () => {
-      if (user) {
-        const encryptedNotebooks: Notebook[] = await getAllItems("notebooks");
-
-        const decryptedNotebooks = await Promise.all(
-          encryptedNotebooks.map(async (encryptedNotebook) => {
-            const decryptedNotebook: Notebook = {
-              ...encryptedNotebook,
-              name: await decryptData(
-                user.encryptionKey,
-                encryptedNotebook.name
-              ),
-            };
-            return decryptedNotebook;
-          })
-        );
-        setNotebooks(decryptedNotebooks);
-      }
-    };
-    void fetchNotebooks();
-  }, [decryptData, user]);
-
-  const handleAddNotebook = async (e: React.FormEvent) => {
+  const handleAddNotebook = (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      if (user) {
-        const encryptedNotebookName = await encryptData(
-          user.encryptionKey,
-          newNotebookName
-        );
+      addNotebook({
+        id: new Date().toISOString(),
+        name: newNotebookName,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      } as Notebook);
 
-        const encryptedNotebook: Notebook = {
-          id: new Date().toISOString(),
-          name: encryptedNotebookName,
-          topicIds: [],
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        };
-        await addItem(STORE_NAMES.NOTEBOOKS, { ...encryptedNotebook });
-        setNotebooks([
-          ...notebooks,
-          { ...encryptedNotebook, name: newNotebookName },
-        ]);
-        setNewNotebookName("");
-        setIsModalOpen(false);
-        toast.success(`Notebook has been created`);
-      }
+      setNewNotebookName("");
+      setIsModalOpen(false);
+      toast.success(`Notebook has been created`);
     } catch (error) {
       console.error("Error creating notebook:", error);
     }
@@ -93,7 +53,11 @@ function NotebookList() {
               <DialogHeader>
                 <DialogTitle>Create a Notebook</DialogTitle>
               </DialogHeader>
-              <form onSubmit={(event) => void handleAddNotebook(event)}>
+              <form
+                onSubmit={(event) => {
+                  handleAddNotebook(event);
+                }}
+              >
                 <div className="py-5">
                   <div className="flex flex-col">
                     <label htmlFor="txtNewNotebookName" className="sr-only">
@@ -145,7 +109,7 @@ function NotebookList() {
         </button>
       </div>
       <ul className="divide-y py-4">
-        {notebooks.map((notebook) => (
+        {notebooks?.map((notebook) => (
           <li key={notebook.id} className="py-2">
             <span className="block w-full px-6">
               <p className="truncate text-[15px] font-medium text-black">
