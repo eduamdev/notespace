@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
+import { useNotes } from "@/hooks/use-notes";
+import { getNoteById } from "@/services/note-service";
 import { toast } from "sonner";
 import { EditorContent, mergeAttributes, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import Heading from "@tiptap/extension-heading";
-import { useNotes } from "@/hooks/use-notes";
-import { getItem } from "@/services/idb-service";
 import EditorToolbar from "@/components/notes/editor-toolbar";
 import { Note } from "@/models/note";
-import { STORE_NAMES } from "@/lib/constants";
 
 const NoteEditor = ({ noteId }: { noteId?: string }) => {
   const { addNote, updateNote } = useNotes();
@@ -55,9 +54,10 @@ const NoteEditor = ({ noteId }: { noteId?: string }) => {
   });
 
   useEffect(() => {
-    const fetchNote = async () => {
+    const fetchCurrentNote = async () => {
       if (noteId) {
-        const note = await getItem<Note>(STORE_NAMES.NOTES, noteId);
+        const note = await getNoteById(noteId);
+
         if (note) {
           setCurrentNote(note);
           if (editor) {
@@ -68,7 +68,7 @@ const NoteEditor = ({ noteId }: { noteId?: string }) => {
       }
     };
 
-    void fetchNote();
+    void fetchCurrentNote();
   }, [editor, noteId]);
 
   const handleUpsertNote = (e: React.FormEvent<HTMLFormElement>) => {
@@ -81,6 +81,7 @@ const NoteEditor = ({ noteId }: { noteId?: string }) => {
             ...currentNote,
             title,
             content: editor.getHTML(),
+            updatedAt: new Date(),
           });
 
           toast.success(`Note has been updated`);
