@@ -1,10 +1,10 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   addNote,
   deleteNote,
   getNotes,
   updateNote,
 } from "@/services/note-service";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const useNotes = () => {
   const queryClient = useQueryClient();

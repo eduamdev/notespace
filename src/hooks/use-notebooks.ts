@@ -1,33 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
-  initDB,
-  addItem,
-  updateItem,
-  getAllItems,
-  deleteItem,
-} from "@/services/idb-service";
-import { STORE_NAMES } from "@/lib/constants";
-import { Notebook } from "@/models/notebook";
-
-const addNotebook = async (notebook: Notebook) => {
-  await initDB();
-  await addItem(STORE_NAMES.NOTEBOOKS, notebook);
-};
-
-const getNotebooks = async () => {
-  await initDB();
-  return await getAllItems<Notebook>(STORE_NAMES.NOTEBOOKS);
-};
-
-const updateNotebook = async (note: Notebook) => {
-  await initDB();
-  await updateItem(STORE_NAMES.NOTEBOOKS, note);
-};
-
-const deleteNotebook = async (id: string) => {
-  await initDB();
-  await deleteItem(STORE_NAMES.NOTEBOOKS, id);
-};
+  addNotebook,
+  deleteNotebook,
+  getNotebooks,
+  updateNotebook,
+} from "@/services/notebook-service";
 
 export const useNotebooks = () => {
   const queryClient = useQueryClient();
