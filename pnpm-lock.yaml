@@ -38,9 +38,6 @@ importers:
       idb:
         specifier: ^8.0.0
         version: 8.0.0
-      libsodium-wrappers-sumo:
-        specifier: ^0.7.13
-        version: 0.7.13
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -60,9 +57,6 @@ importers:
       '@tanstack/react-query-devtools':
         specifier: ^5.44.0
         version: 5.44.0(@tanstack/react-query@5.44.0(react@18.3.1))(react@18.3.1)
-      '@types/libsodium-wrappers-sumo':
-        specifier: ^0.7.8
-        version: 0.7.8
       '@types/react':
         specifier: ^18.3.3
         version: 18.3.3
@@ -1577,12 +1571,6 @@ packages:
   '@types/estree@1.0.5':
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
 
-  '@types/libsodium-wrappers-sumo@0.7.8':
-    resolution: {integrity: sha512-N2+df4MB/A+W0RAcTw7A5oxKgzD+Vh6Ye7lfjWIi5SdTzVLfHPzxUjhwPqHLO5Ev9fv/+VHl+sUaUuTg4fUPqw==}
-
-  '@types/libsodium-wrappers@0.7.14':
-    resolution: {integrity: sha512-5Kv68fXuXK0iDuUir1WPGw2R9fOZUlYlSAa0ztMcL0s0BfIDTqg9GXz8K30VJpPP3sxWhbolnQma2x+/TfkzDQ==}
-
   '@types/prop-types@15.7.12':
     resolution: {integrity: sha512-5zvhXYtRNRluoE/jAp4GVsSduVUzNWKkOZrCDBWYtE7biZywwdC2AcEzg+cSMLFRfVgeAFqpfNabiPjxFddV1Q==}
 
@@ -2525,12 +2513,6 @@ packages:
   levn@0.4.1:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
     engines: {node: '>= 0.8.0'}
-
-  libsodium-sumo@0.7.13:
-    resolution: {integrity: sha512-zTGdLu4b9zSNLfovImpBCbdAA4xkpkZbMnSQjP8HShyOutnGjRHmSOKlsylh1okao6QhLiz7nG98EGn+04cZjQ==}
-
-  libsodium-wrappers-sumo@0.7.13:
-    resolution: {integrity: sha512-lz4YdplzDRh6AhnLGF2Dj2IUj94xRN6Bh8T0HLNwzYGwPehQJX6c7iYVrFUPZ3QqxE0bqC+K0IIqqZJYWumwSQ==}
 
   lilconfig@2.1.0:
     resolution: {integrity: sha512-utWOt/GHzuUxnLKxB6dk81RoOeoNeHgbrXiuGk4yyF5qlRz+iIVWu56E2fqGHFrXz0QNUhLB/8nKqvRH66JKGQ==}
@@ -4981,12 +4963,6 @@ snapshots:
 
   '@types/estree@1.0.5': {}
 
-  '@types/libsodium-wrappers-sumo@0.7.8':
-    dependencies:
-      '@types/libsodium-wrappers': 0.7.14
-
-  '@types/libsodium-wrappers@0.7.14': {}
-
   '@types/prop-types@15.7.12': {}
 
   '@types/react-dom@18.3.0':
@@ -6091,12 +6067,6 @@ snapshots:
     dependencies:
       prelude-ls: 1.2.1
       type-check: 0.4.0
-
-  libsodium-sumo@0.7.13: {}
-
-  libsodium-wrappers-sumo@0.7.13:
-    dependencies:
-      libsodium-sumo: 0.7.13
 
   lilconfig@2.1.0: {}
 
