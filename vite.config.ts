@@ -14,10 +14,10 @@ export default defineConfig({
         enabled: true,
       },
       manifest: {
-        name: "NoteGuard",
-        short_name: "NoteGuard",
+        name: "NoteSpace",
+        short_name: "NoteSpace",
         description:
-          "NoteGuard is your go-to digital notebook for effortless note-taking, organizing thoughts, and staying productive on-the-go. Enjoy secure, encrypted notes, offline access, and seamless synchronization across all your devices",
+          "NoteSpace is your go-to digital notebook for effortless note-taking, organizing thoughts, and staying productive on-the-go",
         icons: [
           { src: "/icon-192.png", type: "image/png", sizes: "192x192" },
           { src: "/icon-512.png", type: "image/png", sizes: "512x512" },

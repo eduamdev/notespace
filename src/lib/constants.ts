@@ -1,5 +1,5 @@
 // Constants related to database
-export const DATABASE_NAME = "NoteGuard";
+export const DATABASE_NAME = "NoteSpace";
 export const DATABASE_VERSION = 1;
 
 // Store names
@@ -11,4 +11,4 @@ export const STORE_NAMES = {
 };
 
 // Other constants
-export const APP_LOG_PREFIX = "[NoteGuard]";
+export const APP_LOG_PREFIX = "[NoteSpace]";
