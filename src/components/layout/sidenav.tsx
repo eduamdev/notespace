@@ -1,5 +1,4 @@
-import { Link, useLocation } from "wouter";
-import { useAuth, useLogout } from "@/hooks/use-auth";
+import { Link } from "wouter";
 import {
   Tooltip,
   TooltipContent,
@@ -12,18 +11,8 @@ import { NoteIcon } from "@/components/icons/note-icon";
 import { NotebookIcon } from "@/components/icons/notebook-icon";
 import { StarIcon } from "@/components/icons/star-icon";
 import { TagsIcon } from "@/components/icons/tags-icon";
-import { LogoutIcon } from "@/components/icons/logout-icon";
 
 function Sidenav() {
-  const auth = useAuth();
-  const logoutMutation = useLogout();
-  const [, setLocation] = useLocation();
-
-  const handleLogout = async () => {
-    await logoutMutation();
-    setLocation("/login");
-  };
-
   return (
     <TooltipProvider>
       <aside className="w-16 p-3">
@@ -110,27 +99,6 @@ function Sidenav() {
                 </Tooltip>
               </div>
             </nav>
-          </div>
-          <div className="pb-4">
-            {auth && (
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <button
-                    onClick={() => {
-                      void handleLogout();
-                    }}
-                    className="flex items-center justify-center p-1"
-                  >
-                    <LogoutIcon className="size-6 shrink-0 text-neutral-700" />
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent
-                  collisionPadding={{ top: 20, bottom: 20, left: 20 }}
-                >
-                  <p>Logout</p>
-                </TooltipContent>
-              </Tooltip>
-            )}
           </div>
         </div>
       </aside>
