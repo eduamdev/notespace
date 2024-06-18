@@ -38,8 +38,8 @@ const TagManager = () => {
   };
 
   return (
-    <div className="relative size-full after:absolute after:right-0 after:top-0 after:h-full after:w-px after:border-r after:border-neutral-950/10 after:content-['']">
-      <div className="flex items-center justify-between px-6 py-4">
+    <>
+      <div className="flex items-center justify-between py-4">
         <h1 className="text-lg font-semibold text-black">Tags</h1>
         <div className="flex items-center justify-center gap-4">
           <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
@@ -98,7 +98,7 @@ const TagManager = () => {
           </Dialog>
         </div>
       </div>
-      <div className="px-6 py-2">
+      <div className="py-2">
         <button className="grid h-10 w-full grid-cols-[18px_1fr] items-center justify-center gap-x-3 rounded-md border border-black/[0.12] px-3 shadow-sm shadow-black/[0.08]">
           <SearchIcon className="size-[18px] text-neutral-600" />
           <input
@@ -111,7 +111,7 @@ const TagManager = () => {
       <ul className="divide-y py-4">
         {tags?.map((tag) => (
           <li key={tag.id} className="py-2">
-            <span className="block w-full px-6">
+            <span className="block w-full">
               <p className="truncate text-[15px] font-medium text-black">
                 {tag.name}
               </p>
@@ -120,7 +120,7 @@ const TagManager = () => {
           </li>
         ))}
       </ul>
-    </div>
+    </>
   );
 };
 

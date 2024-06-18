@@ -115,26 +115,28 @@ const NoteEditor = ({ noteId }: { noteId?: string }) => {
       <input
         type="text"
         value={title}
-        className="rounded-md px-6 py-5 text-2xl font-semibold text-black outline-none placeholder:font-medium"
+        className="w-full rounded-md px-1 py-5 text-2xl font-semibold text-black outline-none placeholder:font-medium lg:px-6"
         onChange={(e) => {
           setTitle(e.target.value);
         }}
         placeholder="Note title"
       />
       <EditorToolbar editor={editor} />
-      <div className="px-6 py-4">
-        <EditorContent
-          editor={editor}
-          className="focus-visible:[&>.tiptap]:outline-none"
-        />
-      </div>
-      <div className="mt-4 px-6">
-        <button
-          type="submit"
-          className="inline-flex rounded-lg bg-black p-3 font-medium text-white "
-        >
-          Create Note
-        </button>
+      <div className="px-1 lg:px-6">
+        <div className="py-4">
+          <EditorContent
+            editor={editor}
+            className="focus-visible:[&>.tiptap]:outline-none"
+          />
+        </div>
+        <div className="mt-4">
+          <button
+            type="submit"
+            className="inline-flex rounded-lg bg-black p-3 font-medium text-white "
+          >
+            Create Note
+          </button>
+        </div>
       </div>
     </form>
   );

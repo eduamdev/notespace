@@ -1,10 +1,11 @@
-import DesktopLayout from "@/components/layout/desktop-layout";
+import { ResponsiveLayout } from "@/components/layout/responsive-layout";
 import NotebookList from "@/components/notes/notebook-list";
 
 export function NotebooksPage() {
   return (
-    <>
-      <DesktopLayout mainContent={<NotebookList />} />;
-    </>
+    <ResponsiveLayout
+      mobileMainContent={<NotebookList />}
+      desktopMainContent={<NotebookList />}
+    />
   );
 }
