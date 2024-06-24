@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import Logo from "@/assets/logo.svg";
+import { MenuIcon } from "@/components/icons/menu-icon";
 
 export default function MobileLayoutView({
   mobileMainContent,
@@ -25,7 +26,9 @@ export default function MobileLayoutView({
                   alt="App Logo"
                   className="inline-flex size-[26px] shrink-0"
                 />
-                <div>menu</div>
+                <button>
+                  <MenuIcon className="text-neutral-600" />
+                </button>
               </div>
               <div className="pt-5">{mobileMainContent}</div>
             </div>
