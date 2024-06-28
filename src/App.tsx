@@ -1,5 +1,4 @@
 import { Redirect, Route, Switch } from "wouter";
-import { Toaster } from "@/components/ui/sonner";
 
 import { NotesPage } from "@/pages/notes";
 import { NewNotePage } from "@/pages/new-note";
@@ -29,7 +28,6 @@ function App() {
           )}
         </Route>
       </Switch>
-      <Toaster richColors />
     </>
   );
 }

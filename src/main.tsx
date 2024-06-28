@@ -1,5 +1,6 @@
 import "@fontsource-variable/public-sans/wght.css";
 import "@fontsource-variable/public-sans/wght-italic.css";
+import { Toaster } from "@/components/ui/sonner";
 
 import React from "react";
 import ReactDOM from "react-dom/client";
@@ -15,6 +16,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <App />
+      <Toaster richColors />
       <ReactQueryDevtools />
     </QueryClientProvider>
   </React.StrictMode>

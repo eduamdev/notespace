@@ -1,4 +1,4 @@
-import Sidenav from "@/components/layout/sidenav";
+import Sidenav from "@/components/layout/desktop/sidenav";
 import { cn } from "@/lib/utils";
 
 function DesktopLayoutView({

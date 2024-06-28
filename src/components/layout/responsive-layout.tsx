@@ -1,5 +1,5 @@
-import DesktopLayoutView from "@/components/layout/desktop-layout-view";
-import MobileLayoutView from "@/components/layout/mobile-layout-view";
+import DesktopLayoutView from "@/components/layout/desktop/view";
+import MobileLayoutView from "@/components/layout/mobile/view";
 
 export function ResponsiveLayout({
   desktopMainContent,
