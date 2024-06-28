@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { useNotebooks } from "@/hooks/use-notebooks";
 import { toast } from "sonner";
 import {
@@ -9,16 +9,27 @@ import {
   DialogTrigger,
   DialogClose,
 } from "@/components/ui/dialog";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
 import { PlusIcon } from "@/components/icons/plus-icon";
 import { SearchIcon } from "@/components/icons/search-icon";
 import { Notebook } from "@/models/notebook";
+import { useMediaQuery } from "@/hooks/use-media-query";
 
 function NotebookList() {
   const { notebooks, addNotebook } = useNotebooks();
   const [newNotebookName, setNewNotebookName] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
 
-  const handleAddNotebook = (e: React.FormEvent) => {
+  const handleAddNotebook = (e: FormEvent) => {
     e.preventDefault();
 
     try {
@@ -42,60 +53,115 @@ function NotebookList() {
       <div className="flex items-center justify-between py-4">
         <h1 className="text-lg font-semibold text-black">Notebooks</h1>
         <div className="flex items-center justify-center gap-4">
-          <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-            <DialogTrigger asChild>
-              <button className="flex h-9 items-center justify-center rounded-lg bg-cyan-600 pl-1.5 pr-2.5 text-cyan-50">
-                <PlusIcon className="inline-block size-4" />
-                <span className="pl-1.5 text-sm font-medium">Notebook</span>
-              </button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Create a Notebook</DialogTitle>
-              </DialogHeader>
-              <form
-                onSubmit={(event) => {
-                  handleAddNotebook(event);
-                }}
-              >
-                <div className="py-5">
-                  <div className="flex flex-col">
-                    <label htmlFor="txtNewNotebookName" className="sr-only">
-                      Notebook:
-                    </label>
-                    <input
-                      type="text"
-                      id="txtNewNotebookName"
-                      value={newNotebookName}
-                      placeholder="Notebook"
-                      className="h-10 w-full items-center justify-center rounded-md border border-black/[0.12] px-3 shadow-sm shadow-black/[0.08] outline-none"
-                      onChange={(e) => {
-                        setNewNotebookName(e.target.value);
-                      }}
-                    />
+          {isDesktop ? (
+            <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+              <DialogTrigger asChild>
+                <button className="flex h-9 items-center justify-center rounded-lg bg-cyan-600 pl-1.5 pr-2.5 text-cyan-50">
+                  <PlusIcon className="inline-block size-4" />
+                  <span className="pl-1.5 text-sm font-medium">Notebook</span>
+                </button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Create a Notebook</DialogTitle>
+                </DialogHeader>
+                <form
+                  onSubmit={(event) => {
+                    handleAddNotebook(event);
+                  }}
+                >
+                  <div className="py-5">
+                    <div className="flex flex-col">
+                      <label htmlFor="txtNewNotebookName" className="sr-only">
+                        Notebook:
+                      </label>
+                      <input
+                        type="text"
+                        id="txtNewNotebookName"
+                        value={newNotebookName}
+                        placeholder="Notebook"
+                        className="h-10 w-full items-center justify-center rounded-md border border-black/[0.12] px-3 shadow-sm shadow-black/[0.08] outline-none"
+                        onChange={(e) => {
+                          setNewNotebookName(e.target.value);
+                        }}
+                      />
+                    </div>
                   </div>
-                </div>
-                <div className="pt-4">
-                  <div className="flex items-center justify-end gap-x-3.5">
-                    <DialogClose asChild>
+                  <div className="pt-4">
+                    <div className="flex items-center justify-end gap-x-3.5">
+                      <DialogClose asChild>
+                        <button
+                          type="button"
+                          className="flex h-9 items-center justify-center rounded-lg border border-neutral-950/[0.12] bg-transparent px-4 text-neutral-700 shadow-sm"
+                        >
+                          Cancel
+                        </button>
+                      </DialogClose>
                       <button
-                        type="button"
-                        className="flex h-9 items-center justify-center rounded-lg border border-neutral-950/[0.12] bg-transparent px-4 text-neutral-700 shadow-sm"
+                        type="submit"
+                        className="flex h-9 items-center justify-center rounded-lg border border-transparent bg-neutral-800 px-4 font-medium text-neutral-50"
                       >
-                        Cancel
+                        Create
                       </button>
-                    </DialogClose>
+                    </div>
+                  </div>
+                </form>
+              </DialogContent>
+            </Dialog>
+          ) : (
+            <Drawer open={isModalOpen} onOpenChange={setIsModalOpen}>
+              <DrawerTrigger asChild>
+                <button className="flex h-9 items-center justify-center rounded-lg bg-cyan-600 pl-1.5 pr-2.5 text-cyan-50">
+                  <PlusIcon className="inline-block size-4" />
+                  <span className="pl-1.5 text-sm font-medium">Notebook</span>
+                </button>
+              </DrawerTrigger>
+              <DrawerContent>
+                <form
+                  onSubmit={(event) => {
+                    handleAddNotebook(event);
+                  }}
+                >
+                  <DrawerHeader className="text-left">
+                    <DrawerTitle>Create a Notebook</DrawerTitle>
+                  </DrawerHeader>
+                  <div className="px-4 py-5">
+                    <div className="flex flex-col">
+                      <label htmlFor="txtNewNotebookName" className="sr-only">
+                        Notebook:
+                      </label>
+                      <input
+                        type="text"
+                        id="txtNewNotebookName"
+                        value={newNotebookName}
+                        placeholder="Notebook"
+                        className="h-9 w-full items-center justify-center rounded-md border border-black/[0.12] px-3 text-sm shadow-sm shadow-black/[0.08] outline-none"
+                        onChange={(e) => {
+                          setNewNotebookName(e.target.value);
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <DrawerFooter className="pt-4">
                     <button
                       type="submit"
-                      className="flex h-9 items-center justify-center rounded-lg border border-transparent bg-neutral-800 px-4 font-medium text-neutral-50"
+                      className="flex h-10 items-center justify-center rounded-lg border border-transparent bg-neutral-800 px-4 text-[15px] font-medium text-neutral-50"
                     >
                       Create
                     </button>
-                  </div>
-                </div>
-              </form>
-            </DialogContent>
-          </Dialog>
+                    <DrawerClose asChild>
+                      <button
+                        type="button"
+                        className="flex h-10 items-center justify-center rounded-lg border border-neutral-950/[0.12] bg-transparent px-4 text-[15px] text-neutral-700 shadow-sm"
+                      >
+                        Cancel
+                      </button>
+                    </DrawerClose>
+                  </DrawerFooter>
+                </form>
+              </DrawerContent>
+            </Drawer>
+          )}
         </div>
       </div>
       <div className="py-2">
