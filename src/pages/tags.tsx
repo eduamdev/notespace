@@ -1,5 +1,5 @@
 import { ResponsiveLayout } from "@/components/layout/responsive-layout";
-import TagManager from "@/components/notes/tag-manager";
+import TagManager from "@/components/tags/tag-manager";
 
 export function TagsPage() {
   return (
