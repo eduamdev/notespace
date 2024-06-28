@@ -1,7 +1,8 @@
 import { Link } from "wouter";
+import { useNotes } from "@/hooks/use-notes";
+import ItemList from "@/components/item-list";
 import { PlusIcon } from "@/components/icons/plus-icon";
 import { SearchIcon } from "@/components/icons/search-icon";
-import { useNotes } from "@/hooks/use-notes";
 
 function NoteList() {
   const { notes } = useNotes();
@@ -30,19 +31,18 @@ function NoteList() {
           />
         </button>
       </div>
-      <ul className="divide-y py-4">
-        {notes?.map((note) => (
-          <li key={note.id} className="py-2">
-            <Link to={`/notes/${note.id}`} className="block w-full">
-              <p className="truncate text-[15px] font-medium text-black">
-                {note.title}
-              </p>
-              <p className="line-clamp-2 text-[15px]">{note.content}</p>
-              <p className="truncate text-[13px] text-neutral-500">Now</p>
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <ItemList
+        items={notes}
+        renderItem={(note) => (
+          <Link to={`/notes/${note.id}`} className="block w-full">
+            <p className="truncate text-[15px] font-medium text-black">
+              {note.title}
+            </p>
+            <p className="line-clamp-2 text-[15px]">{note.content}</p>
+            <p className="truncate text-[13px] text-neutral-500">Now</p>
+          </Link>
+        )}
+      />
     </>
   );
 }
