@@ -4,6 +4,15 @@ import ItemList from "@/components/item-list";
 import ListManager from "@/components/list-manager";
 import { Note } from "@/models/note";
 
+const filterNotes = (notes: Note[], query: string) => {
+  if (!query) return notes;
+  return notes.filter(
+    (note) =>
+      note.title.toLowerCase().includes(query.toLowerCase()) ||
+      note.content.toLowerCase().includes(query.toLowerCase())
+  );
+};
+
 function NoteList() {
   const [, navigate] = useLocation();
 
@@ -29,6 +38,7 @@ function NoteList() {
       onAddItemClick={() => {
         navigate("/notes/new");
       }}
+      filterItems={filterNotes}
     />
   );
 }

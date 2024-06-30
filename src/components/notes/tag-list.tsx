@@ -4,6 +4,13 @@ import ItemList from "@/components/item-list";
 import TagForm from "@/components/notes/tag-form";
 import { Tag } from "@/models/tag";
 
+const filterTags = (tags: Tag[], query: string) => {
+  if (!query) return tags;
+  return tags.filter((tag) =>
+    tag.name.toLowerCase().includes(query.toLowerCase())
+  );
+};
+
 const TagList = () => {
   return (
     <ListManager<Tag>
@@ -24,6 +31,7 @@ const TagList = () => {
           )}
         />
       )}
+      filterItems={filterTags}
     />
   );
 };

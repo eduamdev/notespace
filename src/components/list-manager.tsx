@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, forwardRef, useState } from "react";
+import { ButtonHTMLAttributes, forwardRef, useState, useMemo } from "react";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import {
   Dialog,
@@ -34,6 +34,7 @@ interface ListManagerProps<T> {
   }>;
   ListComponent: React.FC<{ items: T[] | undefined }>;
   onAddItemClick?: () => void;
+  filterItems?: (items: T[], query: string) => T[];
 }
 
 const ListManager = <T,>({
@@ -43,10 +44,17 @@ const ListManager = <T,>({
   FormComponent,
   ListComponent,
   onAddItemClick,
+  filterItems,
 }: ListManagerProps<T>) => {
   const { items, addItem, error, isLoading } = useItemsHook();
+  const [query, setQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const isDesktop = useMediaQuery(DESKTOP_MEDIA_QUERY);
+
+  const filteredItems = useMemo(
+    () => (filterItems ? filterItems(items, query) : items),
+    [items, query, filterItems]
+  );
 
   const AddItemButton = forwardRef<
     HTMLButtonElement,
@@ -119,6 +127,10 @@ const ListManager = <T,>({
             type="text"
             placeholder={`Search ${addItemText.toLowerCase()}...`}
             className="outline-none"
+            value={query}
+            onChange={(e) => {
+              setQuery(e.target.value);
+            }}
           />
         </button>
       </div>
@@ -127,7 +139,7 @@ const ListManager = <T,>({
       ) : error ? (
         <p>Error: {error.message}</p>
       ) : (
-        <ListComponent items={items} />
+        <ListComponent items={filteredItems} />
       )}
     </>
   );

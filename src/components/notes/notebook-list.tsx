@@ -4,6 +4,13 @@ import ItemList from "@/components/item-list";
 import NotebookForm from "@/components/notes/notebook-form";
 import { Notebook } from "@/models/notebook";
 
+const filterNotebooks = (notebooks: Notebook[], query: string) => {
+  if (!query) return notebooks;
+  return notebooks.filter((notebook) =>
+    notebook.name.toLowerCase().includes(query.toLowerCase())
+  );
+};
+
 const NotebookList = () => {
   return (
     <ListManager<Notebook>
@@ -24,6 +31,7 @@ const NotebookList = () => {
           )}
         />
       )}
+      filterItems={filterNotebooks}
     />
   );
 };
