@@ -1,51 +1,12 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { addTag, deleteTag, getTags, updateTag } from "@/services/tag-service";
+import { useData } from "@/hooks/use-data";
+import { Tag } from "@/models/tag";
 
-export const useTags = () => {
-  const queryClient = useQueryClient();
-
-  const {
-    data: tags,
-    error,
-    isLoading,
-  } = useQuery({
-    queryKey: ["tags"],
+export const useTags = () =>
+  useData<Tag>({
+    queryKey: "tags",
     queryFn: getTags,
+    addFn: addTag,
+    updateFn: updateTag,
+    deleteFn: deleteTag,
   });
-
-  const addTagMutation = useMutation({
-    mutationFn: addTag,
-    onSuccess: () => {
-      void queryClient.invalidateQueries({
-        queryKey: ["tags"],
-      });
-    },
-  });
-
-  const updateTagMutation = useMutation({
-    mutationFn: updateTag,
-    onSuccess: () => {
-      void queryClient.invalidateQueries({
-        queryKey: ["tags"],
-      });
-    },
-  });
-
-  const deleteTagMutation = useMutation({
-    mutationFn: deleteTag,
-    onSuccess: () => {
-      void queryClient.invalidateQueries({
-        queryKey: ["tags"],
-      });
-    },
-  });
-
-  return {
-    tags,
-    error,
-    isLoading,
-    addTag: addTagMutation.mutate,
-    updateTag: updateTagMutation.mutate,
-    deleteTag: deleteTagMutation.mutate,
-  };
-};

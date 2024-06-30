@@ -6,32 +6,34 @@ import { Notebook } from "@/models/notebook";
 import { cn } from "@/lib/utils";
 
 interface NotebookFormProps {
-  addNotebook: (notebook: Notebook) => void;
+  addItem: (notebook: Notebook) => void;
   onClose: () => void;
   isDrawer?: boolean;
 }
 
 export default function NotebookForm({
-  addNotebook,
+  addItem,
   onClose,
   isDrawer = false,
 }: NotebookFormProps) {
-  const [newNotebookName, setNewNotebookName] = useState("");
+  const [notebookName, setNotebookName] = useState("");
 
-  const handleAddNotebook = (e: FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
     try {
-      addNotebook({
-        id: new Date().toISOString(),
-        name: newNotebookName,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      } as Notebook);
+      if (notebookName.trim()) {
+        addItem({
+          id: new Date().toISOString(),
+          name: notebookName,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        } as Notebook);
 
-      setNewNotebookName("");
-      onClose();
-      toast.success("Notebook has been created");
+        setNotebookName("");
+        onClose();
+        toast.success("Notebook has been created");
+      }
     } catch (error) {
       toast.error("Error creating notebook");
       console.error("Error creating notebook:", error);
@@ -39,20 +41,20 @@ export default function NotebookForm({
   };
 
   return (
-    <form onSubmit={handleAddNotebook}>
+    <form onSubmit={handleSubmit}>
       <div className={cn("py-5", isDrawer && "px-4")}>
         <div className="flex flex-col">
-          <label htmlFor="txtNewNotebookName" className="sr-only">
+          <label htmlFor="txtNotebookName" className="sr-only">
             Notebook:
           </label>
           <input
             type="text"
-            id="txtNewNotebookName"
-            value={newNotebookName}
+            id="txtNotebookName"
+            value={notebookName}
             placeholder="Notebook"
             className="h-10 w-full rounded-md border border-black/[0.12] px-3 text-sm shadow-sm outline-none lg:text-[15px]"
             onChange={(e) => {
-              setNewNotebookName(e.target.value);
+              setNotebookName(e.target.value);
             }}
           />
         </div>

@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { useNotes } from "@/hooks/use-notes";
 import { getNoteById } from "@/services/note-service";
+import EditorToolbar from "@/components/notes/editor-toolbar";
 import { toast } from "sonner";
 import { EditorContent, mergeAttributes, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import Heading from "@tiptap/extension-heading";
-import EditorToolbar from "@/components/notes/editor-toolbar";
 import { Note } from "@/models/note";
 
 const NoteEditor = ({ noteId }: { noteId?: string }) => {
-  const { addNote, updateNote } = useNotes();
+  const { addItem: addNote, updateItem: updateNote } = useNotes();
   const [title, setTitle] = useState("");
   const [currentNote, setCurrentNote] = useState<Note>();
 

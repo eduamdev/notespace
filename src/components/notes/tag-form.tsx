@@ -6,32 +6,34 @@ import { Tag } from "@/models/tag";
 import { cn } from "@/lib/utils";
 
 interface TagFormProps {
-  addTag: (tag: Tag) => void;
+  addItem: (item: Tag) => void;
   onClose: () => void;
   isDrawer?: boolean;
 }
 
 export default function TagForm({
-  addTag,
+  addItem,
   onClose,
   isDrawer = false,
 }: TagFormProps) {
-  const [newTagName, setNewTagName] = useState("");
+  const [tagName, setTagName] = useState("");
 
-  const handleAddTag = (e: FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
     try {
-      addTag({
-        id: new Date().toISOString(),
-        name: newTagName,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      } as Tag);
+      if (tagName.trim()) {
+        addItem({
+          id: new Date().toISOString(),
+          name: tagName,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        } as Tag);
 
-      setNewTagName("");
-      onClose();
-      toast.success("Tag has been created");
+        setTagName("");
+        onClose();
+        toast.success("Tag has been created");
+      }
     } catch (error) {
       toast.error("Error creating tag");
       console.error("Error creating tag:", error);
@@ -39,20 +41,20 @@ export default function TagForm({
   };
 
   return (
-    <form onSubmit={handleAddTag}>
+    <form onSubmit={handleSubmit}>
       <div className={cn("py-5", isDrawer && "px-4")}>
         <div className="flex flex-col">
-          <label htmlFor="txtNewTagName" className="sr-only">
+          <label htmlFor="txtTagName" className="sr-only">
             Tag:
           </label>
           <input
             type="text"
-            id="txtNewTagName"
-            value={newTagName}
+            id="txtTagName"
+            value={tagName}
             placeholder="Tag"
             className="h-10 w-full rounded-md border border-black/[0.12] px-3 text-sm shadow-sm outline-none lg:text-[15px]"
             onChange={(e) => {
-              setNewTagName(e.target.value);
+              setTagName(e.target.value);
             }}
           />
         </div>

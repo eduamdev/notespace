@@ -1,49 +1,35 @@
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { useNotes } from "@/hooks/use-notes";
 import ItemList from "@/components/item-list";
-import { PlusIcon } from "@/components/icons/plus-icon";
-import { SearchIcon } from "@/components/icons/search-icon";
+import ListManager from "@/components/list-manager";
+import { Note } from "@/models/note";
 
 function NoteList() {
-  const { notes } = useNotes();
+  const [, navigate] = useLocation();
 
   return (
-    <>
-      <div className="flex items-center justify-between py-4">
-        <h1 className="text-lg font-semibold text-black">Notes</h1>
-        <div className="flex items-center justify-center gap-4">
-          <Link
-            href="/notes/new"
-            className="flex h-9 items-center justify-center rounded-lg bg-cyan-600 pl-1.5 pr-2.5 text-cyan-50"
-          >
-            <PlusIcon className="inline-block size-4" />
-            <span className="pl-1.5 text-sm font-medium">Note</span>
-          </Link>
-        </div>
-      </div>
-      <div className="py-2">
-        <button className="grid h-10 w-full grid-cols-[18px_1fr] items-center justify-center gap-x-3 rounded-md border border-black/[0.12] px-3 shadow-sm shadow-black/[0.08]">
-          <SearchIcon className="size-[18px] text-neutral-600" />
-          <input
-            type="text"
-            placeholder="Search note..."
-            className="outline-none"
-          />
-        </button>
-      </div>
-      <ItemList
-        items={notes}
-        renderItem={(note) => (
-          <Link to={`/notes/${note.id}`} className="block w-full">
-            <p className="truncate text-[15px] font-medium text-black">
-              {note.title}
-            </p>
-            <p className="line-clamp-2 text-[15px]">{note.content}</p>
-            <p className="truncate text-[13px] text-neutral-500">Now</p>
-          </Link>
-        )}
-      />
-    </>
+    <ListManager<Note>
+      title="Notes"
+      addItemText="Note"
+      useItemsHook={useNotes}
+      ListComponent={({ items: notes }) => (
+        <ItemList
+          items={notes}
+          renderItem={(note) => (
+            <Link to={`/notes/${note.id}`} className="block w-full">
+              <p className="truncate text-[15px] font-medium text-black">
+                {note.title}
+              </p>
+              <p className="line-clamp-2 text-[15px]">{note.content}</p>
+              <p className="truncate text-[13px] text-neutral-500">Now</p>
+            </Link>
+          )}
+        />
+      )}
+      onAddItemClick={() => {
+        navigate("/notes/new");
+      }}
+    />
   );
 }
 

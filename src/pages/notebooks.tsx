@@ -1,11 +1,11 @@
 import { ResponsiveLayout } from "@/components/layout/responsive-layout";
-import NotebookManager from "@/components/notebooks/notebook-manager";
+import NotebookList from "@/components/notes/notebook-list";
 
 export function NotebooksPage() {
   return (
     <ResponsiveLayout
-      mobileMainContent={<NotebookManager />}
-      desktopMainContent={<NotebookManager />}
+      mobileMainContent={<NotebookList />}
+      desktopMainContent={<NotebookList />}
     />
   );
 }

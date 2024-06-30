@@ -1,3 +1,5 @@
+export const DESKTOP_MEDIA_QUERY = "(min-width: 1024px)";
+
 // Constants related to database
 export const DATABASE_NAME = "NoteSpace";
 export const DATABASE_VERSION = 1;
