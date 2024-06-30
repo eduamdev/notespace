@@ -15,7 +15,7 @@ const ItemList = <T extends Item>({ items, renderItem }: ItemListProps<T>) => {
   }
 
   return (
-    <ul className="divide-y py-4">
+    <ul className="divide-y">
       {items.map((item) => (
         <li key={item.id} className="py-2">
           {renderItem(item)}

@@ -1,7 +1,8 @@
 export interface Note {
   id: string;
   title: string;
-  content: string; // Encrypted content
+  contentHTML: string;
+  contentText: string;
   tags: string[];
   notebookId: string;
   createdAt: Date;

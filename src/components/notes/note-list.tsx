@@ -9,7 +9,7 @@ const filterNotes = (notes: Note[], query: string) => {
   return notes.filter(
     (note) =>
       note.title.toLowerCase().includes(query.toLowerCase()) ||
-      note.content.toLowerCase().includes(query.toLowerCase())
+      note.contentText.toLowerCase().includes(query.toLowerCase())
   );
 };
 
@@ -29,7 +29,7 @@ function NoteList() {
               <p className="truncate text-[15px] font-medium text-black">
                 {note.title}
               </p>
-              <p className="line-clamp-2 text-[15px]">{note.content}</p>
+              <p className="line-clamp-2 text-[15px]">{note.contentText}</p>
               <p className="truncate text-[13px] text-neutral-500">Now</p>
             </Link>
           )}

@@ -62,7 +62,7 @@ const NoteEditor = ({ noteId }: { noteId?: string }) => {
           setCurrentNote(note);
           if (editor) {
             setTitle(note.title);
-            editor.commands.setContent(note.content);
+            editor.commands.setContent(note.contentHTML);
           }
         }
       }
@@ -80,7 +80,8 @@ const NoteEditor = ({ noteId }: { noteId?: string }) => {
           updateNote({
             ...currentNote,
             title,
-            content: editor.getHTML(),
+            contentHTML: editor.getHTML(),
+            contentText: editor.getText(),
             updatedAt: new Date(),
           });
 
@@ -89,7 +90,8 @@ const NoteEditor = ({ noteId }: { noteId?: string }) => {
           addNote({
             id: Date.now().toString(),
             title,
-            content: editor.getHTML(),
+            contentHTML: editor.getHTML(),
+            contentText: editor.getText(),
             tags: [],
             notebookId: "",
             createdAt: new Date(),
