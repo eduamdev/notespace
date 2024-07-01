@@ -74,7 +74,7 @@ const ListManager = <T,>({
 
   return (
     <>
-      <div className="flex items-center justify-between py-4">
+      <div className="flex items-center justify-between py-4 lg:px-6">
         <h1 className="text-lg font-semibold text-black">{title}</h1>
         <div className="flex items-center justify-center gap-4">
           {onAddItemClick ? (
@@ -120,7 +120,7 @@ const ListManager = <T,>({
           )}
         </div>
       </div>
-      <div className="py-2">
+      <div className="py-2 lg:px-6">
         <button className="grid h-10 w-full grid-cols-[18px_1fr] items-center justify-center gap-x-3 rounded-md border border-black/[0.12] px-3 shadow-sm shadow-black/[0.08]">
           <SearchIcon className="size-[18px] text-neutral-600" />
           <input

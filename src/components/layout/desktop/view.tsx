@@ -21,7 +21,7 @@ function DesktopLayoutView({
         <Sidenav />
         <div className="flex size-full items-center">
           <div className="z-10 grid h-[calc(100dvh_-_20px)] w-[calc(100%_-_10px)] grid-cols-[420px,1fr] rounded-[10px] border border-neutral-950/[0.12] bg-white shadow-sm">
-            <div className="relative px-6 after:absolute after:right-0 after:top-0 after:h-full after:w-px after:border-r after:border-neutral-950/10 after:content-['']">
+            <div className="relative after:absolute after:right-0 after:top-0 after:h-full after:w-px after:border-r after:border-neutral-950/10 after:content-['']">
               {desktopMainContent}
             </div>
             <div>{desktopSecondaryContent}</div>

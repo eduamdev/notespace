@@ -93,6 +93,7 @@ const NoteEditor = ({ noteId }: { noteId?: string }) => {
             contentHTML: editor.getHTML(),
             contentText: editor.getText(),
             tags: [],
+            isFavorite: false,
             notebookId: "",
             createdAt: new Date(),
             updatedAt: new Date(),

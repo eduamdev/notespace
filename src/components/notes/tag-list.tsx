@@ -22,12 +22,12 @@ const TagList = () => {
         <ItemList
           items={tags}
           renderItem={(tag) => (
-            <span className="block w-full">
+            <div className="block w-full hover:bg-neutral-50 lg:px-6">
               <p className="truncate text-[15px] font-medium text-black">
                 {tag.name}
               </p>
               <p className="text-[13px] text-neutral-500">0 notes</p>
-            </span>
+            </div>
           )}
         />
       )}

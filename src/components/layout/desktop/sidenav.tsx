@@ -9,7 +9,7 @@ import {
 import Logo from "@/assets/logo.svg";
 import { NoteIcon } from "@/components/icons/note-icon";
 import { NotebookIcon } from "@/components/icons/notebook-icon";
-import { StarIcon } from "@/components/icons/star-icon";
+import { HeartIcon } from "@/components/icons/heart-icon";
 import { TagsIcon } from "@/components/icons/tags-icon";
 
 function Sidenav() {
@@ -70,7 +70,7 @@ function Sidenav() {
                       href="/favorites"
                       className="flex items-center justify-center p-1"
                     >
-                      <StarIcon className="size-6 shrink-0 text-neutral-700" />
+                      <HeartIcon className="size-6 shrink-0 text-neutral-700" />
                     </Link>
                   </TooltipTrigger>
                   <TooltipContent
