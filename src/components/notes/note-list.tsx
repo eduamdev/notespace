@@ -33,7 +33,7 @@ function NoteList() {
         <ItemList
           items={notes}
           renderItem={(note) => (
-            <div className="grid grid-cols-[1fr_24px] items-start justify-center gap-2 hover:bg-neutral-50 lg:px-6">
+            <div className="grid grid-cols-[1fr_auto] items-start justify-center gap-2 hover:bg-neutral-50 lg:px-6">
               <Link
                 to={`/notes/${note.id}`}
                 className="block w-full overflow-hidden"
@@ -45,15 +45,15 @@ function NoteList() {
                 <p className="truncate text-[13px] text-neutral-500">Now</p>
               </Link>
               <button
-                className="z-10 p-2"
+                className="group z-10 p-2"
                 onClick={() => {
                   handleFavoriteClick(note);
                 }}
               >
                 {note.isFavorite ? (
-                  <HeartFilledIcon className="size-4 shrink-0 text-red-400" />
+                  <HeartFilledIcon className="size-4 shrink-0 text-red-400 transition-opacity group-hover:opacity-80" />
                 ) : (
-                  <HeartIcon className="size-4 shrink-0 text-neutral-700" />
+                  <HeartIcon className="size-4 shrink-0 text-neutral-700 transition-colors group-hover:text-red-400" />
                 )}
               </button>
             </div>
