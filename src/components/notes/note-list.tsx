@@ -34,7 +34,7 @@ function NoteList() {
   return (
     <ListManager<Note>
       title="Notes"
-      addItemText="Note"
+      description="Add a new note with a title and content."
       useItemsHook={useNotes}
       ListComponent={({ items: notes }) => (
         <ItemList
@@ -84,6 +84,7 @@ function NoteList() {
       onAddItemClick={() => {
         navigate("/notes/new");
       }}
+      addItemText="Note"
       filterItems={filterNotes}
     />
   );

@@ -3,6 +3,7 @@ import { useMediaQuery } from "@/hooks/use-media-query";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -10,6 +11,7 @@ import {
 import {
   Drawer,
   DrawerContent,
+  DrawerDescription,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
@@ -20,6 +22,7 @@ import { DESKTOP_MEDIA_QUERY } from "@/lib/constants";
 
 interface ListManagerProps<T> {
   title: string;
+  description: string;
   useItemsHook: () => {
     items: T[];
     addItem: (item: T) => void;
@@ -39,6 +42,7 @@ interface ListManagerProps<T> {
 
 const ListManager = <T,>({
   title,
+  description,
   useItemsHook,
   FormComponent,
   ListComponent,
@@ -87,7 +91,10 @@ const ListManager = <T,>({
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Create a {addItemText}</DialogTitle>
+              <DialogTitle>Create a new {addItemText}</DialogTitle>
+              <DialogDescription className="sr-only">
+                {description}
+              </DialogDescription>
             </DialogHeader>
             <FormComponent
               addItem={addItem}
@@ -104,7 +111,10 @@ const ListManager = <T,>({
           </DrawerTrigger>
           <DrawerContent>
             <DrawerHeader className="text-left">
-              <DrawerTitle>Create a {addItemText}</DrawerTitle>
+              <DrawerTitle>Create a new {addItemText}</DrawerTitle>
+              <DrawerDescription className="sr-only">
+                {description}
+              </DrawerDescription>
             </DrawerHeader>
             <FormComponent
               addItem={addItem}

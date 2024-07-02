@@ -15,9 +15,10 @@ const TagList = () => {
   return (
     <ListManager<Tag>
       title="Tags"
-      addItemText="Tag"
+      description="Add a tag to categorize your items."
       useItemsHook={useTags}
       FormComponent={TagForm}
+      addItemText="Tag"
       ListComponent={({ items: tags }) => (
         <ItemList
           items={tags}
