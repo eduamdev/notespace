@@ -115,15 +115,17 @@ const NoteEditor = ({ noteId }: { noteId?: string }) => {
         handleUpsertNote(event);
       }}
     >
-      <input
-        type="text"
-        value={title}
-        className="w-full truncate rounded-md px-1 py-5 text-2xl font-semibold text-black outline-none placeholder:font-medium lg:px-6"
-        onChange={(e) => {
-          setTitle(e.target.value);
-        }}
-        placeholder="Note title"
-      />
+      <div className="px-1 py-5">
+        <input
+          type="text"
+          value={title}
+          className="w-full truncate rounded-md  text-2xl font-semibold text-black outline-none placeholder:font-medium lg:px-6"
+          onChange={(e) => {
+            setTitle(e.target.value);
+          }}
+          placeholder="Note title"
+        />
+      </div>
       <EditorToolbar editor={editor} />
       <div className="px-1 lg:px-6">
         <div className="py-4">

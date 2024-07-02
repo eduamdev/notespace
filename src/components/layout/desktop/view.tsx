@@ -24,7 +24,7 @@ function DesktopLayoutView({
             <div className="relative after:absolute after:right-0 after:top-0 after:h-full after:w-px after:border-r after:border-neutral-950/10 after:content-['']">
               {desktopMainContent}
             </div>
-            <div>{desktopSecondaryContent}</div>
+            <div className="overflow-hidden">{desktopSecondaryContent}</div>
           </div>
         </div>
       </div>
