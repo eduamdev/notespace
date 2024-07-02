@@ -20,7 +20,6 @@ import { DESKTOP_MEDIA_QUERY } from "@/lib/constants";
 
 interface ListManagerProps<T> {
   title: string;
-  addItemText: string;
   useItemsHook: () => {
     items: T[];
     addItem: (item: T) => void;
@@ -34,16 +33,17 @@ interface ListManagerProps<T> {
   }>;
   ListComponent: React.FC<{ items: T[] | undefined }>;
   onAddItemClick?: () => void;
+  addItemText?: string;
   filterItems?: (items: T[], query: string) => T[];
 }
 
 const ListManager = <T,>({
   title,
-  addItemText,
   useItemsHook,
   FormComponent,
   ListComponent,
   onAddItemClick,
+  addItemText,
   filterItems,
 }: ListManagerProps<T>) => {
   const { items, addItem, error, isLoading } = useItemsHook();
@@ -72,52 +72,61 @@ const ListManager = <T,>({
 
   AddItemButton.displayName = "AddItemButton";
 
+  const renderAddItemSection = () => {
+    if (!addItemText || (!onAddItemClick && !FormComponent)) return null;
+
+    if (onAddItemClick) {
+      return <AddItemButton onClick={onAddItemClick} />;
+    }
+
+    if (FormComponent) {
+      return isDesktop ? (
+        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+          <DialogTrigger asChild>
+            <AddItemButton />
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Create a {addItemText}</DialogTitle>
+            </DialogHeader>
+            <FormComponent
+              addItem={addItem}
+              onClose={() => {
+                setIsModalOpen(false);
+              }}
+            />
+          </DialogContent>
+        </Dialog>
+      ) : (
+        <Drawer open={isModalOpen} onOpenChange={setIsModalOpen}>
+          <DrawerTrigger asChild>
+            <AddItemButton />
+          </DrawerTrigger>
+          <DrawerContent>
+            <DrawerHeader className="text-left">
+              <DrawerTitle>Create a {addItemText}</DrawerTitle>
+            </DrawerHeader>
+            <FormComponent
+              addItem={addItem}
+              onClose={() => {
+                setIsModalOpen(false);
+              }}
+              isDrawer
+            />
+          </DrawerContent>
+        </Drawer>
+      );
+    }
+
+    return null;
+  };
+
   return (
     <>
-      <div className="flex items-center justify-between py-4 lg:px-6">
+      <div className="flex h-[68px] items-center justify-between py-4 lg:px-6">
         <h1 className="text-lg font-semibold text-black">{title}</h1>
         <div className="flex items-center justify-center gap-4">
-          {onAddItemClick ? (
-            <AddItemButton onClick={onAddItemClick} />
-          ) : (
-            FormComponent &&
-            (isDesktop ? (
-              <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-                <DialogTrigger asChild>
-                  <AddItemButton />
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Create a {addItemText}</DialogTitle>
-                  </DialogHeader>
-                  <FormComponent
-                    addItem={addItem}
-                    onClose={() => {
-                      setIsModalOpen(false);
-                    }}
-                  />
-                </DialogContent>
-              </Dialog>
-            ) : (
-              <Drawer open={isModalOpen} onOpenChange={setIsModalOpen}>
-                <DrawerTrigger asChild>
-                  <AddItemButton />
-                </DrawerTrigger>
-                <DrawerContent>
-                  <DrawerHeader className="text-left">
-                    <DrawerTitle>Create a {addItemText}</DrawerTitle>
-                  </DrawerHeader>
-                  <FormComponent
-                    addItem={addItem}
-                    onClose={() => {
-                      setIsModalOpen(false);
-                    }}
-                    isDrawer
-                  />
-                </DrawerContent>
-              </Drawer>
-            ))
-          )}
+          {renderAddItemSection()}
         </div>
       </div>
       <div className="py-2 lg:px-6">
@@ -125,7 +134,7 @@ const ListManager = <T,>({
           <SearchIcon className="size-[18px] text-neutral-600" />
           <input
             type="text"
-            placeholder={`Search ${addItemText.toLowerCase()}...`}
+            placeholder={`Search ${title.toLowerCase()}...`}
             className="outline-none"
             value={query}
             onChange={(e) => {

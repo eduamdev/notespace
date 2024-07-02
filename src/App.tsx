@@ -4,6 +4,7 @@ import { NotesPage } from "@/pages/notes";
 import { NewNotePage } from "@/pages/new-note";
 import { NotePage } from "@/pages/note";
 import { NotebooksPage } from "@/pages/notebooks";
+import { FavoritesPage } from "@/pages/favorites";
 import { TagsPage } from "@/pages/tags";
 
 function App() {
@@ -15,7 +16,7 @@ function App() {
         <Route path="/notes/new" component={NewNotePage} />
         <Route path="/notes/:id" component={NotePage} />
         <Route path="/notebooks" component={NotebooksPage} />
-        <Route path="/favorites" component={NotesPage} />
+        <Route path="/favorites" component={FavoritesPage} />
         <Route path="/tags" component={TagsPage} />
 
         {/* Default Route (404) */}

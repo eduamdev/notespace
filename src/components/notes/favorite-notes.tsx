@@ -1,4 +1,4 @@
-import { Link, useLocation } from "wouter";
+import { Link } from "wouter";
 import { useNotes } from "@/hooks/use-notes";
 import ItemList from "@/components/item-list";
 import ListManager from "@/components/list-manager";
@@ -6,17 +6,18 @@ import { HeartIcon } from "@/components/icons/heart-icon";
 import { HeartFilledIcon } from "@/components/icons/heart-filled-icon";
 import { Note } from "@/models/note";
 
-const filterNotes = (notes: Note[], query: string) => {
-  if (!query) return notes;
-  return notes.filter(
-    (note) =>
-      note.title.toLowerCase().includes(query.toLowerCase()) ||
-      note.contentText.toLowerCase().includes(query.toLowerCase())
-  );
+const filterFavoriteNotes = (notes: Note[], query: string) => {
+  if (!query) return notes.filter((note) => note.isFavorite);
+  return notes
+    .filter((note) => note.isFavorite)
+    .filter(
+      (note) =>
+        note.title.toLowerCase().includes(query.toLowerCase()) ||
+        note.contentText.toLowerCase().includes(query.toLowerCase())
+    );
 };
 
-function NoteList() {
-  const [, navigate] = useLocation();
+function FavoriteNotes() {
   const { updateItem } = useNotes();
 
   const handleFavoriteClick = (note: Note) => {
@@ -28,8 +29,7 @@ function NoteList() {
 
   return (
     <ListManager<Note>
-      title="Notes"
-      addItemText="Note"
+      title="Favorite Notes"
       useItemsHook={useNotes}
       ListComponent={({ items: notes }) => (
         <ItemList
@@ -62,12 +62,9 @@ function NoteList() {
           )}
         />
       )}
-      onAddItemClick={() => {
-        navigate("/notes/new");
-      }}
-      filterItems={filterNotes}
+      filterItems={filterFavoriteNotes}
     />
   );
 }
 
-export default NoteList;
+export default FavoriteNotes;
