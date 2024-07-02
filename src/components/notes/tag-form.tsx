@@ -52,7 +52,7 @@ export default function TagForm({
             id="txtTagName"
             value={tagName}
             placeholder="Tag"
-            className="h-10 w-full rounded-md border border-black/[0.12] px-3 text-sm shadow-sm outline-none lg:text-[15px]"
+            className="h-10 w-full rounded-md border border-black/[0.12] px-3 shadow-sm outline-none placeholder:text-sm"
             onChange={(e) => {
               setTagName(e.target.value);
             }}

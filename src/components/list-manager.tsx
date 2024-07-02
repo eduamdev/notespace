@@ -145,7 +145,7 @@ const ListManager = <T,>({
           <input
             type="text"
             placeholder={`Search ${title.toLowerCase()}...`}
-            className="outline-none"
+            className="outline-none placeholder:text-sm"
             value={query}
             onChange={(e) => {
               setQuery(e.target.value);

@@ -5,6 +5,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { formatDistanceToNow } from "date-fns";
 import ItemList from "@/components/item-list";
 import ListManager from "@/components/list-manager";
 import { HeartIcon } from "@/components/icons/heart-icon";
@@ -43,13 +44,19 @@ function NoteList() {
             <div className="grid grid-cols-[1fr_auto] items-start justify-center gap-2 hover:bg-neutral-50 lg:px-6">
               <Link
                 to={`/notes/${note.id}`}
-                className="block w-full overflow-hidden"
+                className="block w-full overflow-hidden py-1"
               >
-                <p className="truncate text-[15px] font-medium text-black">
+                <p className="truncate font-semibold leading-6 text-black">
                   {note.title}
                 </p>
-                <p className="line-clamp-2 text-[15px]">{note.contentText}</p>
-                <p className="truncate text-[13px] text-neutral-500">Now</p>
+                <p className="line-clamp-2 text-[15px] text-neutral-600">
+                  {note.contentText}
+                </p>
+                <p className="truncate text-[13px] leading-7 text-neutral-500">
+                  {formatDistanceToNow(new Date(note.createdAt), {
+                    addSuffix: true,
+                  })}
+                </p>
               </Link>
               <Tooltip>
                 <TooltipTrigger asChild>

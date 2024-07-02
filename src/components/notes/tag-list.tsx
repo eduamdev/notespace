@@ -23,11 +23,13 @@ const TagList = () => {
         <ItemList
           items={tags}
           renderItem={(tag) => (
-            <div className="block w-full hover:bg-neutral-50 lg:px-6">
-              <p className="truncate text-[15px] font-medium text-black">
+            <div className="block w-full py-1 hover:bg-neutral-50 lg:px-6">
+              <p className="truncate font-semibold leading-6 text-black">
                 {tag.name}
               </p>
-              <p className="text-[13px] text-neutral-500">0 notes</p>
+              <p className="truncate text-[13px] leading-7 text-neutral-500">
+                0 notes
+              </p>
             </div>
           )}
         />
