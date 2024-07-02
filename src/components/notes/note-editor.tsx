@@ -118,7 +118,7 @@ const NoteEditor = ({ noteId }: { noteId?: string }) => {
       <input
         type="text"
         value={title}
-        className="w-full rounded-md px-1 py-5 text-2xl font-semibold text-black outline-none placeholder:font-medium lg:px-6"
+        className="w-full truncate rounded-md px-1 py-5 text-2xl font-semibold text-black outline-none placeholder:font-medium lg:px-6"
         onChange={(e) => {
           setTitle(e.target.value);
         }}

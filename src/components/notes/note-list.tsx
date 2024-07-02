@@ -1,5 +1,10 @@
 import { Link, useLocation } from "wouter";
 import { useNotes } from "@/hooks/use-notes";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import ItemList from "@/components/item-list";
 import ListManager from "@/components/list-manager";
 import { HeartIcon } from "@/components/icons/heart-icon";
@@ -46,18 +51,32 @@ function NoteList() {
                 <p className="line-clamp-2 text-[15px]">{note.contentText}</p>
                 <p className="truncate text-[13px] text-neutral-500">Now</p>
               </Link>
-              <button
-                className="group z-10 p-2"
-                onClick={() => {
-                  handleFavoriteClick(note);
-                }}
-              >
-                {note.isFavorite ? (
-                  <HeartFilledIcon className="size-4 shrink-0 text-red-400 transition-opacity group-hover:opacity-80" />
-                ) : (
-                  <HeartIcon className="size-4 shrink-0 text-neutral-700 transition-colors group-hover:text-red-400" />
-                )}
-              </button>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    className="group z-10 p-2"
+                    onClick={() => {
+                      handleFavoriteClick(note);
+                    }}
+                  >
+                    {note.isFavorite ? (
+                      <HeartFilledIcon className="size-4 shrink-0 text-red-400 transition-opacity group-hover:opacity-80" />
+                    ) : (
+                      <HeartIcon className="size-4 shrink-0 text-neutral-700 transition-colors group-hover:text-red-400" />
+                    )}
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent
+                  sideOffset={24}
+                  collisionPadding={{ top: 20, bottom: 20, left: 20 }}
+                >
+                  <p>
+                    {note.isFavorite
+                      ? "Unmark as favorite"
+                      : "Mark as favorite"}
+                  </p>
+                </TooltipContent>
+              </Tooltip>
             </div>
           )}
         />

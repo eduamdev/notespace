@@ -1,5 +1,6 @@
 import "@fontsource-variable/public-sans/wght.css";
 import "@fontsource-variable/public-sans/wght-italic.css";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 
 import React from "react";
@@ -15,7 +16,9 @@ const queryClient = new QueryClient();
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <App />
+      <TooltipProvider>
+        <App />
+      </TooltipProvider>
       <Toaster richColors />
       <ReactQueryDevtools />
     </QueryClientProvider>
