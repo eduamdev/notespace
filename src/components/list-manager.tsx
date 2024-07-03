@@ -155,9 +155,9 @@ const ListManager = <T,>({
       </div>
       <div className="py-4">
         {isLoading ? (
-          <p>Loading...</p>
+          <p className="lg:px-6">Loading...</p>
         ) : error ? (
-          <p>Error: {error.message}</p>
+          <p className="lg:px-6">Error: {error.message}</p>
         ) : (
           <ListComponent items={filteredItems} />
         )}

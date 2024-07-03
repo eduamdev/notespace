@@ -114,27 +114,30 @@ const NoteEditor = ({ noteId }: { noteId?: string }) => {
       onSubmit={(event) => {
         handleUpsertNote(event);
       }}
+      className="grid size-full grid-cols-1 grid-rows-[72px_90px_1fr]"
     >
-      <div className="px-1 py-5">
+      <div className="py-5 lg:px-6">
         <input
           type="text"
           value={title}
-          className="w-full truncate rounded-md  text-2xl font-semibold text-black outline-none placeholder:font-medium lg:px-6"
+          className="w-full truncate rounded-md  text-2xl font-semibold text-black outline-none placeholder:font-medium"
           onChange={(e) => {
             setTitle(e.target.value);
           }}
           placeholder="Note title"
         />
       </div>
-      <EditorToolbar editor={editor} />
-      <div className="px-1 lg:px-6">
+      <div>
+        <EditorToolbar editor={editor} />
+      </div>
+      <div className="overflow-y-auto px-1 lg:px-6">
         <div className="py-4">
           <EditorContent
             editor={editor}
             className="focus-visible:[&>.tiptap]:outline-none"
           />
         </div>
-        <div className="mt-4">
+        <div className="my-4">
           <button
             type="submit"
             className="inline-flex rounded-lg bg-black p-3 font-medium text-white "
