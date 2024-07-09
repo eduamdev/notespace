@@ -25,16 +25,18 @@ export default function MobileLayoutView({
       <div className="size-full bg-neutral-50">
         <div className="size-full pt-[10px]">
           <div className="size-full rounded-t-[10px] border border-neutral-950/[0.12] bg-white shadow-sm">
-            <div className="px-4 py-5">
-              <div className="flex items-center justify-between">
-                <img
-                  src={Logo}
-                  alt="App Logo"
-                  className="inline-flex size-[26px] shrink-0"
-                />
-                {!isDesktop && (
-                  <MobileMenu open={open} onOpenChange={setOpen} />
-                )}
+            <div className="py-5">
+              <div className="px-4">
+                <div className="flex items-center justify-between">
+                  <img
+                    src={Logo}
+                    alt="App Logo"
+                    className="inline-flex size-[26px] shrink-0"
+                  />
+                  {!isDesktop && (
+                    <MobileMenu open={open} onOpenChange={setOpen} />
+                  )}
+                </div>
               </div>
               <div className="pt-5">{mobileMainContent}</div>
             </div>

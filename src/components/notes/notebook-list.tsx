@@ -23,7 +23,7 @@ const NotebookList = () => {
         <ItemList
           items={notebooks}
           renderItem={(notebook) => (
-            <div className="block w-full py-1 hover:bg-neutral-50 lg:px-6">
+            <div className="block w-full px-4 py-1 hover:bg-neutral-50 lg:px-6">
               <p className="truncate font-semibold leading-6 text-black">
                 {notebook.name}
               </p>

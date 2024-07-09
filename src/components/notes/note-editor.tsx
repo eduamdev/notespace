@@ -116,7 +116,7 @@ const NoteEditor = ({ noteId }: { noteId?: string }) => {
       }}
       className="grid size-full grid-cols-1 grid-rows-[72px_90px_1fr]"
     >
-      <div className="py-5 lg:px-6">
+      <div className="px-4 py-5 lg:px-6">
         <input
           type="text"
           value={title}
@@ -127,10 +127,10 @@ const NoteEditor = ({ noteId }: { noteId?: string }) => {
           placeholder="Note title"
         />
       </div>
-      <div>
+      <div className="px-2 lg:px-0">
         <EditorToolbar editor={editor} />
       </div>
-      <div className="overflow-y-auto px-1 lg:px-6">
+      <div className="overflow-y-auto px-4 lg:px-6">
         <div className="py-4">
           <EditorContent
             editor={editor}

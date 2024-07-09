@@ -37,7 +37,7 @@ function FavoriteNotes() {
         <ItemList
           items={notes}
           renderItem={(note) => (
-            <div className="grid grid-cols-[1fr_auto] items-start justify-center gap-2 hover:bg-neutral-50 lg:px-6">
+            <div className="grid grid-cols-[1fr_auto] items-start justify-center gap-2 px-4 hover:bg-neutral-50 lg:px-6">
               <Link
                 to={`/notes/${note.id}`}
                 className="block w-full overflow-hidden py-1"
