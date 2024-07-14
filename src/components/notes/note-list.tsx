@@ -10,6 +10,7 @@ import ItemList from "@/components/item-list";
 import ListManager from "@/components/list-manager";
 import { HeartIcon } from "@/components/icons/heart-icon";
 import { HeartFilledIcon } from "@/components/icons/heart-filled-icon";
+import { TrashIcon } from "@/components/icons/trash-icon";
 import { Note } from "@/models/note";
 
 const filterNotes = (notes: Note[], query: string) => {
@@ -21,15 +22,19 @@ const filterNotes = (notes: Note[], query: string) => {
   );
 };
 
-function NoteList() {
+export default function NoteList() {
   const [, navigate] = useLocation();
-  const { updateItem } = useNotes();
+  const { updateItem, deleteItem } = useNotes();
 
   const handleFavoriteClick = (note: Note) => {
     updateItem({
       ...note,
       isFavorite: !note.isFavorite,
     });
+  };
+
+  const handleDeleteClick = (noteId: string) => {
+    deleteItem(noteId);
   };
 
   return (
@@ -58,32 +63,11 @@ function NoteList() {
                   })}
                 </p>
               </Link>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <button
-                    className="group z-10 p-2"
-                    onClick={() => {
-                      handleFavoriteClick(note);
-                    }}
-                  >
-                    {note.isFavorite ? (
-                      <HeartFilledIcon className="size-4 shrink-0 text-red-400 transition-opacity group-hover:opacity-80" />
-                    ) : (
-                      <HeartIcon className="size-4 shrink-0 text-neutral-700 transition-colors group-hover:text-red-400" />
-                    )}
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent
-                  sideOffset={24}
-                  collisionPadding={{ top: 20, bottom: 20, left: 20 }}
-                >
-                  <p>
-                    {note.isFavorite
-                      ? "Unmark as favorite"
-                      : "Mark as favorite"}
-                  </p>
-                </TooltipContent>
-              </Tooltip>
+              <NoteActions
+                note={note}
+                onFavoriteClick={handleFavoriteClick}
+                onDeleteClick={handleDeleteClick}
+              />
             </div>
           )}
         />
@@ -97,4 +81,59 @@ function NoteList() {
   );
 }
 
-export default NoteList;
+interface NoteActionsProps {
+  note: Note;
+  onFavoriteClick: (note: Note) => void;
+  onDeleteClick: (noteId: string) => void;
+}
+
+function NoteActions({
+  note,
+  onFavoriteClick,
+  onDeleteClick,
+}: NoteActionsProps) {
+  return (
+    <div className="flex flex-row items-center justify-center gap-2">
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            className="group z-10 p-2"
+            onClick={() => {
+              onFavoriteClick(note);
+            }}
+          >
+            {note.isFavorite ? (
+              <HeartFilledIcon className="size-[18px] shrink-0 text-red-400 transition-opacity group-hover:opacity-80" />
+            ) : (
+              <HeartIcon className="size-[18px] shrink-0 text-neutral-700 transition-colors group-hover:text-red-400" />
+            )}
+          </button>
+        </TooltipTrigger>
+        <TooltipContent
+          sideOffset={24}
+          collisionPadding={{ top: 20, bottom: 20, left: 20 }}
+        >
+          <p>{note.isFavorite ? "Unmark as favorite" : "Mark as favorite"}</p>
+        </TooltipContent>
+      </Tooltip>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            className="group z-10 p-2"
+            onClick={() => {
+              onDeleteClick(note.id);
+            }}
+          >
+            <TrashIcon className="size-[18px] shrink-0 text-neutral-700 transition-colors group-hover:text-red-400" />
+          </button>
+        </TooltipTrigger>
+        <TooltipContent
+          sideOffset={24}
+          collisionPadding={{ top: 20, bottom: 20, left: 20 }}
+        >
+          <p>Delete note</p>
+        </TooltipContent>
+      </Tooltip>
+    </div>
+  );
+}
