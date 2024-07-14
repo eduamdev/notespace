@@ -46,10 +46,10 @@ export default function NoteList() {
         <ItemList
           items={notes}
           renderItem={(note) => (
-            <div className="grid grid-cols-[1fr_auto] items-start justify-center gap-2 px-4 hover:bg-neutral-50 lg:px-6">
+            <div className="group/item grid grid-cols-[1fr_auto] items-start justify-center gap-4 px-4 hover:bg-neutral-50 lg:px-6">
               <Link
                 to={`/notes/${note.id}`}
-                className="block w-full overflow-hidden py-1"
+                className="relative block w-full overflow-hidden py-1"
               >
                 <p className="truncate font-semibold leading-6 text-black">
                   {note.title}
@@ -62,6 +62,7 @@ export default function NoteList() {
                     addSuffix: true,
                   })}
                 </p>
+                <div className="absolute inset-y-0 right-0 h-full w-8 bg-gradient-to-l from-white group-hover/item:from-neutral-50"></div>
               </Link>
               <NoteActions
                 note={note}
@@ -93,19 +94,19 @@ function NoteActions({
   onDeleteClick,
 }: NoteActionsProps) {
   return (
-    <div className="flex flex-row items-center justify-center gap-2">
+    <div className="z-10 mt-1 flex flex-row items-center justify-center gap-2 rounded-full border border-transparent bg-white px-1 group-hover/item:border-neutral-950/5">
       <Tooltip>
         <TooltipTrigger asChild>
           <button
-            className="group z-10 p-2"
+            className="group/favorite z-20 p-2"
             onClick={() => {
               onFavoriteClick(note);
             }}
           >
             {note.isFavorite ? (
-              <HeartFilledIcon className="size-[18px] shrink-0 text-red-400 transition-opacity group-hover:opacity-80" />
+              <HeartFilledIcon className="size-[18px] shrink-0 text-red-400 transition-opacity group-hover/favorite:opacity-80" />
             ) : (
-              <HeartIcon className="size-[18px] shrink-0 text-neutral-700 transition-colors group-hover:text-red-400" />
+              <HeartIcon className="size-[18px] shrink-0 text-neutral-700 transition-colors group-hover/favorite:text-red-400" />
             )}
           </button>
         </TooltipTrigger>
@@ -119,12 +120,12 @@ function NoteActions({
       <Tooltip>
         <TooltipTrigger asChild>
           <button
-            className="group z-10 p-2"
+            className="group/delete z-20 p-2"
             onClick={() => {
               onDeleteClick(note.id);
             }}
           >
-            <TrashIcon className="size-[18px] shrink-0 text-neutral-700 transition-colors group-hover:text-red-400" />
+            <TrashIcon className="size-[18px] shrink-0 text-neutral-700 transition-colors group-hover/delete:text-red-400" />
           </button>
         </TooltipTrigger>
         <TooltipContent
