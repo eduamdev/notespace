@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import { DialogClose } from "@/components/ui/dialog";
 import { DrawerClose, DrawerFooter } from "@/components/ui/drawer";
 import { Notebook } from "@/models/notebook";
-import { cn } from "@/lib/utils";
+import { cn, generateUniqueId } from "@/lib/utils";
 
 interface NotebookFormProps {
   addItem: (notebook: Notebook) => void;
@@ -24,7 +24,7 @@ export default function NotebookForm({
     try {
       if (notebookName.trim()) {
         addItem({
-          id: new Date().toISOString(),
+          id: generateUniqueId(),
           name: notebookName,
           createdAt: new Date(),
           updatedAt: new Date(),

@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import { DialogClose } from "@/components/ui/dialog";
 import { DrawerClose, DrawerFooter } from "@/components/ui/drawer";
 import { Tag } from "@/models/tag";
-import { cn } from "@/lib/utils";
+import { cn, generateUniqueId } from "@/lib/utils";
 
 interface TagFormProps {
   addItem: (item: Tag) => void;
@@ -24,7 +24,7 @@ export default function TagForm({
     try {
       if (tagName.trim()) {
         addItem({
-          id: new Date().toISOString(),
+          id: generateUniqueId(),
           name: tagName,
           createdAt: new Date(),
           updatedAt: new Date(),

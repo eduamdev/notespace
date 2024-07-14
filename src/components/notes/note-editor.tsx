@@ -8,6 +8,7 @@ import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import Heading from "@tiptap/extension-heading";
 import { Note } from "@/models/note";
+import { generateUniqueId } from "@/lib/utils";
 
 const NoteEditor = ({ noteId }: { noteId?: string }) => {
   const { addItem: addNote, updateItem: updateNote } = useNotes();
@@ -88,7 +89,7 @@ const NoteEditor = ({ noteId }: { noteId?: string }) => {
           toast.success(`Note has been updated`);
         } else {
           addNote({
-            id: Date.now().toString(),
+            id: generateUniqueId(),
             title,
             contentHTML: editor.getHTML(),
             contentText: editor.getText(),
