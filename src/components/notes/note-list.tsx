@@ -1,16 +1,9 @@
 import { Link, useLocation } from "wouter";
-import { useNotes } from "@/hooks/use-notes";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { formatDistanceToNow } from "date-fns";
-import ItemList from "@/components/item-list";
+import { useNotes } from "@/hooks/use-notes";
 import ListManager from "@/components/list-manager";
-import { HeartIcon } from "@/components/icons/heart-icon";
-import { HeartFilledIcon } from "@/components/icons/heart-filled-icon";
-import { TrashIcon } from "@/components/icons/trash-icon";
+import ItemList from "@/components/item-list";
+import NoteActions from "@/components/notes/note-actions";
 import { Note } from "@/models/note";
 
 const filterNotes = (notes: Note[], query: string) => {
@@ -41,6 +34,7 @@ export default function NoteList() {
     <ListManager<Note>
       title="Notes"
       description="Add a new note with a title and content."
+      itemName="Note"
       useItemsHook={useNotes}
       ListComponent={({ items: notes }) => (
         <ItemList
@@ -76,65 +70,7 @@ export default function NoteList() {
       onAddItemClick={() => {
         navigate("/notes/new");
       }}
-      addItemText="Note"
       filterItems={filterNotes}
     />
-  );
-}
-
-interface NoteActionsProps {
-  note: Note;
-  onFavoriteClick: (note: Note) => void;
-  onDeleteClick: (noteId: string) => void;
-}
-
-function NoteActions({
-  note,
-  onFavoriteClick,
-  onDeleteClick,
-}: NoteActionsProps) {
-  return (
-    <div className="z-10 mt-1 flex flex-row items-center justify-center gap-2 rounded-full border border-transparent bg-white px-1 group-hover/item:border-neutral-950/5">
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <button
-            className="group/favorite z-20 p-2"
-            onClick={() => {
-              onFavoriteClick(note);
-            }}
-          >
-            {note.isFavorite ? (
-              <HeartFilledIcon className="size-[18px] shrink-0 text-red-400 transition-opacity group-hover/favorite:opacity-80" />
-            ) : (
-              <HeartIcon className="size-[18px] shrink-0 text-neutral-700 transition-colors group-hover/favorite:text-red-400" />
-            )}
-          </button>
-        </TooltipTrigger>
-        <TooltipContent
-          sideOffset={24}
-          collisionPadding={{ top: 20, bottom: 20, left: 20 }}
-        >
-          <p>{note.isFavorite ? "Unmark as favorite" : "Mark as favorite"}</p>
-        </TooltipContent>
-      </Tooltip>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <button
-            className="group/delete z-20 p-2"
-            onClick={() => {
-              onDeleteClick(note.id);
-            }}
-          >
-            <TrashIcon className="size-[18px] shrink-0 text-neutral-700 transition-colors group-hover/delete:text-red-400" />
-          </button>
-        </TooltipTrigger>
-        <TooltipContent
-          sideOffset={24}
-          collisionPadding={{ top: 20, bottom: 20, left: 20 }}
-        >
-          <p>Delete note</p>
-        </TooltipContent>
-      </Tooltip>
-    </div>
   );
 }

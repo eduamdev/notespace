@@ -16,9 +16,9 @@ const NotebookList = () => {
     <ListManager<Notebook>
       title="Notebooks"
       description="Organize your notes by creating a new notebook with a meaningful title."
+      itemName="Notebook"
       useItemsHook={useNotebooks}
       FormComponent={NotebookForm}
-      addItemText="Notebook"
       ListComponent={({ items: notebooks }) => (
         <ItemList
           items={notebooks}

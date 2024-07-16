@@ -23,6 +23,7 @@ import { DESKTOP_MEDIA_QUERY } from "@/lib/constants";
 interface ListManagerProps<T> {
   title: string;
   description: string;
+  itemName: string;
   useItemsHook: () => {
     items: T[];
     addItem: (item: T) => void;
@@ -36,19 +37,20 @@ interface ListManagerProps<T> {
   }>;
   ListComponent: React.FC<{ items: T[] | undefined }>;
   onAddItemClick?: () => void;
-  addItemText?: string;
   filterItems?: (items: T[], query: string) => T[];
+  noItemsMessage?: string;
 }
 
 const ListManager = <T,>({
   title,
   description,
+  itemName,
   useItemsHook,
   FormComponent,
   ListComponent,
   onAddItemClick,
-  addItemText,
   filterItems,
+  noItemsMessage,
 }: ListManagerProps<T>) => {
   const { items, addItem, error, isLoading } = useItemsHook();
   const [query, setQuery] = useState("");
@@ -70,14 +72,14 @@ const ListManager = <T,>({
       {...props}
     >
       <PlusIcon className="inline-block size-4" />
-      <span className="pl-1.5 text-sm font-medium">{addItemText}</span>
+      <span className="pl-1.5 text-sm font-medium">{itemName}</span>
     </button>
   ));
 
   AddItemButton.displayName = "AddItemButton";
 
   const renderAddItemSection = () => {
-    if (!addItemText || (!onAddItemClick && !FormComponent)) return null;
+    if (!onAddItemClick && !FormComponent) return null;
 
     if (onAddItemClick) {
       return <AddItemButton onClick={onAddItemClick} />;
@@ -91,7 +93,7 @@ const ListManager = <T,>({
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Create a new {addItemText}</DialogTitle>
+              <DialogTitle>Create a new {itemName}</DialogTitle>
               <DialogDescription className="sr-only">
                 {description}
               </DialogDescription>
@@ -111,7 +113,7 @@ const ListManager = <T,>({
           </DrawerTrigger>
           <DrawerContent>
             <DrawerHeader className="text-left">
-              <DrawerTitle>Create a new {addItemText}</DrawerTitle>
+              <DrawerTitle>Create a new {itemName}</DrawerTitle>
               <DrawerDescription className="sr-only">
                 {description}
               </DrawerDescription>
@@ -144,7 +146,7 @@ const ListManager = <T,>({
           <SearchIcon className="size-[18px] text-neutral-600" />
           <input
             type="text"
-            placeholder={`Search ${title.toLowerCase()}...`}
+            placeholder={`Search ${itemName.toLowerCase()}s...`}
             className="outline-none placeholder:text-sm"
             value={query}
             onChange={(e) => {
@@ -155,9 +157,16 @@ const ListManager = <T,>({
       </div>
       <div className="py-4">
         {isLoading ? (
-          <p className="px-4 lg:px-6">Loading...</p>
+          <p className="px-4 py-2 lg:px-6">Loading...</p>
         ) : error ? (
-          <p className="px-4 lg:px-6">Error: {error.message}</p>
+          <p className="px-4 py-2 lg:px-6">Error: {error.message}</p>
+        ) : filteredItems.length === 0 ? (
+          <p className="px-4 py-2 font-serif tracking-wide text-neutral-600 lg:px-6">
+            {!query
+              ? noItemsMessage ??
+                `You haven't created any ${itemName.toLowerCase()}s yet. Add your first ${itemName.toLowerCase()}.`
+              : `No results found. Adjust your search and try again.`}
+          </p>
         ) : (
           <ListComponent items={filteredItems} />
         )}

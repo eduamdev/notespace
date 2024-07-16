@@ -1,10 +1,9 @@
 import { Link } from "wouter";
-import { useNotes } from "@/hooks/use-notes";
 import { formatDistanceToNow } from "date-fns";
-import ItemList from "@/components/item-list";
+import { useNotes } from "@/hooks/use-notes";
 import ListManager from "@/components/list-manager";
-import { HeartIcon } from "@/components/icons/heart-icon";
-import { HeartFilledIcon } from "@/components/icons/heart-filled-icon";
+import ItemList from "@/components/item-list";
+import NoteActions from "@/components/notes/note-actions";
 import { Note } from "@/models/note";
 
 const filterFavoriteNotes = (notes: Note[], query: string) => {
@@ -19,7 +18,7 @@ const filterFavoriteNotes = (notes: Note[], query: string) => {
 };
 
 function FavoriteNotes() {
-  const { updateItem } = useNotes();
+  const { updateItem, deleteItem } = useNotes();
 
   const handleFavoriteClick = (note: Note) => {
     updateItem({
@@ -28,10 +27,15 @@ function FavoriteNotes() {
     });
   };
 
+  const handleDeleteClick = (noteId: string) => {
+    deleteItem(noteId);
+  };
+
   return (
     <ListManager<Note>
-      title="Favorite Notes"
+      title="Favorites"
       description=""
+      itemName="Favorite"
       useItemsHook={useNotes}
       ListComponent={({ items: notes }) => (
         <ItemList
@@ -54,23 +58,17 @@ function FavoriteNotes() {
                   })}
                 </p>
               </Link>
-              <button
-                className="group z-10 p-2"
-                onClick={() => {
-                  handleFavoriteClick(note);
-                }}
-              >
-                {note.isFavorite ? (
-                  <HeartFilledIcon className="size-4 shrink-0 text-red-400 transition-opacity group-hover:opacity-80" />
-                ) : (
-                  <HeartIcon className="size-4 shrink-0 text-neutral-700 transition-colors group-hover:text-red-400" />
-                )}
-              </button>
+              <NoteActions
+                note={note}
+                onFavoriteClick={handleFavoriteClick}
+                onDeleteClick={handleDeleteClick}
+              />
             </div>
           )}
         />
       )}
       filterItems={filterFavoriteNotes}
+      noItemsMessage="You haven't added any notes to your favorites yet. Start exploring and click the star icon to mark your favorite notes!"
     />
   );
 }
