@@ -128,7 +128,7 @@ const NoteEditor = ({ noteId }: { noteId?: string }) => {
           placeholder="Note title"
         />
       </div>
-      <div className="overflow-hidden px-2 lg:px-0">
+      <div className="overflow-hidden px-4 lg:-mx-7 lg:px-6">
         <EditorToolbar editor={editor} />
       </div>
       <div className="overflow-y-auto px-4 lg:px-6">
