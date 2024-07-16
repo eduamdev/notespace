@@ -40,7 +40,11 @@ export default function NoteActions({
           sideOffset={24}
           collisionPadding={{ top: 20, bottom: 20, left: 20 }}
         >
-          <p>{note.isFavorite ? "Unmark as favorite" : "Mark as favorite"}</p>
+          <p>
+            {note.isFavorite
+              ? "Unmark note as favorite"
+              : "Mark note as favorite"}
+          </p>
         </TooltipContent>
       </Tooltip>
       <Tooltip>
