@@ -1,19 +1,23 @@
 import { useEffect, useState } from "react";
+import { useDebounce } from "use-debounce";
 import { useNotes } from "@/hooks/use-notes";
 import { getNoteById } from "@/services/note-service";
 import EditorToolbar from "@/components/notes/editor-toolbar";
-import { toast } from "sonner";
 import { EditorContent, mergeAttributes, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import Heading from "@tiptap/extension-heading";
 import { Note } from "@/models/note";
 import { generateUniqueId } from "@/lib/utils";
+import { useLocation } from "wouter";
 
 const NoteEditor = ({ noteId }: { noteId?: string }) => {
   const { addItem: addNote, updateItem: updateNote } = useNotes();
   const [title, setTitle] = useState("");
   const [currentNote, setCurrentNote] = useState<Note>();
+  const [initialTitle, setInitialTitle] = useState("");
+  const [initialContent, setInitialContent] = useState("");
+  const [, navigate] = useLocation();
 
   const editor = useEditor({
     extensions: [
@@ -61,6 +65,8 @@ const NoteEditor = ({ noteId }: { noteId?: string }) => {
 
         if (note) {
           setCurrentNote(note);
+          setInitialTitle(note.title);
+          setInitialContent(note.contentText);
           if (editor) {
             setTitle(note.title);
             editor.commands.setContent(note.contentHTML);
@@ -72,51 +78,56 @@ const NoteEditor = ({ noteId }: { noteId?: string }) => {
     void fetchCurrentNote();
   }, [editor, noteId]);
 
-  const handleUpsertNote = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const [debouncedTitle] = useDebounce(title, 2000);
+  const [debouncedEditor] = useDebounce(editor?.state.doc.content, 2000);
 
-    try {
-      if (editor?.getHTML()) {
-        if (currentNote) {
-          updateNote({
-            ...currentNote,
-            title,
-            contentHTML: editor.getHTML(),
-            contentText: editor.getText(),
-            updatedAt: new Date(),
-          });
-
-          toast.success(`Note has been updated`);
-        } else {
-          addNote({
-            id: generateUniqueId(),
-            title,
-            contentHTML: editor.getHTML(),
-            contentText: editor.getText(),
-            tags: [],
-            isFavorite: false,
-            notebookId: "",
-            createdAt: new Date(),
-            updatedAt: new Date(),
-          });
-
-          setTitle("");
-          editor.commands.clearContent();
-          toast.success(`Note has been created`);
-        }
+  useEffect(() => {
+    if (
+      debouncedEditor &&
+      (debouncedTitle !== initialTitle || editor?.getText() !== initialContent)
+    ) {
+      if (currentNote) {
+        updateNote({
+          ...currentNote,
+          title: title,
+          contentHTML: editor?.getHTML() ?? "",
+          contentText: editor?.getText() ?? "",
+          updatedAt: new Date(),
+        });
+      } else if (
+        debouncedTitle.trim() !== "" ||
+        editor?.getText().trim() !== ""
+      ) {
+        const noteId = generateUniqueId();
+        addNote({
+          id: noteId,
+          title: title,
+          contentHTML: editor?.getHTML() ?? "",
+          contentText: editor?.getText() ?? "",
+          tags: [],
+          isFavorite: false,
+          notebookId: "",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        });
+        navigate(`/notes/${noteId}`);
       }
-    } catch (error) {
-      console.error("Error creating or editing a note:", error);
     }
-  };
+  }, [
+    debouncedTitle,
+    currentNote,
+    updateNote,
+    title,
+    editor,
+    addNote,
+    navigate,
+    initialTitle,
+    initialContent,
+    debouncedEditor,
+  ]);
 
   return (
-    <form
-      onSubmit={(event) => {
-        handleUpsertNote(event);
-      }}
-      className="grid size-full grid-cols-1 grid-rows-[72px_90px_1fr]"
-    >
+    <div className="grid size-full grid-cols-1 grid-rows-[72px_90px_1fr]">
       <div className="px-4 py-5 lg:px-6">
         <input
           type="text"
@@ -138,16 +149,9 @@ const NoteEditor = ({ noteId }: { noteId?: string }) => {
             className="focus-visible:[&>.tiptap]:outline-none"
           />
         </div>
-        <div className="my-4">
-          <button
-            type="submit"
-            className="inline-flex rounded-lg bg-black p-3 font-medium text-white "
-          >
-            Create Note
-          </button>
-        </div>
+        <div className="my-4"></div>
       </div>
-    </form>
+    </div>
   );
 };
 
