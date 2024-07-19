@@ -17,6 +17,7 @@ const NoteEditor = ({ noteId }: { noteId?: string }) => {
   const [currentNote, setCurrentNote] = useState<Note>();
   const [initialTitle, setInitialTitle] = useState("");
   const [initialContent, setInitialContent] = useState("");
+  const [error, setError] = useState<string | null>(null);
   const [, navigate] = useLocation();
 
   const editor = useEditor({
@@ -61,16 +62,20 @@ const NoteEditor = ({ noteId }: { noteId?: string }) => {
   useEffect(() => {
     const fetchCurrentNote = async () => {
       if (noteId) {
-        const note = await getNoteById(noteId);
+        try {
+          const note = await getNoteById(noteId);
 
-        if (note) {
-          setCurrentNote(note);
-          setInitialTitle(note.title);
-          setInitialContent(note.contentText);
-          if (editor) {
-            setTitle(note.title);
-            editor.commands.setContent(note.contentHTML);
+          if (note) {
+            setCurrentNote(note);
+            setInitialTitle(note.title);
+            setInitialContent(note.contentText);
+            if (editor) {
+              setTitle(note.title);
+              editor.commands.setContent(note.contentHTML);
+            }
           }
+        } catch (error) {
+          setError("An error occurred while loading the note.");
         }
       }
     };
@@ -78,41 +83,57 @@ const NoteEditor = ({ noteId }: { noteId?: string }) => {
     void fetchCurrentNote();
   }, [editor, noteId]);
 
-  const [debouncedTitle] = useDebounce(title, 2000);
-  const [debouncedEditor] = useDebounce(editor?.state.doc.content, 2000);
+  const [debouncedTitle, { isPending: isDebouncedTitlePending }] = useDebounce(
+    title,
+    2000
+  );
+  const [
+    debouncedEditorContent,
+    { isPending: isDebouncedEditorContentPending },
+  ] = useDebounce(editor?.state.doc.content, 2000);
 
   useEffect(() => {
-    if (
-      debouncedEditor &&
-      (debouncedTitle !== initialTitle || editor?.getText() !== initialContent)
-    ) {
-      if (currentNote) {
-        updateNote({
-          ...currentNote,
-          title: title,
-          contentHTML: editor?.getHTML() ?? "",
-          contentText: editor?.getText() ?? "",
-          updatedAt: new Date(),
-        });
-      } else if (
-        debouncedTitle.trim() !== "" ||
-        editor?.getText().trim() !== ""
+    const autosaveNote = () => {
+      if (
+        debouncedEditorContent &&
+        (debouncedTitle !== initialTitle ||
+          editor?.getText() !== initialContent)
       ) {
-        const noteId = generateUniqueId();
-        addNote({
-          id: noteId,
-          title: title,
-          contentHTML: editor?.getHTML() ?? "",
-          contentText: editor?.getText() ?? "",
-          tags: [],
-          isFavorite: false,
-          notebookId: "",
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        });
-        navigate(`/notes/${noteId}`);
+        try {
+          setError(null);
+          if (currentNote) {
+            updateNote({
+              ...currentNote,
+              title: title,
+              contentHTML: editor?.getHTML() ?? "",
+              contentText: editor?.getText() ?? "",
+              updatedAt: new Date(),
+            });
+          } else if (
+            debouncedTitle.trim() !== "" ||
+            editor?.getText().trim() !== ""
+          ) {
+            const newNoteId = generateUniqueId();
+            addNote({
+              id: newNoteId,
+              title: title,
+              contentHTML: editor?.getHTML() ?? "",
+              contentText: editor?.getText() ?? "",
+              tags: [],
+              isFavorite: false,
+              notebookId: "",
+              createdAt: new Date(),
+              updatedAt: new Date(),
+            });
+            navigate(`/notes/${newNoteId}`);
+          }
+        } catch (error) {
+          setError("An error occurred while saving the note.");
+        }
       }
-    }
+    };
+
+    autosaveNote();
   }, [
     debouncedTitle,
     currentNote,
@@ -123,7 +144,7 @@ const NoteEditor = ({ noteId }: { noteId?: string }) => {
     navigate,
     initialTitle,
     initialContent,
-    debouncedEditor,
+    debouncedEditorContent,
   ]);
 
   return (
@@ -149,7 +170,14 @@ const NoteEditor = ({ noteId }: { noteId?: string }) => {
             className="focus-visible:[&>.tiptap]:outline-none"
           />
         </div>
-        <div className="my-4"></div>
+        {(isDebouncedTitlePending() || isDebouncedEditorContentPending()) && (
+          <div className="my-4 text-sm text-gray-500">
+            {initialTitle === title && initialContent === editor?.getText()
+              ? `Loading...`
+              : `Saving...`}
+          </div>
+        )}
+        {error && <div className="my-4 text-sm text-red-500">{error}</div>}
       </div>
     </div>
   );
