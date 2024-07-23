@@ -1,7 +1,7 @@
 import { Redirect, Route, Switch } from "wouter";
 
 import { NotesPage } from "@/pages/notes";
-import { NewNotePage } from "@/pages/new-note";
+import { CreateNotePage } from "@/pages/create-note";
 import { NotePage } from "@/pages/note";
 import { NotebooksPage } from "@/pages/notebooks";
 import { FavoritesPage } from "@/pages/favorites";
@@ -13,8 +13,8 @@ function App() {
       <Switch>
         <Route path="/" component={() => <Redirect to="/notes" />} />
         <Route path="/notes" component={NotesPage} />
-        <Route path="/notes/new" component={NewNotePage} />
-        <Route path="/notes/:id" component={NotePage} />
+        <Route path="/notes/:noteId/create" component={CreateNotePage} />
+        <Route path="/notes/:noteId/edit" component={NotePage} />
         <Route path="/notebooks" component={NotebooksPage} />
         <Route path="/favorites" component={FavoritesPage} />
         <Route path="/tags" component={TagsPage} />

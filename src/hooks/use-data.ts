@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 interface UseDataProps<T> {
@@ -6,20 +7,31 @@ interface UseDataProps<T> {
   addFn: (item: T) => Promise<void>;
   updateFn: (item: T) => Promise<void>;
   deleteFn: (id: string) => Promise<void>;
+  singleItemQueryFn?: (id: string) => Promise<T>;
 }
 
-export const useData = <T>({
-  queryKey,
-  queryFn,
-  addFn,
-  updateFn,
-  deleteFn,
-}: UseDataProps<T>) => {
+export const useData = <T>(
+  {
+    queryKey,
+    queryFn,
+    addFn,
+    updateFn,
+    deleteFn,
+    singleItemQueryFn,
+  }: UseDataProps<T>,
+  itemId?: string
+) => {
   const queryClient = useQueryClient();
 
   const { data, error, isLoading } = useQuery({
     queryKey: [queryKey],
     queryFn,
+  });
+
+  const singleItemQuery = useQuery<T>({
+    queryKey: [queryKey, itemId],
+    queryFn: () => singleItemQueryFn!(itemId!),
+    enabled: !!singleItemQueryFn && !!itemId,
   });
 
   const addMutation = useMutation({
@@ -45,8 +57,9 @@ export const useData = <T>({
 
   return {
     items: data ?? [],
-    error,
-    isLoading,
+    singleItem: singleItemQuery.data,
+    error: error ?? singleItemQuery.error,
+    isLoading: isLoading || singleItemQuery.isLoading,
     addItem: addMutation.mutate,
     updateItem: updateMutation.mutate,
     deleteItem: deleteMutation.mutate,

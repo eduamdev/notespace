@@ -1,24 +1,35 @@
 import { useEffect, useState } from "react";
+import { useLocation, useParams } from "wouter";
 import { useDebounce } from "use-debounce";
 import { useNotes } from "@/hooks/use-notes";
-import { getNoteById } from "@/services/note-service";
 import EditorToolbar from "@/components/notes/editor-toolbar";
 import { EditorContent, mergeAttributes, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import Heading from "@tiptap/extension-heading";
 import { Note } from "@/models/note";
-import { generateUniqueId } from "@/lib/utils";
-import { useLocation } from "wouter";
 
-const NoteEditor = ({ noteId }: { noteId?: string }) => {
+interface NoteEditorProps {
+  note?: Note;
+}
+
+const NoteEditor = ({ note }: NoteEditorProps) => {
   const { addItem: addNote, updateItem: updateNote } = useNotes();
   const [title, setTitle] = useState("");
-  const [currentNote, setCurrentNote] = useState<Note>();
   const [initialTitle, setInitialTitle] = useState("");
   const [initialContent, setInitialContent] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [, navigate] = useLocation();
+
+  const { noteId } = useParams<{ noteId: string }>();
+
+  if (note) {
+    console.log(
+      `note provided: ${note.id}, ${note.title}, ${note.contentText}`
+    );
+  } else {
+    console.log(`new note: ${noteId}`);
+  }
 
   const editor = useEditor({
     extensions: [
@@ -60,28 +71,26 @@ const NoteEditor = ({ noteId }: { noteId?: string }) => {
   });
 
   useEffect(() => {
-    const fetchCurrentNote = async () => {
-      if (noteId) {
-        try {
-          const note = await getNoteById(noteId);
+    const fetchCurrentNote = () => {
+      if (editor) {
+        if (note) {
+          setTitle(note.title);
+          editor.commands.setContent(note.contentHTML);
 
-          if (note) {
-            setCurrentNote(note);
-            setInitialTitle(note.title);
-            setInitialContent(note.contentText);
-            if (editor) {
-              setTitle(note.title);
-              editor.commands.setContent(note.contentHTML);
-            }
-          }
-        } catch (error) {
-          setError("An error occurred while loading the note.");
+          setInitialTitle(note.title);
+          setInitialContent(note.contentHTML);
+        } else {
+          setTitle("");
+          editor.commands.clearContent();
+
+          setInitialTitle("");
+          setInitialContent("");
         }
       }
     };
 
-    void fetchCurrentNote();
-  }, [editor, noteId]);
+    fetchCurrentNote();
+  }, [editor, note, noteId]);
 
   const [debouncedTitle, { isPending: isDebouncedTitlePending }] = useDebounce(
     title,
@@ -92,60 +101,62 @@ const NoteEditor = ({ noteId }: { noteId?: string }) => {
     { isPending: isDebouncedEditorContentPending },
   ] = useDebounce(editor?.state.doc.content, 2000);
 
-  useEffect(() => {
-    const autosaveNote = () => {
-      if (
-        debouncedEditorContent &&
-        (debouncedTitle !== initialTitle ||
-          editor?.getText() !== initialContent)
-      ) {
-        try {
-          setError(null);
-          if (currentNote) {
-            updateNote({
-              ...currentNote,
-              title: title,
-              contentHTML: editor?.getHTML() ?? "",
-              contentText: editor?.getText() ?? "",
-              updatedAt: new Date(),
-            });
-          } else if (
-            debouncedTitle.trim() !== "" ||
-            editor?.getText().trim() !== ""
-          ) {
-            const newNoteId = generateUniqueId();
-            addNote({
-              id: newNoteId,
-              title: title,
-              contentHTML: editor?.getHTML() ?? "",
-              contentText: editor?.getText() ?? "",
-              tags: [],
-              isFavorite: false,
-              notebookId: "",
-              createdAt: new Date(),
-              updatedAt: new Date(),
-            });
-            navigate(`/notes/${newNoteId}`);
-          }
-        } catch (error) {
-          setError("An error occurred while saving the note.");
-        }
-      }
-    };
+  // useEffect(() => {
+  //   const autosaveNote = () => {
+  //     if (
+  //       debouncedEditorContent &&
+  //       (debouncedTitle !== initialTitle ||
+  //         editor?.getText() !== initialContent)
+  //     ) {
+  //       try {
+  //         setError(null);
+  //         if (note) {
+  //           updateNote({
+  //             ...note,
+  //             title: title,
+  //             contentHTML: editor?.getHTML() ?? "",
+  //             contentText: editor?.getText() ?? "",
+  //             updatedAt: new Date(),
+  //           });
+  //         } else if (
+  //           debouncedTitle.trim() !== "" ||
+  //           editor?.getText().trim() !== ""
+  //         ) {
+  //           if (noteId) {
+  //             addNote({
+  //               id: noteId,
+  //               title: title,
+  //               contentHTML: editor?.getHTML() ?? "",
+  //               contentText: editor?.getText() ?? "",
+  //               tags: [],
+  //               isFavorite: false,
+  //               notebookId: "",
+  //               createdAt: new Date(),
+  //               updatedAt: new Date(),
+  //             });
+  //             navigate(`/notes/${noteId}/edit`);
+  //           }
+  //         }
+  //       } catch (error) {
+  //         setError("An error occurred while saving the note.");
+  //       }
+  //     }
+  //   };
 
-    autosaveNote();
-  }, [
-    debouncedTitle,
-    currentNote,
-    updateNote,
-    title,
-    editor,
-    addNote,
-    navigate,
-    initialTitle,
-    initialContent,
-    debouncedEditorContent,
-  ]);
+  //   autosaveNote();
+  // }, [
+  //   debouncedTitle,
+  //   updateNote,
+  //   title,
+  //   editor,
+  //   addNote,
+  //   navigate,
+  //   initialTitle,
+  //   initialContent,
+  //   debouncedEditorContent,
+  //   noteId,
+  //   note,
+  // ]);
 
   return (
     <div className="grid size-full grid-cols-1 grid-rows-[72px_90px_1fr]">

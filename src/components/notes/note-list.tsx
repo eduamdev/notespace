@@ -4,6 +4,7 @@ import { useNotes } from "@/hooks/use-notes";
 import ListManager from "@/components/list-manager";
 import ItemList from "@/components/item-list";
 import NoteActions from "@/components/notes/note-actions";
+import { generateUniqueId } from "@/lib/utils";
 import { Note } from "@/models/note";
 
 const filterNotes = (notes: Note[], query: string) => {
@@ -42,7 +43,7 @@ export default function NoteList() {
           renderItem={(note) => (
             <div className="group/item grid grid-cols-[1fr_auto] items-start justify-center gap-4 px-4 hover:bg-neutral-50 lg:px-6">
               <Link
-                to={`/notes/${note.id}`}
+                to={`/notes/${note.id}/edit`}
                 className="relative block w-full overflow-hidden py-1"
               >
                 <p className="truncate font-semibold leading-6 text-black">
@@ -68,7 +69,7 @@ export default function NoteList() {
         />
       )}
       onAddItemClick={() => {
-        navigate("/notes/new");
+        navigate(`/notes/${generateUniqueId()}/create`);
       }}
       filterItems={filterNotes}
     />

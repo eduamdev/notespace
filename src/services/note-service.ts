@@ -9,9 +9,14 @@ import {
 import { STORE_NAMES } from "@/lib/constants";
 import { Note } from "@/models/note";
 
-export const getNoteById = async (id: string) => {
+export const getNoteById = async (noteId: string) => {
   await initDB();
-  return await getItem<Note>(STORE_NAMES.NOTES, id);
+  const note = await getItem<Note>(STORE_NAMES.NOTES, noteId);
+
+  if (!note) {
+    throw new Error("Note not found");
+  }
+  return note;
 };
 
 export const addNote = async (note: Note) => {
@@ -29,7 +34,7 @@ export const updateNote = async (note: Note) => {
   await updateItem(STORE_NAMES.NOTES, note);
 };
 
-export const deleteNote = async (id: string) => {
+export const deleteNote = async (noteId: string) => {
   await initDB();
-  await deleteItem(STORE_NAMES.NOTES, id);
+  await deleteItem(STORE_NAMES.NOTES, noteId);
 };
