@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "wouter";
-import { useDebounce } from "use-debounce";
+import { useDebouncedCallback } from "use-debounce";
 import { useNotes } from "@/hooks/use-notes";
 import EditorToolbar from "@/components/notes/editor-toolbar";
 import { EditorContent, mergeAttributes, useEditor } from "@tiptap/react";
@@ -15,21 +15,23 @@ interface NoteEditorProps {
 
 const NoteEditor = ({ note }: NoteEditorProps) => {
   const { addItem: addNote, updateItem: updateNote } = useNotes();
-  const [title, setTitle] = useState("");
-  const [initialTitle, setInitialTitle] = useState("");
-  const [initialContent, setInitialContent] = useState("");
+  const [title, setTitle] = useState(note?.title ?? "");
+  const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [, navigate] = useLocation();
 
   const { noteId } = useParams<{ noteId: string }>();
 
-  if (note) {
-    console.log(
-      `note provided: ${note.id}, ${note.title}, ${note.contentText}`
-    );
-  } else {
-    console.log(`new note: ${noteId}`);
-  }
+  const debouncedAutosave = useDebouncedCallback(() => {
+    try {
+      autosaveNote();
+      setError(null);
+    } catch (error) {
+      setError("An error occurred while saving the note.");
+    } finally {
+      setIsSaving(false);
+    }
+  }, 1000);
 
   const editor = useEditor({
     extensions: [
@@ -68,105 +70,55 @@ const NoteEditor = ({ note }: NoteEditorProps) => {
       }).configure({ levels: [2, 3] }),
     ],
     content: "",
+    onUpdate: () => {
+      setIsSaving(true);
+      debouncedAutosave();
+    },
   });
 
+  const autosaveNote = () => {
+    if (note) {
+      updateNote({
+        ...note,
+        title,
+        contentHTML: editor?.getHTML() ?? "",
+        contentText: editor?.getText() ?? "",
+        updatedAt: new Date(),
+      });
+    } else if (noteId) {
+      addNote({
+        id: noteId,
+        title,
+        contentHTML: editor?.getHTML() ?? "",
+        contentText: editor?.getText() ?? "",
+        tags: [],
+        isFavorite: false,
+        notebookId: "",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+      navigate(`/notes/${noteId}/edit`);
+    }
+  };
+
   useEffect(() => {
-    const fetchCurrentNote = () => {
-      if (editor) {
-        if (note) {
-          setTitle(note.title);
-          editor.commands.setContent(note.contentHTML);
-
-          setInitialTitle(note.title);
-          setInitialContent(note.contentHTML);
-        } else {
-          setTitle("");
-          editor.commands.clearContent();
-
-          setInitialTitle("");
-          setInitialContent("");
-        }
-      }
-    };
-
-    fetchCurrentNote();
-  }, [editor, note, noteId]);
-
-  const [debouncedTitle, { isPending: isDebouncedTitlePending }] = useDebounce(
-    title,
-    2000
-  );
-  const [
-    debouncedEditorContent,
-    { isPending: isDebouncedEditorContentPending },
-  ] = useDebounce(editor?.state.doc.content, 2000);
-
-  // useEffect(() => {
-  //   const autosaveNote = () => {
-  //     if (
-  //       debouncedEditorContent &&
-  //       (debouncedTitle !== initialTitle ||
-  //         editor?.getText() !== initialContent)
-  //     ) {
-  //       try {
-  //         setError(null);
-  //         if (note) {
-  //           updateNote({
-  //             ...note,
-  //             title: title,
-  //             contentHTML: editor?.getHTML() ?? "",
-  //             contentText: editor?.getText() ?? "",
-  //             updatedAt: new Date(),
-  //           });
-  //         } else if (
-  //           debouncedTitle.trim() !== "" ||
-  //           editor?.getText().trim() !== ""
-  //         ) {
-  //           if (noteId) {
-  //             addNote({
-  //               id: noteId,
-  //               title: title,
-  //               contentHTML: editor?.getHTML() ?? "",
-  //               contentText: editor?.getText() ?? "",
-  //               tags: [],
-  //               isFavorite: false,
-  //               notebookId: "",
-  //               createdAt: new Date(),
-  //               updatedAt: new Date(),
-  //             });
-  //             navigate(`/notes/${noteId}/edit`);
-  //           }
-  //         }
-  //       } catch (error) {
-  //         setError("An error occurred while saving the note.");
-  //       }
-  //     }
-  //   };
-
-  //   autosaveNote();
-  // }, [
-  //   debouncedTitle,
-  //   updateNote,
-  //   title,
-  //   editor,
-  //   addNote,
-  //   navigate,
-  //   initialTitle,
-  //   initialContent,
-  //   debouncedEditorContent,
-  //   noteId,
-  //   note,
-  // ]);
+    if (editor && note) {
+      editor.commands.setContent(note.contentHTML);
+      setTitle(note.title);
+    }
+  }, [editor, note]);
 
   return (
     <div className="grid size-full grid-cols-1 grid-rows-[72px_90px_1fr]">
       <div className="px-4 py-5 lg:px-6">
         <input
           type="text"
-          value={title}
           className="w-full truncate rounded-md  text-2xl font-semibold text-black outline-none placeholder:font-medium"
+          value={title}
           onChange={(e) => {
             setTitle(e.target.value);
+            setIsSaving(true);
+            debouncedAutosave();
           }}
           placeholder="Note title"
         />
@@ -181,12 +133,8 @@ const NoteEditor = ({ note }: NoteEditorProps) => {
             className="focus-visible:[&>.tiptap]:outline-none"
           />
         </div>
-        {(isDebouncedTitlePending() || isDebouncedEditorContentPending()) && (
-          <div className="my-4 text-sm text-gray-500">
-            {initialTitle === title && initialContent === editor?.getText()
-              ? `Loading...`
-              : `Saving...`}
-          </div>
+        {isSaving && (
+          <div className="my-4 text-sm text-neutral-500">Saving...</div>
         )}
         {error && <div className="my-4 text-sm text-red-500">{error}</div>}
       </div>

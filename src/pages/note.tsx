@@ -3,34 +3,12 @@ import { toast } from "sonner";
 import { ResponsiveLayout } from "@/components/layout/responsive-layout";
 import NoteList from "@/components/notes/note-list";
 import NoteEditor from "@/components/notes/note-editor";
-import { Note } from "@/models/note";
-import {
-  getNoteById,
-  getNotes,
-  addNote,
-  updateNote,
-  deleteNote,
-} from "@/services/note-service";
-import { useData } from "@/hooks/use-data";
+import { useNotes } from "@/hooks/use-notes";
 
 export function NotePage() {
   const { noteId } = useParams<{ noteId: string }>();
 
-  const {
-    singleItem: note,
-    error,
-    isLoading,
-  } = useData<Note>(
-    {
-      queryKey: "notes",
-      queryFn: getNotes,
-      addFn: addNote,
-      updateFn: updateNote,
-      deleteFn: deleteNote,
-      singleItemQueryFn: getNoteById,
-    },
-    noteId
-  );
+  const { singleItem: note, error, isLoading } = useNotes(noteId);
 
   if (error) {
     toast.error("Error loading note data");
