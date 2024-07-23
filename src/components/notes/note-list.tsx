@@ -31,6 +31,9 @@ export default function NoteList() {
     deleteItem(noteId);
   };
 
+  const sortByUpdatedAtDescending = (a: Note, b: Note) =>
+    b.updatedAt.getTime() - a.updatedAt.getTime();
+
   return (
     <ListManager<Note>
       title="Notes"
@@ -53,7 +56,7 @@ export default function NoteList() {
                   {note.contentText}
                 </p>
                 <p className="truncate text-[13px] leading-7 text-neutral-500">
-                  {formatDistanceToNow(new Date(note.createdAt), {
+                  {formatDistanceToNow(new Date(note.updatedAt), {
                     addSuffix: true,
                   })}
                 </p>
@@ -66,6 +69,7 @@ export default function NoteList() {
               />
             </div>
           )}
+          sortFn={sortByUpdatedAtDescending}
         />
       )}
       onAddItemClick={() => {
