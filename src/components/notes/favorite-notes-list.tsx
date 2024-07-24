@@ -4,6 +4,7 @@ import { useNotes } from "@/hooks/use-notes";
 import ListManager from "@/components/list-manager";
 import ItemList from "@/components/item-list";
 import NoteActions from "@/components/notes/note-actions";
+import { sortNotesByUpdatedAtDescending } from "@/lib/utils";
 import { Note } from "@/models/note";
 
 const filterFavoriteNotes = (notes: Note[], query: string) => {
@@ -17,7 +18,7 @@ const filterFavoriteNotes = (notes: Note[], query: string) => {
     );
 };
 
-function FavoriteNotes() {
+function FavoriteNotesList() {
   const { updateItem, deleteItem } = useNotes();
 
   const handleFavoriteClick = (note: Note) => {
@@ -41,11 +42,11 @@ function FavoriteNotes() {
         <ItemList
           items={notes}
           renderItem={(note) => (
-            <div className="grid grid-cols-[1fr_auto] items-start justify-center gap-2 px-4 hover:bg-neutral-50 lg:px-6">
-              <Link
-                to={`/notes/${note.id}`}
-                className="block w-full overflow-hidden py-1"
-              >
+            <Link
+              to={`/favorites/notes/${note.id}/edit`}
+              className="group/item grid grid-cols-[1fr_auto] items-start justify-center gap-4 px-4 hover:bg-neutral-50 lg:px-6"
+            >
+              <div className="relative block w-full overflow-hidden py-1">
                 <p className="truncate font-semibold leading-6 text-black">
                   {note.title}
                 </p>
@@ -53,18 +54,20 @@ function FavoriteNotes() {
                   {note.contentText}
                 </p>
                 <p className="truncate text-[13px] leading-7 text-neutral-500">
-                  {formatDistanceToNow(new Date(note.createdAt), {
+                  {formatDistanceToNow(new Date(note.updatedAt), {
                     addSuffix: true,
                   })}
                 </p>
-              </Link>
+                <div className="absolute inset-y-0 right-0 h-full w-8 bg-gradient-to-l from-white group-hover/item:from-neutral-50"></div>
+              </div>
               <NoteActions
                 note={note}
                 onFavoriteClick={handleFavoriteClick}
                 onDeleteClick={handleDeleteClick}
               />
-            </div>
+            </Link>
           )}
+          sortFn={sortNotesByUpdatedAtDescending}
         />
       )}
       filterItems={filterFavoriteNotes}
@@ -73,4 +76,4 @@ function FavoriteNotes() {
   );
 }
 
-export default FavoriteNotes;
+export default FavoriteNotesList;

@@ -65,7 +65,7 @@ function Sidenav() {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Link
-                    href="/favorites"
+                    href="/favorites/notes"
                     className="flex items-center justify-center p-1"
                   >
                     <StarIcon className="size-6 shrink-0 text-neutral-700" />

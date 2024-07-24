@@ -27,7 +27,7 @@ function MobileMenu({
           <Link href="/notebooks">Notebooks</Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href="/favorites">Favorites</Link>
+          <Link href="/favorites/notes">Favorites</Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link href="/tags">Tags</Link>
