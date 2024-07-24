@@ -4,7 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 interface UseDataProps<T> {
   queryKey: string;
   queryFn: () => Promise<T[]>;
-  addFn: (item: T) => Promise<void>;
+  createFn: (item: T) => Promise<void>;
   updateFn: (item: T) => Promise<void>;
   deleteFn: (id: string) => Promise<void>;
   singleItemQueryFn?: (id: string) => Promise<T>;
@@ -14,7 +14,7 @@ export const useData = <T>(
   {
     queryKey,
     queryFn,
-    addFn,
+    createFn,
     updateFn,
     deleteFn,
     singleItemQueryFn,
@@ -34,8 +34,8 @@ export const useData = <T>(
     enabled: !!singleItemQueryFn && !!itemId,
   });
 
-  const addMutation = useMutation({
-    mutationFn: addFn,
+  const createMutation = useMutation({
+    mutationFn: createFn,
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: [queryKey] });
     },
@@ -60,7 +60,7 @@ export const useData = <T>(
     singleItem: singleItemQuery.data,
     error: error ?? singleItemQuery.error,
     isLoading: isLoading || singleItemQuery.isLoading,
-    addItem: addMutation.mutate,
+    createItem: createMutation.mutate,
     updateItem: updateMutation.mutate,
     deleteItem: deleteMutation.mutate,
   };

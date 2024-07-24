@@ -1,5 +1,5 @@
 import {
-  addNote,
+  createNote,
   deleteNote,
   getNoteById,
   getNotes,
@@ -13,7 +13,7 @@ export const useNotes = (noteId?: string) =>
     {
       queryKey: "notes",
       queryFn: getNotes,
-      addFn: addNote,
+      createFn: createNote,
       updateFn: updateNote,
       deleteFn: deleteNote,
       singleItemQueryFn: getNoteById,

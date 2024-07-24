@@ -1,5 +1,5 @@
 import {
-  addNotebook,
+  createNotebook,
   deleteNotebook,
   getNotebooks,
   updateNotebook,
@@ -11,7 +11,7 @@ export const useNotebooks = () =>
   useData<Notebook>({
     queryKey: "notebooks",
     queryFn: getNotebooks,
-    addFn: addNotebook,
+    createFn: createNotebook,
     updateFn: updateNotebook,
     deleteFn: deleteNotebook,
   });

@@ -6,24 +6,24 @@ import { Tag } from "@/models/tag";
 import { cn, generateUniqueId } from "@/lib/utils";
 
 interface TagFormProps {
-  addItem: (item: Tag) => void;
+  createItem: (item: Tag) => void;
   onClose: () => void;
   isDrawer?: boolean;
 }
 
 export default function TagForm({
-  addItem,
+  createItem,
   onClose,
   isDrawer = false,
 }: TagFormProps) {
   const [tagName, setTagName] = useState("");
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleFormSubmit = (e: FormEvent) => {
     e.preventDefault();
 
     try {
       if (tagName.trim()) {
-        addItem({
+        createItem({
           id: generateUniqueId(),
           name: tagName,
           createdAt: new Date(),
@@ -32,7 +32,6 @@ export default function TagForm({
 
         setTagName("");
         onClose();
-        toast.success("Tag has been created");
       }
     } catch (error) {
       toast.error("Error creating tag");
@@ -41,21 +40,21 @@ export default function TagForm({
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleFormSubmit}>
       <div className={cn("pt-3", isDrawer && "px-4")}>
         <div className="flex flex-col">
-          <label htmlFor="txtTagName" className="sr-only">
-            Tag:
+          <label htmlFor="tagNameInput" className="sr-only">
+            Tag Name:
           </label>
           <input
             type="text"
-            id="txtTagName"
+            id="tagNameInput"
             value={tagName}
-            placeholder="Enter tag name"
-            className="h-10 w-full rounded-md border border-black/[0.12] px-3 shadow-sm outline-none placeholder:text-sm"
             onChange={(e) => {
               setTagName(e.target.value);
             }}
+            placeholder="Enter tag name"
+            className="h-10 w-full rounded-md border border-black/[0.12] px-3 shadow-sm outline-none placeholder:text-sm"
           />
         </div>
       </div>

@@ -1,6 +1,6 @@
 import {
   initDB,
-  addItem,
+  createItem,
   updateItem,
   getAllItems,
   deleteItem,
@@ -8,9 +8,9 @@ import {
 import { STORE_NAMES } from "@/lib/constants";
 import { Tag } from "@/models/tag";
 
-export const addTag = async (tag: Tag) => {
+export const createTag = async (tag: Tag) => {
   await initDB();
-  await addItem(STORE_NAMES.TAGS, tag);
+  await createItem(STORE_NAMES.TAGS, tag);
 };
 
 export const getTags = async () => {

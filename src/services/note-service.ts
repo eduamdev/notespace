@@ -1,6 +1,6 @@
 import {
   initDB,
-  addItem,
+  createItem,
   updateItem,
   getItem,
   getAllItems,
@@ -19,9 +19,9 @@ export const getNoteById = async (noteId: string) => {
   return note;
 };
 
-export const addNote = async (note: Note) => {
+export const createNote = async (note: Note) => {
   await initDB();
-  await addItem(STORE_NAMES.NOTES, note);
+  await createItem(STORE_NAMES.NOTES, note);
 };
 
 export const getNotes = async () => {

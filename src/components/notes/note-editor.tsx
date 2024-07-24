@@ -14,7 +14,7 @@ interface NoteEditorProps {
 }
 
 const NoteEditor = ({ note }: NoteEditorProps) => {
-  const { addItem: addNote, updateItem: updateNote } = useNotes();
+  const { createItem, updateItem } = useNotes();
   const [title, setTitle] = useState(note?.title ?? "");
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -78,7 +78,7 @@ const NoteEditor = ({ note }: NoteEditorProps) => {
 
   const autosaveNote = () => {
     if (note) {
-      updateNote({
+      updateItem({
         ...note,
         title,
         contentHTML: editor?.getHTML() ?? "",
@@ -86,7 +86,7 @@ const NoteEditor = ({ note }: NoteEditorProps) => {
         updatedAt: new Date(),
       });
     } else if (noteId) {
-      addNote({
+      createItem({
         id: noteId,
         title,
         contentHTML: editor?.getHTML() ?? "",
@@ -111,9 +111,12 @@ const NoteEditor = ({ note }: NoteEditorProps) => {
   return (
     <div className="grid size-full grid-cols-1 grid-rows-[72px_90px_1fr]">
       <div className="px-4 py-5 lg:px-6">
+        <label htmlFor="noteTitleInput" className="sr-only">
+          Note title:
+        </label>
         <input
           type="text"
-          className="w-full truncate rounded-md  text-2xl font-semibold text-black outline-none placeholder:font-medium"
+          id="noteTitleInput"
           value={title}
           onChange={(e) => {
             setTitle(e.target.value);
@@ -121,6 +124,7 @@ const NoteEditor = ({ note }: NoteEditorProps) => {
             debouncedAutosave();
           }}
           placeholder="Note title"
+          className="w-full truncate rounded-md  text-2xl font-semibold text-black outline-none placeholder:font-medium"
         />
       </div>
       <div className="overflow-hidden px-4 lg:-mx-7 lg:px-6">

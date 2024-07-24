@@ -27,7 +27,10 @@ export const initDB = async (): Promise<void> => {
   }
 };
 
-export const addItem = async <T>(storeName: string, item: T): Promise<void> => {
+export const createItem = async <T>(
+  storeName: string,
+  item: T
+): Promise<void> => {
   if (!db) throw new Error("DB is not initialized");
   const tx = db.transaction(storeName, "readwrite");
   const store = tx.objectStore(storeName);

@@ -26,17 +26,17 @@ interface ListManagerProps<T> {
   itemName: string;
   useItemsHook: () => {
     items: T[];
-    addItem: (item: T) => void;
+    createItem: (item: T) => void;
     error: Error | null;
     isLoading: boolean;
   };
   FormComponent?: React.ComponentType<{
-    addItem: (item: T) => void;
+    createItem: (item: T) => void;
     onClose: () => void;
     isDrawer?: boolean;
   }>;
   ListComponent: React.FC<{ items: T[] | undefined }>;
-  onAddItemClick?: () => void;
+  onCreateItemButtonClick?: () => void;
   filterItems?: (items: T[], query: string) => T[];
   noItemsMessage?: string;
 }
@@ -48,21 +48,21 @@ const ListManager = <T,>({
   useItemsHook,
   FormComponent,
   ListComponent,
-  onAddItemClick,
+  onCreateItemButtonClick,
   filterItems,
   noItemsMessage,
 }: ListManagerProps<T>) => {
-  const { items, addItem, error, isLoading } = useItemsHook();
-  const [query, setQuery] = useState("");
+  const { items, createItem, error, isLoading } = useItemsHook();
+  const [searchQuery, setSearchQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const isDesktop = useMediaQuery(DESKTOP_MEDIA_QUERY);
 
   const filteredItems = useMemo(
-    () => (filterItems ? filterItems(items, query) : items),
-    [items, query, filterItems]
+    () => (filterItems ? filterItems(items, searchQuery) : items),
+    [items, searchQuery, filterItems]
   );
 
-  const AddItemButton = forwardRef<
+  const CreateItemButton = forwardRef<
     HTMLButtonElement,
     ButtonHTMLAttributes<HTMLButtonElement>
   >((props, ref) => (
@@ -76,20 +76,20 @@ const ListManager = <T,>({
     </button>
   ));
 
-  AddItemButton.displayName = "AddItemButton";
+  CreateItemButton.displayName = "CreateItemButton";
 
-  const renderAddItemSection = () => {
-    if (!onAddItemClick && !FormComponent) return null;
+  const renderCreateItemSection = () => {
+    if (!onCreateItemButtonClick && !FormComponent) return null;
 
-    if (onAddItemClick) {
-      return <AddItemButton onClick={onAddItemClick} />;
+    if (onCreateItemButtonClick) {
+      return <CreateItemButton onClick={onCreateItemButtonClick} />;
     }
 
     if (FormComponent) {
       return isDesktop ? (
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
           <DialogTrigger asChild>
-            <AddItemButton />
+            <CreateItemButton />
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
@@ -99,7 +99,7 @@ const ListManager = <T,>({
               </DialogDescription>
             </DialogHeader>
             <FormComponent
-              addItem={addItem}
+              createItem={createItem}
               onClose={() => {
                 setIsModalOpen(false);
               }}
@@ -109,7 +109,7 @@ const ListManager = <T,>({
       ) : (
         <Drawer open={isModalOpen} onOpenChange={setIsModalOpen}>
           <DrawerTrigger asChild>
-            <AddItemButton />
+            <CreateItemButton />
           </DrawerTrigger>
           <DrawerContent>
             <DrawerHeader className="text-left">
@@ -119,7 +119,7 @@ const ListManager = <T,>({
               </DrawerDescription>
             </DrawerHeader>
             <FormComponent
-              addItem={addItem}
+              createItem={createItem}
               onClose={() => {
                 setIsModalOpen(false);
               }}
@@ -138,7 +138,7 @@ const ListManager = <T,>({
       <div className="flex h-[68px] items-center justify-between p-4 lg:px-6">
         <h1 className="text-lg font-semibold text-black">{title}</h1>
         <div className="flex items-center justify-center gap-4">
-          {renderAddItemSection()}
+          {renderCreateItemSection()}
         </div>
       </div>
       <div className="px-4 py-2 lg:px-6">
@@ -148,9 +148,9 @@ const ListManager = <T,>({
             type="text"
             placeholder={`Search ${itemName.toLowerCase()}s...`}
             className="outline-none placeholder:text-sm"
-            value={query}
+            value={searchQuery}
             onChange={(e) => {
-              setQuery(e.target.value);
+              setSearchQuery(e.target.value);
             }}
           />
         </button>
@@ -162,7 +162,7 @@ const ListManager = <T,>({
           <p className="px-4 py-2 lg:px-6">Error: {error.message}</p>
         ) : filteredItems.length === 0 ? (
           <p className="px-4 py-2 font-serif tracking-wide text-neutral-600 lg:px-6">
-            {!query
+            {!searchQuery
               ? noItemsMessage ??
                 `You haven't created any ${itemName.toLowerCase()}s yet. Add your first ${itemName.toLowerCase()}.`
               : `No results found. Adjust your search and try again.`}

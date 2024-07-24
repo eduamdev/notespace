@@ -76,7 +76,7 @@ export default function NoteList() {
           sortFn={sortNotesByUpdatedAtDescending}
         />
       )}
-      onAddItemClick={() => {
+      onCreateItemButtonClick={() => {
         navigate(`/notes/${generateUniqueId()}/create`);
       }}
       filterItems={filterNotes}

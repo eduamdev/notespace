@@ -6,24 +6,24 @@ import { Notebook } from "@/models/notebook";
 import { cn, generateUniqueId } from "@/lib/utils";
 
 interface NotebookFormProps {
-  addItem: (notebook: Notebook) => void;
+  createItem: (notebook: Notebook) => void;
   onClose: () => void;
   isDrawer?: boolean;
 }
 
 export default function NotebookForm({
-  addItem,
+  createItem,
   onClose,
   isDrawer = false,
 }: NotebookFormProps) {
   const [notebookName, setNotebookName] = useState("");
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleFormSubmit = (e: FormEvent) => {
     e.preventDefault();
 
     try {
       if (notebookName.trim()) {
-        addItem({
+        createItem({
           id: generateUniqueId(),
           name: notebookName,
           createdAt: new Date(),
@@ -32,7 +32,6 @@ export default function NotebookForm({
 
         setNotebookName("");
         onClose();
-        toast.success("Notebook has been created");
       }
     } catch (error) {
       toast.error("Error creating notebook");
@@ -41,21 +40,21 @@ export default function NotebookForm({
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleFormSubmit}>
       <div className={cn("pt-3", isDrawer && "px-4")}>
         <div className="flex flex-col">
-          <label htmlFor="txtNotebookName" className="sr-only">
-            Notebook:
+          <label htmlFor="notebookNameInput" className="sr-only">
+            Notebook Name:
           </label>
           <input
             type="text"
-            id="txtNotebookName"
+            id="notebookNameInput"
             value={notebookName}
-            placeholder="Enter notebook name"
-            className="h-10 w-full rounded-md border border-black/[0.12] px-3 shadow-sm outline-none placeholder:text-sm"
             onChange={(e) => {
               setNotebookName(e.target.value);
             }}
+            placeholder="Enter notebook name"
+            className="h-10 w-full rounded-md border border-black/[0.12] px-3 shadow-sm outline-none placeholder:text-sm"
           />
         </div>
       </div>
