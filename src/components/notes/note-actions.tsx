@@ -72,20 +72,22 @@ export default function NoteActions({
         </Tooltip>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Are you absolutely sure?</DialogTitle>
+            <DialogTitle>
+              Are you sure you want to delete this note?
+            </DialogTitle>
             <DialogDescription>
-              This action cannot be undone. Are you sure you want to permanently
-              delete this file from our servers?
+              This action is irreversible. Once deleted, this note will be
+              permanently removed. Do you want to proceed?
             </DialogDescription>
           </DialogHeader>
-          <DialogFooter>
+          <DialogFooter className="p-0">
             <button
               className="flex h-10 items-center justify-center rounded-lg border border-transparent bg-neutral-800 px-4 text-[15px] font-medium text-neutral-50"
               onClick={() => {
                 onDeleteClick(note.id);
               }}
             >
-              Confirm
+              Yes, delete permanently
             </button>
           </DialogFooter>
         </DialogContent>

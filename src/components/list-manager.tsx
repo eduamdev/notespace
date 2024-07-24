@@ -72,7 +72,7 @@ const ListManager = <T,>({
       {...props}
     >
       <PlusIcon className="inline-block size-4" />
-      <span className="pl-1.5 text-sm font-medium">{itemName}</span>
+      <span className="pl-1.5 text-sm font-medium">New {itemName}</span>
     </button>
   ));
 
@@ -93,7 +93,7 @@ const ListManager = <T,>({
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Create a new {itemName}</DialogTitle>
+              <DialogTitle>Create New {itemName}</DialogTitle>
               <DialogDescription className="sr-only">
                 {description}
               </DialogDescription>
@@ -113,7 +113,7 @@ const ListManager = <T,>({
           </DrawerTrigger>
           <DrawerContent>
             <DrawerHeader className="text-left">
-              <DrawerTitle>Create a new {itemName}</DrawerTitle>
+              <DrawerTitle>Create New {itemName}</DrawerTitle>
               <DrawerDescription className="sr-only">
                 {description}
               </DrawerDescription>

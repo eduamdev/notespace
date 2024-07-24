@@ -36,7 +36,7 @@ function FavoriteNotesList() {
     <ListManager<Note>
       title="Favorites"
       description=""
-      itemName="Favorite"
+      itemName="Favorite note"
       useItemsHook={useNotes}
       ListComponent={({ items: notes }) => (
         <ItemList

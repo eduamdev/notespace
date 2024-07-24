@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 import { toast } from "sonner";
-import { DialogClose } from "@/components/ui/dialog";
+import { DialogClose, DialogFooter } from "@/components/ui/dialog";
 import { DrawerClose, DrawerFooter } from "@/components/ui/drawer";
 import { Notebook } from "@/models/notebook";
 import { cn, generateUniqueId } from "@/lib/utils";
@@ -42,7 +42,7 @@ export default function NotebookForm({
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className={cn("py-5", isDrawer && "px-4")}>
+      <div className={cn("pt-3", isDrawer && "px-4")}>
         <div className="flex flex-col">
           <label htmlFor="txtNotebookName" className="sr-only">
             Notebook:
@@ -51,7 +51,7 @@ export default function NotebookForm({
             type="text"
             id="txtNotebookName"
             value={notebookName}
-            placeholder="Notebook"
+            placeholder="Enter notebook name"
             className="h-10 w-full rounded-md border border-black/[0.12] px-3 shadow-sm outline-none placeholder:text-sm"
             onChange={(e) => {
               setNotebookName(e.target.value);
@@ -66,7 +66,7 @@ export default function NotebookForm({
               type="submit"
               className="flex h-10 items-center justify-center rounded-lg border border-transparent bg-neutral-800 px-4 text-[15px] font-medium text-neutral-50"
             >
-              Create
+              Create Notebook
             </button>
             <DrawerClose asChild>
               <button
@@ -78,22 +78,24 @@ export default function NotebookForm({
             </DrawerClose>
           </DrawerFooter>
         ) : (
-          <div className="flex items-center justify-end gap-x-3.5 pt-4">
-            <DialogClose asChild>
+          <DialogFooter>
+            <div className="flex items-center justify-end gap-x-3.5">
+              <DialogClose asChild>
+                <button
+                  type="button"
+                  className="flex h-9 items-center justify-center rounded-lg border border-neutral-950/[0.12] bg-transparent px-4 text-neutral-700 shadow-sm"
+                >
+                  Cancel
+                </button>
+              </DialogClose>
               <button
-                type="button"
-                className="flex h-9 items-center justify-center rounded-lg border border-neutral-950/[0.12] bg-transparent px-4 text-neutral-700 shadow-sm"
+                type="submit"
+                className="flex h-9 items-center justify-center rounded-lg border border-transparent bg-neutral-800 px-4 font-medium text-neutral-50"
               >
-                Cancel
+                Create Notebook
               </button>
-            </DialogClose>
-            <button
-              type="submit"
-              className="flex h-9 items-center justify-center rounded-lg border border-transparent bg-neutral-800 px-4 font-medium text-neutral-50"
-            >
-              Create
-            </button>
-          </div>
+            </div>
+          </DialogFooter>
         )}
       </>
     </form>
