@@ -3,6 +3,16 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Separator } from "@/components/ui/separator";
 import { StarFilledIcon } from "@/components/icons/star-filled-icon";
 import { StarIcon } from "@/components/icons/star-icon";
 import { TrashIcon } from "@/components/icons/trash-icon";
@@ -20,21 +30,19 @@ export default function NoteActions({
   onDeleteClick,
 }: NoteActionsProps) {
   return (
-    <div className="z-10 mt-1 flex flex-row items-center justify-center gap-2 rounded-full border border-transparent bg-white px-1 group-hover/item:border-neutral-950/5">
+    <div className="absolute right-4 top-2 z-10 hidden flex-row items-center justify-center gap-1 rounded-full border border-neutral-950/[0.1] bg-white px-1 shadow-sm group-hover/item:flex">
       <Tooltip>
-        <TooltipTrigger asChild>
-          <button
-            className="group/favorite z-20 p-2"
-            onClick={() => {
-              onFavoriteClick(note);
-            }}
-          >
-            {note.isFavorite ? (
-              <StarFilledIcon className="size-[18px] shrink-0 text-yellow-400 transition-opacity group-hover/favorite:opacity-80" />
-            ) : (
-              <StarIcon className="size-[18px] shrink-0 text-neutral-700 transition-colors group-hover/favorite:text-yellow-500" />
-            )}
-          </button>
+        <TooltipTrigger
+          className="group/favorite z-20 p-2"
+          onClick={() => {
+            onFavoriteClick(note);
+          }}
+        >
+          {note.isFavorite ? (
+            <StarFilledIcon className="size-[18px] shrink-0 text-yellow-400 transition-opacity group-hover/favorite:opacity-80" />
+          ) : (
+            <StarIcon className="size-[18px] shrink-0 text-neutral-700 transition-colors group-hover/favorite:text-yellow-500" />
+          )}
         </TooltipTrigger>
         <TooltipContent
           sideOffset={24}
@@ -47,24 +55,41 @@ export default function NoteActions({
           </p>
         </TooltipContent>
       </Tooltip>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <button
-            className="group/delete z-20 p-2"
-            onClick={() => {
-              onDeleteClick(note.id);
-            }}
+      <Separator decorative orientation="vertical" className="h-[18px]" />
+      <Dialog>
+        <Tooltip>
+          <DialogTrigger asChild>
+            <TooltipTrigger className="group/delete z-20 p-2">
+              <TrashIcon className="size-[18px] shrink-0 text-neutral-700 transition-colors group-hover/delete:text-red-400" />
+            </TooltipTrigger>
+          </DialogTrigger>
+          <TooltipContent
+            sideOffset={24}
+            collisionPadding={{ top: 20, bottom: 20, left: 20 }}
           >
-            <TrashIcon className="size-[18px] shrink-0 text-neutral-700 transition-colors group-hover/delete:text-red-400" />
-          </button>
-        </TooltipTrigger>
-        <TooltipContent
-          sideOffset={24}
-          collisionPadding={{ top: 20, bottom: 20, left: 20 }}
-        >
-          <p>Delete note</p>
-        </TooltipContent>
-      </Tooltip>
+            <p>Delete note</p>
+          </TooltipContent>
+        </Tooltip>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Are you absolutely sure?</DialogTitle>
+            <DialogDescription>
+              This action cannot be undone. Are you sure you want to permanently
+              delete this file from our servers?
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <button
+              className="flex h-10 items-center justify-center rounded-lg border border-transparent bg-neutral-800 px-4 text-[15px] font-medium text-neutral-50"
+              onClick={() => {
+                onDeleteClick(note.id);
+              }}
+            >
+              Confirm
+            </button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
