@@ -1,3 +1,4 @@
+import { ButtonHTMLAttributes, forwardRef } from "react";
 import { Link, useLocation } from "wouter";
 import { formatDistanceToNow } from "date-fns";
 import { useNotes } from "@/hooks/use-notes";
@@ -5,17 +6,10 @@ import ListManager from "@/components/list-manager";
 import ItemList from "@/components/item-list";
 import NoteActions from "@/components/notes/note-actions";
 import { StarIcon } from "@/components/icons/star-icon";
-import { generateUniqueId, sortNotesByUpdatedAtDescending } from "@/lib/utils";
+import { PlusIcon } from "@/components/icons/plus-icon";
+import { filterNotes, sortNotesByUpdatedAtDescending } from "@/lib/notes";
+import { generateUniqueId } from "@/lib/utils";
 import { Note } from "@/models/note";
-
-const filterNotes = (notes: Note[], query: string) => {
-  if (!query) return notes;
-  return notes.filter(
-    (note) =>
-      note.title.toLowerCase().includes(query.toLowerCase()) ||
-      note.contentText.toLowerCase().includes(query.toLowerCase())
-  );
-};
 
 export default function NoteList() {
   const [, navigate] = useLocation();
@@ -32,11 +26,33 @@ export default function NoteList() {
     deleteItem(noteId);
   };
 
+  const AddNoteButton = forwardRef<
+    HTMLButtonElement,
+    ButtonHTMLAttributes<HTMLButtonElement>
+  >((props, ref) => (
+    <button
+      ref={ref}
+      className="flex h-9 items-center justify-center rounded-lg bg-cyan-600 pl-1.5 pr-2.5 text-cyan-50"
+      {...props}
+    >
+      <PlusIcon className="inline-block size-4" />
+      <span className="pl-1.5 text-sm font-medium">New Note</span>
+    </button>
+  ));
+
+  AddNoteButton.displayName = "AddNoteButton";
+
   return (
     <ListManager<Note>
       title="Notes"
-      description="Add a new note with a title and content."
       itemName="Note"
+      headerAction={
+        <AddNoteButton
+          onClick={() => {
+            navigate(`/notes/${generateUniqueId()}/create`);
+          }}
+        />
+      }
       useItemsHook={useNotes}
       ListComponent={({ items: notes }) => (
         <ItemList
@@ -76,9 +92,6 @@ export default function NoteList() {
           sortFn={sortNotesByUpdatedAtDescending}
         />
       )}
-      onCreateItemButtonClick={() => {
-        navigate(`/notes/${generateUniqueId()}/create`);
-      }}
       filterItems={filterNotes}
     />
   );

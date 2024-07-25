@@ -2,23 +2,18 @@ import { useNotebooks } from "@/hooks/use-notebooks";
 import ListManager from "@/components/list-manager";
 import ItemList from "@/components/item-list";
 import NotebookForm from "@/components/notes/notebook-form";
+import { filterNotebooks } from "@/lib/notes";
 import { Notebook } from "@/models/notebook";
 
-const filterNotebooks = (notebooks: Notebook[], query: string) => {
-  if (!query) return notebooks;
-  return notebooks.filter((notebook) =>
-    notebook.name.toLowerCase().includes(query.toLowerCase())
-  );
-};
-
 const NotebookList = () => {
+  const { createItem } = useNotebooks();
+
   return (
     <ListManager<Notebook>
       title="Notebooks"
-      description="Organize your notes by creating a new notebook with a meaningful title."
       itemName="Notebook"
       useItemsHook={useNotebooks}
-      FormComponent={NotebookForm}
+      headerAction={<NotebookForm createItem={createItem} />}
       ListComponent={({ items: notebooks }) => (
         <ItemList
           items={notebooks}

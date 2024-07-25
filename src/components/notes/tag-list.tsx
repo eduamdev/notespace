@@ -2,23 +2,18 @@ import { useTags } from "@/hooks/use-tags";
 import ListManager from "@/components/list-manager";
 import ItemList from "@/components/item-list";
 import TagForm from "@/components/notes/tag-form";
+import { filterTags } from "@/lib/notes";
 import { Tag } from "@/models/tag";
 
-const filterTags = (tags: Tag[], query: string) => {
-  if (!query) return tags;
-  return tags.filter((tag) =>
-    tag.name.toLowerCase().includes(query.toLowerCase())
-  );
-};
-
 const TagList = () => {
+  const { createItem } = useTags();
+
   return (
     <ListManager<Tag>
       title="Tags"
-      description="Add a tag to categorize your items."
       itemName="Tag"
       useItemsHook={useTags}
-      FormComponent={TagForm}
+      headerAction={<TagForm createItem={createItem} />}
       ListComponent={({ items: tags }) => (
         <ItemList
           items={tags}

@@ -4,19 +4,11 @@ import { useNotes } from "@/hooks/use-notes";
 import ListManager from "@/components/list-manager";
 import ItemList from "@/components/item-list";
 import NoteActions from "@/components/notes/note-actions";
-import { sortNotesByUpdatedAtDescending } from "@/lib/utils";
+import {
+  filterFavoriteNotes,
+  sortNotesByUpdatedAtDescending,
+} from "@/lib/notes";
 import { Note } from "@/models/note";
-
-const filterFavoriteNotes = (notes: Note[], query: string) => {
-  if (!query) return notes.filter((note) => note.isFavorite);
-  return notes
-    .filter((note) => note.isFavorite)
-    .filter(
-      (note) =>
-        note.title.toLowerCase().includes(query.toLowerCase()) ||
-        note.contentText.toLowerCase().includes(query.toLowerCase())
-    );
-};
 
 function FavoriteNotesList() {
   const { updateItem, deleteItem } = useNotes();
@@ -35,7 +27,6 @@ function FavoriteNotesList() {
   return (
     <ListManager<Note>
       title="Favorites"
-      description=""
       itemName="Favorite note"
       useItemsHook={useNotes}
       ListComponent={({ items: notes }) => (
