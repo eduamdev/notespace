@@ -5,7 +5,7 @@ import NoteList from "@/components/notes/note-list";
 import NoteEditor from "@/components/notes/note-editor";
 import { useNotes } from "@/hooks/use-notes";
 
-export function NotePage() {
+export function EditNotePage() {
   const { noteId } = useParams<{ noteId: string }>();
 
   const { singleItem: note, error, isLoading } = useNotes(noteId);

@@ -5,7 +5,7 @@ import FavoriteNotesList from "@/components/notes/favorite-notes-list";
 import NoteEditor from "@/components/notes/note-editor";
 import { useNotes } from "@/hooks/use-notes";
 
-export function FavoriteNotePage() {
+export function EditFavoriteNotePage() {
   const { noteId } = useParams<{ noteId: string }>();
 
   const { singleItem: note, error, isLoading } = useNotes(noteId);

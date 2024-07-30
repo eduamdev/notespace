@@ -2,11 +2,13 @@ import { Redirect, Route, Switch } from "wouter";
 
 import { NotesPage } from "@/pages/notes";
 import { CreateNotePage } from "@/pages/create-note";
-import { NotePage } from "@/pages/note";
+import { EditNotePage } from "@/pages/edit-note";
 import { NotebooksPage } from "@/pages/notebooks";
 import { NotebookPage } from "@/pages/notebook";
+import { CreateNotebookNotePage } from "@/pages/create-notebook-note";
+import { EditNotebookNotePage } from "@/pages/edit-notebook-note";
 import { FavoriteNotesPage } from "@/pages/favorite-notes";
-import { FavoriteNotePage } from "@/pages/favorite-note";
+import { EditFavoriteNotePage } from "@/pages/edit-favorite-note";
 import { TagsPage } from "@/pages/tags";
 
 function App() {
@@ -16,13 +18,21 @@ function App() {
         <Route path="/" component={() => <Redirect to="/notes" />} />
         <Route path="/notes" component={NotesPage} />
         <Route path="/notes/:noteId/create" component={CreateNotePage} />
-        <Route path="/notes/:noteId/edit" component={NotePage} />
+        <Route path="/notes/:noteId/edit" component={EditNotePage} />
         <Route path="/notebooks" component={NotebooksPage} />
         <Route path="/notebooks/:notebookId" component={NotebookPage} />
+        <Route
+          path="/notebooks/:notebookId/notes/:noteId/create"
+          component={CreateNotebookNotePage}
+        />
+        <Route
+          path="/notebooks/:notebookId/notes/:noteId/edit"
+          component={EditNotebookNotePage}
+        />
         <Route path="/favorites/notes" component={FavoriteNotesPage} />
         <Route
           path="/favorites/notes/:noteId/edit"
-          component={FavoriteNotePage}
+          component={EditFavoriteNotePage}
         />
         <Route path="/tags" component={TagsPage} />
 
