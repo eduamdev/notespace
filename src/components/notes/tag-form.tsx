@@ -41,9 +41,9 @@ export default function TagForm({ createItem }: TagFormProps) {
       title="Create Tag"
       description=""
       trigger={
-        <button className="flex h-9 items-center justify-center rounded-lg bg-cyan-600 pl-1.5 pr-2.5 text-cyan-50">
+        <button className="flex h-9 items-center justify-center rounded-lg bg-neutral-900 pl-1.5 pr-2.5 text-neutral-50">
           <PlusIcon className="inline-block size-4" />
-          <span className="pl-1.5 text-sm font-medium">Create Tag</span>
+          <span className="pl-1.5 text-sm font-medium">New Tag</span>
         </button>
       }
       onSubmit={handleSubmit}

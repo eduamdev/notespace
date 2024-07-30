@@ -32,7 +32,7 @@ export default function NoteList() {
   >((props, ref) => (
     <button
       ref={ref}
-      className="flex h-9 items-center justify-center rounded-lg bg-cyan-600 pl-1.5 pr-2.5 text-cyan-50"
+      className="flex h-9 items-center justify-center rounded-lg bg-neutral-900 pl-1.5 pr-2.5 text-neutral-50"
       {...props}
     >
       <PlusIcon className="inline-block size-4" />

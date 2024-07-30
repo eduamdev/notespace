@@ -4,6 +4,7 @@ import ItemList from "@/components/item-list";
 import NotebookForm from "@/components/notes/notebook-form";
 import { filterNotebooks } from "@/lib/notes";
 import { Notebook } from "@/models/notebook";
+import { Link } from "wouter";
 
 const NotebookList = () => {
   const { createItem } = useNotebooks();
@@ -18,14 +19,16 @@ const NotebookList = () => {
         <ItemList
           items={notebooks}
           renderItem={(notebook) => (
-            <div className="block w-full px-4 py-1 hover:bg-neutral-50 lg:px-6">
-              <p className="truncate font-semibold leading-6 text-black">
-                {notebook.name}
-              </p>
-              <p className="truncate text-[13px] leading-7 text-neutral-500">
-                0 notes
-              </p>
-            </div>
+            <Link href={`/notebooks/${notebook.id}`}>
+              <div className="block w-full px-4 py-1 hover:bg-neutral-50 lg:px-6">
+                <p className="truncate font-semibold leading-6 text-black">
+                  {notebook.name}
+                </p>
+                <p className="truncate text-[13px] leading-7 text-neutral-500">
+                  0 notes
+                </p>
+              </div>
+            </Link>
           )}
         />
       )}
