@@ -28,20 +28,20 @@ const NotebookManager = () => {
 
   return (
     <>
-      <div className="flex h-[68px] items-center justify-between p-4 lg:px-6">
+      <div className="flex h-[70px] items-center justify-between p-4 lg:px-6">
         <Link
           href="/notebooks"
           className="-ml-1.5 flex h-9 items-center justify-center gap-1 pr-2.5 align-middle text-neutral-700"
         >
           <ChevronLeftIcon className="size-4 shrink-0" />
-          <span className="text-[15px] leading-none">Back</span>
+          <span className="text-sm leading-none">Back</span>
         </Link>
         <Link
           href={`/notebooks/${notebookId}/notes/${generateUniqueId()}/create`}
-          className="flex h-9 items-center justify-center rounded-lg bg-neutral-900 pl-1.5 pr-2.5 text-neutral-50"
+          className="flex h-[38px] items-center justify-center rounded-lg gap-x-2 bg-neutral-900 pl-2.5 pr-3.5 text-neutral-50"
         >
-          <PlusIcon className="inline-block size-4" />
-          <span className="pl-1.5 text-sm font-medium">New Note</span>
+          <PlusIcon className="shrink-0 size-[18px]" />
+          <span className="text-sm font-medium">New Note</span>
         </Link>
       </div>
       <div></div>

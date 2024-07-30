@@ -41,9 +41,9 @@ export default function NotebookForm({ createItem }: NotebookFormProps) {
       title="Create Notebook"
       description=""
       trigger={
-        <button className="flex h-9 items-center justify-center rounded-lg bg-neutral-900 pl-1.5 pr-2.5 text-neutral-50">
-          <PlusIcon className="inline-block size-4" />
-          <span className="pl-1.5 text-sm font-medium">New Notebook</span>
+        <button className="flex h-[38px] items-center justify-center rounded-lg gap-x-2 bg-neutral-900 pl-2.5 pr-3.5 text-neutral-50">
+          <PlusIcon className="shrink-0 size-[18px]" />
+          <span className="text-sm font-medium">New Notebook</span>
         </button>
       }
       onSubmit={handleSubmit}

@@ -34,7 +34,7 @@ const ListManager = <T,>({
 
   return (
     <>
-      <div className="flex h-[68px] items-center justify-between p-4 lg:px-6">
+      <div className="flex h-[70px] items-center justify-between p-4 lg:px-6">
         <h1 className="text-lg font-semibold text-black">{title}</h1>
         {headerAction && (
           <div className="flex items-center justify-center gap-4">
