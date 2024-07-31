@@ -18,9 +18,12 @@ const NoteEditor = ({ note }: NoteEditorProps) => {
   const [title, setTitle] = useState(note?.title ?? "");
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [, navigate] = useLocation();
+  const [location, setLocation] = useLocation();
 
-  const { noteId } = useParams<{ noteId: string }>();
+  const { noteId, notebookId } = useParams<{
+    noteId: string;
+    notebookId: string;
+  }>();
 
   const debouncedAutosave = useDebouncedCallback(() => {
     try {
@@ -93,11 +96,11 @@ const NoteEditor = ({ note }: NoteEditorProps) => {
         contentText: editor?.getText() ?? "",
         tags: [],
         isFavorite: false,
-        notebookId: "",
+        notebookId: notebookId || "",
         createdAt: new Date(),
         updatedAt: new Date(),
       });
-      navigate(`/notes/${noteId}/edit`);
+      setLocation(location.split("/").slice(0, -1).join("/") + "/edit");
     }
   };
 
