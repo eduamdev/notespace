@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Link, useParams } from "wouter";
 import { toast } from "sonner";
 import { useNotebooks } from "@/hooks/use-notebooks";
@@ -12,10 +12,21 @@ import { SearchIcon } from "@/components/icons/search-icon";
 import { ChevronLeftIcon } from "@/components/icons/chevron-left-icon";
 import { EditIcon } from "@/components/icons/edit-icon";
 import { generateUniqueId } from "@/lib/utils";
+import ItemList from "../item-list";
+import { useNotes } from "@/hooks/use-notes";
+import {
+  filterNotesByNotebookId,
+  sortNotesByUpdatedAtDescending,
+} from "@/lib/notes";
+import { formatDistanceToNow } from "date-fns";
+import { StarIcon } from "../icons/star-icon";
+import NoteActions from "./note-actions";
+import { Note } from "@/models/note";
 
 const NotebookManager = () => {
   const { notebookId } = useParams<{ notebookId: string }>();
   const { singleItem: notebook, error } = useNotebooks(notebookId);
+  const { items: notes, updateItem, deleteItem } = useNotes();
   const [searchQuery, setSearchQuery] = useState("");
 
   if (error) {
@@ -25,6 +36,22 @@ const NotebookManager = () => {
       error
     );
   }
+
+  const handleFavoriteClick = (note: Note) => {
+    updateItem({
+      ...note,
+      isFavorite: !note.isFavorite,
+    });
+  };
+
+  const handleDeleteClick = (noteId: string) => {
+    deleteItem(noteId);
+  };
+
+  const filteredNotes = useMemo(
+    () => filterNotesByNotebookId(notes, notebookId, searchQuery),
+    [notebookId, notes, searchQuery]
+  );
 
   return (
     <>
@@ -78,7 +105,42 @@ const NotebookManager = () => {
         </button>
       </div>
       <div className="py-4">
-        <div className="px-4 py-2 lg:px-6">list or something</div>
+        <ItemList
+          items={filteredNotes}
+          renderItem={(note) => (
+            <div className="group/item relative">
+              <Link
+                to={`/notebooks/${notebookId}/notes/${note.id}/edit`}
+                className="grid grid-cols-1 items-start justify-center gap-4 px-4 hover:bg-neutral-50 lg:px-6"
+              >
+                <div className="relative block w-full overflow-hidden py-1">
+                  <p className="truncate font-semibold leading-6 text-black">
+                    {note.title}
+                  </p>
+                  <p className="line-clamp-2 text-[15px] text-neutral-600">
+                    {note.contentText}
+                  </p>
+                  <p className="flex items-center justify-start gap-x-3 truncate text-[13px] leading-7 text-neutral-500">
+                    <span>
+                      {formatDistanceToNow(new Date(note.updatedAt), {
+                        addSuffix: true,
+                      })}
+                    </span>
+                    {note.isFavorite && (
+                      <StarIcon className="size-[13px] shrink-0 text-neutral-600" />
+                    )}
+                  </p>
+                </div>
+              </Link>
+              <NoteActions
+                note={note}
+                onFavoriteClick={handleFavoriteClick}
+                onDeleteClick={handleDeleteClick}
+              />
+            </div>
+          )}
+          sortFn={sortNotesByUpdatedAtDescending}
+        />
       </div>
     </>
   );

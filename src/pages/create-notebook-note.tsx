@@ -5,7 +5,7 @@ import NoteEditor from "@/components/notes/note-editor";
 export function CreateNotebookNotePage() {
   return (
     <ResponsiveLayout
-      mobileMainContent={<NotebookManager />}
+      mobileMainContent={<NoteEditor />}
       desktopMainContent={<NotebookManager />}
       desktopSecondaryContent={<NoteEditor />}
     />

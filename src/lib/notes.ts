@@ -14,6 +14,22 @@ export const filterNotes = (notes: Note[], query: string) => {
   );
 };
 
+export const filterNotesByNotebookId = (
+  notes: Note[],
+  notebookId: string,
+  query: string
+) => {
+  return notes.filter((note) => {
+    const matchesNotebookId = !notebookId || note.notebookId === notebookId;
+    const matchesQuery =
+      !query ||
+      note.title.toLowerCase().includes(query.toLowerCase()) ||
+      note.contentText.toLowerCase().includes(query.toLowerCase());
+
+    return matchesNotebookId && matchesQuery;
+  });
+};
+
 export const filterFavoriteNotes = (notes: Note[], query: string) => {
   if (!query) return notes.filter((note) => note.isFavorite);
   return notes
