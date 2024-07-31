@@ -2,9 +2,7 @@
   "files.associations": {
     "*.css": "tailwindcss"
   },
-  "[typescript]": {
-    "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": "explicit"
-    }
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "always"
   }
 }

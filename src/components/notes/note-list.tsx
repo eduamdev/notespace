@@ -32,10 +32,10 @@ export default function NoteList() {
   >((props, ref) => (
     <button
       ref={ref}
-      className="flex h-[38px] items-center justify-center rounded-lg gap-x-2 bg-neutral-900 pl-2.5 pr-3.5 text-neutral-50"
+      className="flex h-[38px] items-center justify-center gap-x-2 rounded-lg bg-neutral-900 pl-2.5 pr-3.5 text-neutral-50"
       {...props}
     >
-      <PlusIcon className="shrink-0 size-[18px]" />
+      <PlusIcon className="size-[18px] shrink-0" />
       <span className="text-sm font-medium">New Note</span>
     </button>
   ));

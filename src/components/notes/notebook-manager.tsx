@@ -38,9 +38,9 @@ const NotebookManager = () => {
         </Link>
         <Link
           href={`/notebooks/${notebookId}/notes/${generateUniqueId()}/create`}
-          className="flex h-[38px] items-center justify-center rounded-lg gap-x-2 bg-neutral-900 pl-2.5 pr-3.5 text-neutral-50"
+          className="flex h-[38px] items-center justify-center gap-x-2 rounded-lg bg-neutral-900 pl-2.5 pr-3.5 text-neutral-50"
         >
-          <PlusIcon className="shrink-0 size-[18px]" />
+          <PlusIcon className="size-[18px] shrink-0" />
           <span className="text-sm font-medium">New Note</span>
         </Link>
       </div>
