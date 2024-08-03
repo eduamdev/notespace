@@ -55,7 +55,7 @@ export default function NoteActions({
           </p>
         </TooltipContent>
       </Tooltip>
-      <Separator decorative orientation="vertical" className="h-[18px]" />
+      <Separator orientation="vertical" className="h-[18px]" />
       <Dialog>
         <Tooltip>
           <DialogTrigger asChild>
