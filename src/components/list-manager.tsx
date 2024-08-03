@@ -1,5 +1,5 @@
 import { useState, useMemo, ReactNode } from "react";
-import { SearchIcon } from "@/components/icons/search-icon";
+import SearchInput from "@/components/ui/search-input";
 
 interface ListManagerProps<T> {
   title: string;
@@ -43,18 +43,12 @@ const ListManager = <T,>({
         )}
       </div>
       <div className="px-4 py-2 lg:px-6">
-        <button className="grid h-10 w-full grid-cols-[18px_1fr] items-center justify-center gap-x-3 rounded-md border border-black/[0.12] px-3 shadow-sm shadow-black/[0.08]">
-          <SearchIcon className="size-[18px] text-neutral-600" />
-          <input
-            type="text"
-            placeholder={`Search ${itemName.toLowerCase()}s...`}
-            className="outline-none placeholder:text-sm"
-            value={searchQuery}
-            onChange={(e) => {
-              setSearchQuery(e.target.value);
-            }}
-          />
-        </button>
+        <SearchInput
+          placeholder={`Search ${itemName.toLowerCase()}s...`}
+          value={searchQuery}
+          onChange={setSearchQuery}
+          ariaLabel={`Search ${itemName.toLowerCase()}s...`}
+        />
       </div>
       <div className="py-4">
         {isLoading ? (

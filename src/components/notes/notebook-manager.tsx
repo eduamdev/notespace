@@ -8,7 +8,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { PlusIcon } from "@/components/icons/plus-icon";
-import { SearchIcon } from "@/components/icons/search-icon";
 import { ChevronLeftIcon } from "@/components/icons/chevron-left-icon";
 import { EditIcon } from "@/components/icons/edit-icon";
 import { generateUniqueId } from "@/lib/utils";
@@ -22,6 +21,7 @@ import { formatDistanceToNow } from "date-fns";
 import { StarIcon } from "../icons/star-icon";
 import NoteActions from "./note-actions";
 import { Note } from "@/models/note";
+import SearchInput from "../ui/search-input";
 
 const NotebookManager = () => {
   const { notebookId } = useParams<{ notebookId: string }>();
@@ -90,18 +90,12 @@ const NotebookManager = () => {
         </div>
       </div>
       <div className="px-4 py-2 lg:px-6">
-        <button className="grid h-10 w-full grid-cols-[18px_1fr] items-center justify-center gap-x-3 rounded-md border border-black/[0.12] px-3 shadow-sm shadow-black/[0.08]">
-          <SearchIcon className="size-[18px] text-neutral-600" />
-          <input
-            type="text"
-            placeholder={`Search Notes...`}
-            className="outline-none placeholder:text-sm"
-            value={searchQuery}
-            onChange={(e) => {
-              setSearchQuery(e.target.value);
-            }}
-          />
-        </button>
+        <SearchInput
+          placeholder="Search notes..."
+          value={searchQuery}
+          onChange={setSearchQuery}
+          ariaLabel="Search notes"
+        />
       </div>
       <div className="py-4">
         <ItemList
