@@ -69,8 +69,8 @@ const TagManager = () => {
         </Link>
       </div>
       <div className="px-4 py-2 lg:px-6">
-        <div className="grid h-10 w-full grid-cols-[1fr_auto] items-center line-clamp-1 gap-x-2">
-          <h1 className="text-lg font-semibold truncate">{tag?.name}</h1>
+        <div className="line-clamp-1 grid h-10 w-full grid-cols-[1fr_auto] items-center gap-x-2">
+          <h1 className="truncate text-lg font-semibold">{tag?.name}</h1>
           <Tooltip>
             <TooltipTrigger asChild>
               <button>
@@ -81,7 +81,7 @@ const TagManager = () => {
               sideOffset={24}
               collisionPadding={{ top: 20, bottom: 20, left: 20 }}
             >
-              <p>Edit Notebook</p>
+              <p>Edit Tag</p>
             </TooltipContent>
           </Tooltip>
         </div>

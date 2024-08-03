@@ -26,10 +26,10 @@ const NotebookList = () => {
             return (
               <Link href={`/notebooks/${notebook.id}`}>
                 <div className="w-full px-4 py-1 hover:bg-neutral-50 lg:px-6">
-                  <p className="truncate font-semibold leading-6 text-black">
+                  <p className="truncate font-semibold text-black">
                     {notebook.name}
                   </p>
-                  <p className="truncate text-[13px] leading-7 text-neutral-500">
+                  <p className="truncate text-[13px] leading-6 text-neutral-500">
                     {noteCount} {noteCount === 1 ? "note" : "notes"}
                   </p>
                 </div>

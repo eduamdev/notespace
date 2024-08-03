@@ -68,7 +68,7 @@ export default function NoteList() {
                 className="grid grid-cols-1 items-start justify-center gap-4 px-4 hover:bg-neutral-50 lg:px-6"
               >
                 <div className="relative block w-full overflow-hidden py-1">
-                  <p className="truncate font-semibold leading-6 text-black">
+                  <p className="truncate font-semibold text-black">
                     {note.title}
                   </p>
                   <p className="line-clamp-2 text-[15px] text-neutral-600">
