@@ -1,13 +1,15 @@
+import { Link } from "wouter";
 import { useNotebooks } from "@/hooks/use-notebooks";
+import { useNotes } from "@/hooks/use-notes";
 import ListManager from "@/components/list-manager";
 import ItemList from "@/components/item-list";
 import NotebookForm from "@/components/notes/notebook-form";
-import { filterNotebooks } from "@/lib/notes";
+import { filterNotebooks, getNoteCountForNotebook } from "@/lib/notes";
 import { Notebook } from "@/models/notebook";
-import { Link } from "wouter";
 
 const NotebookList = () => {
   const { createItem } = useNotebooks();
+  const { items: notes } = useNotes();
 
   return (
     <ListManager<Notebook>
@@ -18,18 +20,22 @@ const NotebookList = () => {
       ListComponent={({ items: notebooks }) => (
         <ItemList
           items={notebooks}
-          renderItem={(notebook) => (
-            <Link href={`/notebooks/${notebook.id}`}>
-              <div className="block w-full px-4 py-1 hover:bg-neutral-50 lg:px-6">
-                <p className="truncate font-semibold leading-6 text-black">
-                  {notebook.name}
-                </p>
-                <p className="truncate text-[13px] leading-7 text-neutral-500">
-                  0 notes
-                </p>
-              </div>
-            </Link>
-          )}
+          renderItem={(notebook) => {
+            const noteCount = getNoteCountForNotebook(notebook, notes);
+
+            return (
+              <Link href={`/notebooks/${notebook.id}`}>
+                <div className="w-full px-4 py-1 hover:bg-neutral-50 lg:px-6">
+                  <p className="truncate font-semibold leading-6 text-black">
+                    {notebook.name}
+                  </p>
+                  <p className="truncate text-[13px] leading-7 text-neutral-500">
+                    {noteCount} {noteCount === 1 ? "note" : "notes"}
+                  </p>
+                </div>
+              </Link>
+            );
+          }}
         />
       )}
       filterItems={filterNotebooks}

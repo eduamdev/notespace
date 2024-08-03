@@ -30,6 +30,30 @@ export const filterNotesByNotebookId = (
   });
 };
 
+export const getNoteCountForNotebook = (notebook: Notebook, notes: Note[]) => {
+  return notes.filter((note) => note.notebookId === notebook.id).length;
+};
+
+export const filterNotesByTagId = (
+  notes: Note[],
+  tagId: string,
+  query: string
+) => {
+  return notes.filter((note) => {
+    const matchesTagId = !tagId || note.tags.includes(tagId);
+    const matchesQuery =
+      !query ||
+      note.title.toLowerCase().includes(query.toLowerCase()) ||
+      note.contentText.toLowerCase().includes(query.toLowerCase());
+
+    return matchesTagId && matchesQuery;
+  });
+};
+
+export const getNoteCountForTag = (tag: Tag, notes: Note[]) => {
+  return notes.filter((note) => note.tags.includes(tag.id)).length;
+};
+
 export const filterFavoriteNotes = (notes: Note[], query: string) => {
   if (!query) return notes.filter((note) => note.isFavorite);
   return notes

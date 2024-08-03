@@ -10,6 +10,9 @@ import { EditNotebookNotePage } from "@/pages/edit-notebook-note";
 import { FavoriteNotesPage } from "@/pages/favorite-notes";
 import { EditFavoriteNotePage } from "@/pages/edit-favorite-note";
 import { TagsPage } from "@/pages/tags";
+import { TagPage } from "@/pages/tag";
+import { CreateTagNotePage } from "@/pages/create-tag-note";
+import { EditTagNotePage } from "@/pages/edit-tag-note";
 
 function App() {
   return (
@@ -35,6 +38,15 @@ function App() {
           component={EditFavoriteNotePage}
         />
         <Route path="/tags" component={TagsPage} />
+        <Route path="/tags/:tagId" component={TagPage} />
+        <Route
+          path="/tags/:tagId/notes/:noteId/create"
+          component={CreateTagNotePage}
+        />
+        <Route
+          path="/tags/:tagId/notes/:noteId/edit"
+          component={EditTagNotePage}
+        />
 
         {/* Default Route (404) */}
         <Route>

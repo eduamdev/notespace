@@ -1,12 +1,15 @@
+import { Link } from "wouter";
 import { useTags } from "@/hooks/use-tags";
+import { useNotes } from "@/hooks/use-notes";
 import ListManager from "@/components/list-manager";
 import ItemList from "@/components/item-list";
 import TagForm from "@/components/notes/tag-form";
-import { filterTags } from "@/lib/notes";
+import { filterTags, getNoteCountForTag } from "@/lib/notes";
 import { Tag } from "@/models/tag";
 
 const TagList = () => {
   const { createItem } = useTags();
+  const { items: notes } = useNotes();
 
   return (
     <ListManager<Tag>
@@ -18,14 +21,16 @@ const TagList = () => {
         <ItemList
           items={tags}
           renderItem={(tag) => (
-            <div className="block w-full px-4 py-1 hover:bg-neutral-50 lg:px-6">
-              <p className="truncate font-semibold leading-6 text-black">
-                {tag.name}
-              </p>
-              <p className="truncate text-[13px] leading-7 text-neutral-500">
-                0 notes
-              </p>
-            </div>
+            <Link href={`/tags/${tag.id}`}>
+              <div className="grid w-full grid-cols-[1fr_auto] gap-x-4 px-4 py-1 hover:bg-neutral-50 lg:px-6">
+                <p className="truncate font-semibold leading-6 text-black">
+                  # {tag.name}
+                </p>
+                <p className="truncate text-[13px] leading-7 text-neutral-500">
+                  {getNoteCountForTag(tag, notes)}
+                </p>
+              </div>
+            </Link>
           )}
         />
       )}

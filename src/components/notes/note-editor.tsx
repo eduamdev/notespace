@@ -20,9 +20,10 @@ const NoteEditor = ({ note }: NoteEditorProps) => {
   const [error, setError] = useState<string | null>(null);
   const [location, setLocation] = useLocation();
 
-  const { noteId, notebookId } = useParams<{
+  const { noteId, notebookId, tagId } = useParams<{
     noteId: string;
     notebookId: string;
+    tagId: string;
   }>();
 
   const debouncedAutosave = useDebouncedCallback(() => {
@@ -94,7 +95,7 @@ const NoteEditor = ({ note }: NoteEditorProps) => {
         title,
         contentHTML: editor?.getHTML() ?? "",
         contentText: editor?.getText() ?? "",
-        tags: [],
+        tags: tagId ? [tagId] : [],
         isFavorite: false,
         notebookId: notebookId || "",
         createdAt: new Date(),
