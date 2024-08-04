@@ -1,7 +1,13 @@
 import { useMemo, useState } from "react";
 import { Link, useParams } from "wouter";
 import { toast } from "sonner";
+import { formatDistanceToNow } from "date-fns";
 import { useNotebooks } from "@/hooks/use-notebooks";
+import { useNotes } from "@/hooks/use-notes";
+import { Button } from "@/components/ui/button";
+import SearchInput from "@/components/ui/search-input";
+import ItemList from "@/components/item-list";
+import NoteActions from "@/components/notes/note-actions";
 import {
   Tooltip,
   TooltipContent,
@@ -10,18 +16,13 @@ import {
 import { PlusIcon } from "@/components/icons/plus-icon";
 import { ChevronLeftIcon } from "@/components/icons/chevron-left-icon";
 import { EditIcon } from "@/components/icons/edit-icon";
-import { generateUniqueId } from "@/lib/utils";
-import ItemList from "../item-list";
-import { useNotes } from "@/hooks/use-notes";
+import { StarIcon } from "@/components/icons/star-icon";
 import {
   filterNotesByNotebookId,
   sortNotesByUpdatedAtDescending,
 } from "@/lib/notes";
-import { formatDistanceToNow } from "date-fns";
-import { StarIcon } from "../icons/star-icon";
-import NoteActions from "./note-actions";
+import { generateUniqueId } from "@/lib/utils";
 import { Note } from "@/models/note";
-import SearchInput from "../ui/search-input";
 
 const NotebookManager = () => {
   const { notebookId } = useParams<{ notebookId: string }>();
@@ -76,9 +77,9 @@ const NotebookManager = () => {
           <h1 className="truncate text-lg font-semibold">{notebook?.name}</h1>
           <Tooltip>
             <TooltipTrigger asChild>
-              <button>
+              <Button size={"icon"} variant={"ghost"}>
                 <EditIcon className="h-[18px] shrink-0 text-neutral-700" />
-              </button>
+              </Button>
             </TooltipTrigger>
             <TooltipContent
               sideOffset={24}

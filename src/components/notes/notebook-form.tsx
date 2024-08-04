@@ -1,5 +1,6 @@
 import { FormEvent, useState } from "react";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 import ModalForm from "@/components/modal-form";
 import { PlusIcon } from "@/components/icons/plus-icon";
 import { generateUniqueId } from "@/lib/utils";
@@ -41,10 +42,9 @@ export default function NotebookForm({ createItem }: NotebookFormProps) {
       title="Create Notebook"
       description=""
       trigger={
-        <button className="flex h-[38px] items-center justify-center gap-x-2 rounded-lg bg-neutral-900 pl-2.5 pr-3.5 text-neutral-50">
-          <PlusIcon className="size-[18px] shrink-0" />
-          <span className="text-sm font-medium">New Notebook</span>
-        </button>
+        <Button>
+          <PlusIcon className="mr-2 size-[18px] shrink-0" /> New Notebook
+        </Button>
       }
       onSubmit={handleSubmit}
     >

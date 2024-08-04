@@ -1,8 +1,8 @@
-import { ButtonHTMLAttributes, forwardRef } from "react";
 import { Link, useLocation } from "wouter";
 import { formatDistanceToNow } from "date-fns";
 import { useNotes } from "@/hooks/use-notes";
 import { useTags } from "@/hooks/use-tags";
+import { Button } from "@/components/ui/button";
 import ListManager from "@/components/list-manager";
 import ItemList from "@/components/item-list";
 import NoteActions from "@/components/notes/note-actions";
@@ -30,32 +30,19 @@ export default function NoteList() {
     deleteItem(noteId);
   };
 
-  const AddNoteButton = forwardRef<
-    HTMLButtonElement,
-    ButtonHTMLAttributes<HTMLButtonElement>
-  >((props, ref) => (
-    <button
-      ref={ref}
-      className="flex h-[38px] items-center justify-center gap-x-2 rounded-lg bg-neutral-900 pl-2.5 pr-3.5 text-neutral-50"
-      {...props}
-    >
-      <PlusIcon className="size-[18px] shrink-0" />
-      <span className="text-sm font-medium">New Note</span>
-    </button>
-  ));
-
-  AddNoteButton.displayName = "AddNoteButton";
-
   return (
     <ListManager<Note>
       title="Notes"
       itemName="Note"
       headerAction={
-        <AddNoteButton
+        <Button
           onClick={() => {
             navigate(`/notes/${generateUniqueId()}/create`);
           }}
-        />
+        >
+          <PlusIcon className="mr-2 size-[18px] shrink-0" />
+          New Note
+        </Button>
       }
       useItemsHook={useNotes}
       ListComponent={({ items: notes }) => (

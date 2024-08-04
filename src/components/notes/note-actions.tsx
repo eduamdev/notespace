@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
@@ -81,14 +82,13 @@ export default function NoteActions({
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="p-0">
-            <button
-              className="flex h-10 items-center justify-center rounded-lg border border-transparent bg-neutral-800 px-4 text-[15px] font-medium text-neutral-50"
+            <Button
               onClick={() => {
                 onDeleteClick(note.id);
               }}
             >
               Yes, delete permanently
-            </button>
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

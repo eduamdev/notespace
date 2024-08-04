@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { useMediaQuery } from "@/hooks/use-media-query";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -49,29 +50,19 @@ export default function ModalForm({
       <div className={cn("pt-3", !isDesktop && "px-4")}>{children}</div>
       {isDesktop ? (
         <DialogFooter>
-          <div className="flex items-center justify-end gap-x-3.5">
-            <DialogClose className="flex h-9 items-center justify-center rounded-lg border border-neutral-950/[0.12] bg-transparent px-4 text-neutral-700 shadow-sm">
-              Cancel
-            </DialogClose>
-            <button
-              type="submit"
-              className="flex h-9 items-center justify-center rounded-lg border border-transparent bg-neutral-800 px-4 font-medium text-neutral-50"
-            >
-              {title}
-            </button>
+          <div className="flex items-center justify-end gap-x-2.5">
+            <Button variant="outline" asChild>
+              <DialogClose>Cancel</DialogClose>
+            </Button>
+            <Button type="submit">{title}</Button>
           </div>
         </DialogFooter>
       ) : (
         <DrawerFooter>
-          <button
-            type="submit"
-            className="flex h-10 items-center justify-center rounded-lg border border-transparent bg-neutral-800 px-4 text-[15px] font-medium text-neutral-50"
-          >
-            {title}
-          </button>
-          <DrawerClose className="flex h-10 items-center justify-center rounded-lg border border-neutral-950/[0.12] bg-transparent px-4 text-[15px] text-neutral-700 shadow-sm">
-            Cancel
-          </DrawerClose>
+          <Button type="submit">{title}</Button>
+          <Button variant={"outline"} asChild>
+            <DrawerClose>Cancel</DrawerClose>
+          </Button>
         </DrawerFooter>
       )}
     </form>
