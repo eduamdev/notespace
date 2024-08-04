@@ -82,7 +82,7 @@ const NotebookManager = () => {
               </Button>
             </TooltipTrigger>
             <TooltipContent
-              sideOffset={24}
+              sideOffset={6}
               collisionPadding={{ top: 20, bottom: 20, left: 20 }}
             >
               <p>Edit Notebook</p>
