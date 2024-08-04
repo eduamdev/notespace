@@ -1,4 +1,4 @@
-import { FC, ReactNode } from "react";
+import { ReactNode } from "react";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import {
   Dialog,
@@ -7,6 +7,7 @@ import {
   DialogTitle,
   DialogDescription,
   DialogTrigger,
+  DialogFooter,
 } from "@/components/ui/dialog";
 import {
   Drawer,
@@ -15,27 +16,34 @@ import {
   DrawerTitle,
   DrawerDescription,
   DrawerTrigger,
+  DrawerFooter,
 } from "@/components/ui/drawer";
 import { DESKTOP_MEDIA_QUERY } from "@/lib/constants";
 
 interface ResponsiveModalProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
   trigger: ReactNode;
   title: string;
   description?: string;
   children: ReactNode;
+  footer?: ReactNode;
 }
 
-const ResponsiveModal: FC<ResponsiveModalProps> = ({
+const ResponsiveModal = ({
+  open,
+  onOpenChange,
   trigger,
   title,
   description,
   children,
-}) => {
+  footer,
+}: ResponsiveModalProps) => {
   const isDesktop = useMediaQuery(DESKTOP_MEDIA_QUERY);
 
   if (isDesktop) {
     return (
-      <Dialog>
+      <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogTrigger asChild>{trigger}</DialogTrigger>
         <DialogContent>
           <DialogHeader>
@@ -45,20 +53,22 @@ const ResponsiveModal: FC<ResponsiveModalProps> = ({
             )}
           </DialogHeader>
           {children}
+          {footer && <DialogFooter>{footer}</DialogFooter>}
         </DialogContent>
       </Dialog>
     );
   }
 
   return (
-    <Drawer>
+    <Drawer open={open} onOpenChange={onOpenChange}>
       <DrawerTrigger asChild>{trigger}</DrawerTrigger>
       <DrawerContent>
         <DrawerHeader>
           <DrawerTitle>{title}</DrawerTitle>
           {description && <DrawerDescription>{description}</DrawerDescription>}
         </DrawerHeader>
-        {children}
+        <div className="px-4">{children}</div>
+        {footer && <DrawerFooter>{footer}</DrawerFooter>}
       </DrawerContent>
     </Drawer>
   );

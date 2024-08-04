@@ -72,12 +72,12 @@ export default function NoteList() {
           <div className="px-4 lg:px-6">
             {isLoading && <p className="py-2">Loading...</p>}
             {error && <p className="py-2">Error: {error.message}</p>}
-            {searchQuery && !notes.length && (
+            {searchQuery && !filteredNotes.length && (
               <p className="py-2 font-serif tracking-wide text-neutral-600">
                 No results found. Adjust your search and try again.
               </p>
             )}
-            {!searchQuery && !notes.length && (
+            {!searchQuery && !filteredNotes.length && (
               <p className="py-2 font-serif tracking-wide text-neutral-600">
                 You haven&apos;t created any notes yet. Add your first note
               </p>

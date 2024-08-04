@@ -1,33 +1,33 @@
 import { FormEvent, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import ModalForm from "@/components/modal-form";
-import { PlusIcon } from "@/components/icons/plus-icon";
 import { generateUniqueId } from "@/lib/utils";
-import { Tag } from "@/models/tag";
+import { useTags } from "@/hooks/use-tags";
 
 interface TagFormProps {
-  createItem: (item: Tag) => void;
+  onSuccess?: () => void;
 }
 
-export default function TagForm({ createItem }: TagFormProps) {
+export default function TagForm({ onSuccess }: TagFormProps) {
+  const { createItem: createTag } = useTags();
   const [tagName, setTagName] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
     try {
       if (tagName.trim()) {
-        createItem({
+        createTag({
           id: generateUniqueId(),
           name: tagName,
           createdAt: new Date(),
           updatedAt: new Date(),
-        } as Tag);
+        });
 
         setTagName("");
-        setIsModalOpen(false);
+        if (onSuccess) {
+          onSuccess();
+        }
       }
     } catch (error) {
       toast.error("Error creating tag");
@@ -36,18 +36,7 @@ export default function TagForm({ createItem }: TagFormProps) {
   };
 
   return (
-    <ModalForm
-      open={isModalOpen}
-      onOpenChange={setIsModalOpen}
-      title="Create Tag"
-      description=""
-      trigger={
-        <Button>
-          <PlusIcon className="mr-2 size-[18px] shrink-0" /> New Tag
-        </Button>
-      }
-      onSubmit={handleSubmit}
-    >
+    <form onSubmit={handleSubmit}>
       <div className="flex flex-col">
         <label htmlFor="tagNameInput" className="sr-only">
           Tag Name:
@@ -63,6 +52,11 @@ export default function TagForm({ createItem }: TagFormProps) {
           }}
         />
       </div>
-    </ModalForm>
+      <div className="mt-auto flex flex-col items-center gap-2 py-4 lg:flex-row lg:justify-end lg:pb-0">
+        <Button type="submit" className="w-full lg:w-auto">
+          Create Tag
+        </Button>
+      </div>
+    </form>
   );
 }
