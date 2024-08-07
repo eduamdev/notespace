@@ -103,6 +103,7 @@ const NotebookDetails = () => {
                 description="Update your notebook's name to better reflect its contents and purpose."
               >
                 <NotebookForm
+                  notebook={notebook}
                   onSuccess={() => {
                     setIsModalOpen(false);
                   }}

@@ -3,13 +3,15 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { generateUniqueId } from "@/lib/utils";
 import { useTags } from "@/hooks/use-tags";
+import { Tag } from "@/models/tag";
 
 interface TagFormProps {
+  tag?: Tag;
   onSuccess?: () => void;
 }
 
-export default function TagForm({ onSuccess }: TagFormProps) {
-  const { createItem: createTag } = useTags();
+export default function TagForm({ tag, onSuccess }: TagFormProps) {
+  const { createItem, updateItem } = useTags(tag ? tag.name : "");
   const [tagName, setTagName] = useState("");
 
   const handleSubmit = (e: FormEvent) => {
@@ -17,12 +19,20 @@ export default function TagForm({ onSuccess }: TagFormProps) {
 
     try {
       if (tagName.trim()) {
-        createTag({
-          id: generateUniqueId(),
-          name: tagName,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        });
+        if (tag) {
+          updateItem({
+            ...tag,
+            name: tagName,
+            updatedAt: new Date(),
+          });
+        } else {
+          createItem({
+            id: generateUniqueId(),
+            name: tagName,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          });
+        }
 
         setTagName("");
         if (onSuccess) {
@@ -30,8 +40,8 @@ export default function TagForm({ onSuccess }: TagFormProps) {
         }
       }
     } catch (error) {
-      toast.error("Error creating tag");
-      console.error("Error creating tag:", error);
+      toast.error(`Error ${tag ? "updating" : "saving"} tag`);
+      console.error(`Error ${tag ? "updating" : "saving"} tag:`, error);
     }
   };
 
@@ -54,7 +64,7 @@ export default function TagForm({ onSuccess }: TagFormProps) {
       </div>
       <div className="mt-auto flex flex-col items-center gap-2 py-4 lg:flex-row lg:justify-end lg:pb-0">
         <Button type="submit" className="w-full lg:w-auto">
-          Create Tag
+          {tag ? `Edit Tag` : `Create Tag`}
         </Button>
       </div>
     </form>

@@ -95,9 +95,10 @@ const TagDetails = () => {
                   </Button>
                 }
                 title={"Edit Tag"}
-                description="Update your notebook's name to better reflect its contents and purpose."
+                description="Update the name of your tag to better reflect the content it organizes."
               >
                 <TagForm
+                  tag={tag}
                   onSuccess={() => {
                     setIsModalOpen(false);
                   }}
