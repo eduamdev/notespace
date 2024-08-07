@@ -85,7 +85,7 @@ const NotebookDetails = () => {
 
           <div className="p-4 lg:px-6">
             <div className="line-clamp-1 grid h-10 w-full grid-cols-[1fr_auto] items-center gap-x-2">
-              <div className="flex items-center justify-start gap-x-1 truncate">
+              <div className="flex items-center justify-start gap-x-1.5 truncate">
                 <NotebookIcon className="size-[18px] shrink-0 text-neutral-600" />
                 <h1 className="truncate text-lg font-semibold">
                   {notebook?.name}
