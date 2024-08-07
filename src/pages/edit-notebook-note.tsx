@@ -1,6 +1,6 @@
 import { ResponsiveLayout } from "@/components/layout/responsive-layout";
 import NoteEditor from "@/components/notes/note-editor";
-import NotebookManager from "@/components/notes/notebook-manager";
+import NotebookDetails from "@/components/notes/notebook-details";
 import { useNotes } from "@/hooks/use-notes";
 import { toast } from "sonner";
 import { useParams } from "wouter";
@@ -18,7 +18,7 @@ export function EditNotebookNotePage() {
   return (
     <ResponsiveLayout
       mobileMainContent={isLoading ? "loading..." : <NoteEditor note={note} />}
-      desktopMainContent={<NotebookManager />}
+      desktopMainContent={<NotebookDetails />}
       desktopSecondaryContent={
         isLoading ? "loading..." : <NoteEditor note={note} />
       }

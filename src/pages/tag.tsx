@@ -1,11 +1,11 @@
 import { ResponsiveLayout } from "@/components/layout/responsive-layout";
-import TagManager from "@/components/notes/tag-manager";
+import TagDetails from "@/components/notes/tag-details";
 
 export function TagPage() {
   return (
     <ResponsiveLayout
-      mobileMainContent={<TagManager />}
-      desktopMainContent={<TagManager />}
+      mobileMainContent={<TagDetails />}
+      desktopMainContent={<TagDetails />}
     />
   );
 }

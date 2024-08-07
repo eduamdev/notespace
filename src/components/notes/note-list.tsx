@@ -3,7 +3,7 @@ import { formatDistanceToNow } from "date-fns";
 import { useNotes } from "@/hooks/use-notes";
 import { useTags } from "@/hooks/use-tags";
 import { Button } from "@/components/ui/button";
-import ItemList from "@/components/item-list";
+import ItemList from "@/components/notes/item-list";
 import NoteActions from "@/components/notes/note-actions";
 import { ClockIcon } from "@/components/icons/clock-icon";
 import { StarIcon } from "@/components/icons/star-icon";
@@ -12,7 +12,7 @@ import { HashIcon } from "@/components/icons/hash-icon";
 import { filterNotes, sortNotesByUpdatedAtDescending } from "@/lib/notes";
 import { generateUniqueId } from "@/lib/utils";
 import { Note } from "@/models/note";
-import { ListView } from "../list-view";
+import { ListView } from "./list-view";
 import SearchInput from "../ui/search-input";
 import { useMemo, useState } from "react";
 

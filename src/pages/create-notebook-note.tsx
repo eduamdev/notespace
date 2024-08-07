@@ -1,12 +1,12 @@
 import { ResponsiveLayout } from "@/components/layout/responsive-layout";
-import NotebookManager from "@/components/notes/notebook-manager";
+import NotebookDetails from "@/components/notes/notebook-details";
 import NoteEditor from "@/components/notes/note-editor";
 
 export function CreateNotebookNotePage() {
   return (
     <ResponsiveLayout
       mobileMainContent={<NoteEditor />}
-      desktopMainContent={<NotebookManager />}
+      desktopMainContent={<NotebookDetails />}
       desktopSecondaryContent={<NoteEditor />}
     />
   );

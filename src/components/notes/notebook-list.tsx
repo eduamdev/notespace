@@ -1,10 +1,10 @@
 import { Link } from "wouter";
 import { useNotebooks } from "@/hooks/use-notebooks";
 import { useNotes } from "@/hooks/use-notes";
-import ItemList from "@/components/item-list";
+import ItemList from "@/components/notes/item-list";
 import NotebookForm from "@/components/notes/notebook-form";
 import { filterNotebooks, getNoteCountForNotebook } from "@/lib/notes";
-import { ListView } from "../list-view";
+import { ListView } from "./list-view";
 import { Button } from "../ui/button";
 import ResponsiveModal from "../ui/responsive-modal";
 import { PlusIcon } from "../icons/plus-icon";

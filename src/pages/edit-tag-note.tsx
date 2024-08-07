@@ -1,6 +1,6 @@
 import { ResponsiveLayout } from "@/components/layout/responsive-layout";
 import NoteEditor from "@/components/notes/note-editor";
-import TagManager from "@/components/notes/tag-manager";
+import TagDetails from "@/components/notes/tag-details";
 import { useNotes } from "@/hooks/use-notes";
 import { toast } from "sonner";
 import { useParams } from "wouter";
@@ -18,7 +18,7 @@ export function EditTagNotePage() {
   return (
     <ResponsiveLayout
       mobileMainContent={isLoading ? "loading..." : <NoteEditor note={note} />}
-      desktopMainContent={<TagManager />}
+      desktopMainContent={<TagDetails />}
       desktopSecondaryContent={
         isLoading ? "loading..." : <NoteEditor note={note} />
       }

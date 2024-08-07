@@ -1,19 +1,20 @@
 import { Link } from "wouter";
 import { formatDistanceToNow } from "date-fns";
 import { useNotes } from "@/hooks/use-notes";
-import ItemList from "@/components/item-list";
+import ItemList from "@/components/notes/item-list";
 import NoteActions from "@/components/notes/note-actions";
 import {
   filterFavoriteNotes,
   sortNotesByUpdatedAtDescending,
 } from "@/lib/notes";
 import { Note } from "@/models/note";
-import { ListView } from "../list-view";
+import { ListView } from "./list-view";
 import SearchInput from "../ui/search-input";
 import { useMemo, useState } from "react";
 import { ClockIcon } from "../icons/clock-icon";
 import { HashIcon } from "../icons/hash-icon";
 import { useTags } from "@/hooks/use-tags";
+import { StarIcon } from "../icons/star-icon";
 
 function FavoriteNotesList() {
   const { items: notes, error, isLoading, updateItem, deleteItem } = useNotes();
@@ -96,6 +97,9 @@ function FavoriteNotesList() {
                           addSuffix: true,
                         })}
                       </span>
+                      {note.isFavorite && (
+                        <StarIcon className="size-[13px] shrink-0" />
+                      )}
                       <span className="inline-flex items-center justify-center gap-x-2">
                         {note.tags.map((tagId) => {
                           const tag = tags.find((tag) => tag.id === tagId);
