@@ -89,7 +89,7 @@ const NoteEditor = ({ note }: NoteEditorProps) => {
         contentText: editor?.getText() ?? "",
         updatedAt: new Date(),
       });
-    } else if (noteId) {
+    } else {
       createItem({
         id: noteId,
         title,

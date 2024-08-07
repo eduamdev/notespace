@@ -89,12 +89,16 @@ export default function NoteList() {
               <div className="group/item relative">
                 <Link
                   to={`/notes/${note.id}/edit`}
-                  className="grid grid-cols-1 items-start justify-center gap-4 px-4 hover:bg-neutral-50 lg:px-6"
+                  className="grid  grid-cols-1 items-start justify-center gap-4 px-4 hover:bg-neutral-50 lg:px-6"
                 >
                   <div className="relative block w-full overflow-hidden py-1">
-                    <p className="truncate font-semibold text-black">
-                      {note.title}
-                    </p>
+                    {note.title ? (
+                      <p className="truncate font-semibold text-black">
+                        {note.title}
+                      </p>
+                    ) : (
+                      <p className="truncate font-serif">[Untitled Note]</p>
+                    )}
                     <p className="line-clamp-2 text-[15px] text-neutral-600">
                       {note.contentText}
                     </p>
