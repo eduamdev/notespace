@@ -10,6 +10,8 @@ import ResponsiveModal from "../ui/responsive-modal";
 import { PlusIcon } from "../icons/plus-icon";
 import SearchInput from "../ui/search-input";
 import { useMemo, useState } from "react";
+import { AlertSquareIcon } from "../icons/alert-square-icon";
+import { Skeleton } from "../ui/skeleton";
 
 const NotebookList = () => {
   const { items: notebooks, isLoading, error } = useNotebooks();
@@ -63,40 +65,54 @@ const NotebookList = () => {
       }
       body={
         <div className="py-4">
-          <div className="px-4 lg:px-6">
-            {isLoading && <p className="py-2">Loading...</p>}
-            {error && <p className="py-2">Error: {error.message}</p>}
-            {searchQuery && !filteredNotebooks.length && (
-              <p className="py-2 font-serif tracking-wide text-neutral-600">
-                No results found. Adjust your search and try again.
-              </p>
-            )}
-            {!searchQuery && !filteredNotebooks.length && (
-              <p className="py-2 font-serif tracking-wide text-neutral-600">
-                You haven&apos;t created any notebooks yet. Add your first
-                notebook
-              </p>
-            )}
-          </div>
-          <ItemList
-            items={filteredNotebooks}
-            renderItem={(notebook) => {
-              const noteCount = getNoteCountForNotebook(notebook, notes);
+          {error ? (
+            <p className="grid grid-cols-[auto_1fr] items-start gap-x-3 bg-red-50/50 px-4 py-3.5 text-sm font-medium text-red-500 lg:px-6">
+              <AlertSquareIcon className="size-4 shrink-0" />
+              <span className="font-semibold">Error: {error.message}</span>
+            </p>
+          ) : isLoading ? (
+            <div className="divide-y px-4 lg:px-6">
+              {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
+                <div
+                  key={item}
+                  className="grid grid-cols-1 items-start justify-center gap-3 py-4"
+                >
+                  <Skeleton className="mt-0.5 h-[14px] w-2/5" />
+                  <Skeleton className="h-[11px] w-1/5" />
+                </div>
+              ))}
+            </div>
+          ) : searchQuery && !filteredNotebooks.length ? (
+            <p className="px-4 py-2 font-serif tracking-wide text-neutral-600 lg:px-6">
+              No results found. Adjust your search and try again.
+            </p>
+          ) : !searchQuery && !filteredNotebooks.length ? (
+            <p className="px-4 py-2 font-serif tracking-wide text-neutral-600 lg:px-6">
+              You haven&apos;t created any notebooks yet. Add your first
+              notebook.
+            </p>
+          ) : (
+            <ItemList
+              items={filteredNotebooks}
+              renderItem={(notebook) => {
+                const noteCount = getNoteCountForNotebook(notebook, notes);
 
-              return (
-                <Link href={`/notebooks/${notebook.id}`}>
-                  <div className="w-full px-4 py-1 hover:bg-neutral-50 lg:px-6">
+                return (
+                  <Link
+                    href={`/notebooks/${notebook.id}`}
+                    className="grid w-full grid-cols-1 justify-center px-4 py-1 hover:bg-neutral-50 lg:px-6"
+                  >
                     <p className="truncate font-semibold text-black">
                       {notebook.name}
                     </p>
-                    <p className="truncate text-[13px] leading-6 text-neutral-500">
+                    <p className="truncate text-[13px] leading-7 text-neutral-500">
                       {noteCount} {noteCount === 1 ? "note" : "notes"}
                     </p>
-                  </div>
-                </Link>
-              );
-            }}
-          />
+                  </Link>
+                );
+              }}
+            />
+          )}
         </div>
       }
     />

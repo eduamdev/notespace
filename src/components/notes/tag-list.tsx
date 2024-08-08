@@ -11,6 +11,8 @@ import { Button } from "../ui/button";
 import { PlusIcon } from "../icons/plus-icon";
 import SearchInput from "../ui/search-input";
 import { useMemo, useState } from "react";
+import { AlertSquareIcon } from "../icons/alert-square-icon";
+import { Skeleton } from "../ui/skeleton";
 
 const TagList = () => {
   const { items: tags, isLoading, error } = useTags();
@@ -64,26 +66,39 @@ const TagList = () => {
       }
       body={
         <div className="py-4">
-          <div className="px-4 lg:px-6">
-            {isLoading && <p className="py-2">Loading...</p>}
-            {error && <p className="py-2">Error: {error.message}</p>}
-            {searchQuery && !filteredTags.length && (
-              <p className="py-2 font-serif tracking-wide text-neutral-600">
-                No results found. Adjust your search and try again.
-              </p>
-            )}
-            {!searchQuery && !filteredTags.length && (
-              <p className="py-2 font-serif tracking-wide text-neutral-600">
-                You haven&apos;t created any notebooks yet. Add your first
-                notebook
-              </p>
-            )}
-          </div>
-          <ItemList
-            items={filteredTags}
-            renderItem={(tag) => (
-              <Link href={`/tags/${tag.id}`}>
-                <div className="grid w-full grid-cols-[1fr_auto] gap-x-4 px-4 py-1 hover:bg-neutral-50 lg:px-6">
+          {error ? (
+            <p className="grid grid-cols-[auto_1fr] items-start gap-x-3 bg-red-50/50 px-4 py-3.5 text-sm font-medium text-red-500 lg:px-6">
+              <AlertSquareIcon className="size-4 shrink-0" />
+              <span className="font-semibold">Error: {error.message}</span>
+            </p>
+          ) : isLoading ? (
+            <div className="divide-y px-4 lg:px-6">
+              {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
+                <div
+                  key={item}
+                  className="flex items-center justify-between gap-2 py-5"
+                >
+                  <Skeleton className="h-[13px] w-1/2" />
+                  <Skeleton className="h-[13px] w-8" />
+                </div>
+              ))}
+            </div>
+          ) : searchQuery && !filteredTags.length ? (
+            <p className="px-4 py-2 font-serif tracking-wide text-neutral-600 lg:px-6">
+              No results found. Adjust your search and try again.
+            </p>
+          ) : !searchQuery && !filteredTags.length ? (
+            <p className="px-4 py-2 font-serif tracking-wide text-neutral-600 lg:px-6">
+              You haven&apos;t created any tags yet. Add your first tag.
+            </p>
+          ) : (
+            <ItemList
+              items={filteredTags}
+              renderItem={(tag) => (
+                <Link
+                  href={`/tags/${tag.id}`}
+                  className="grid w-full grid-cols-[1fr_auto] gap-x-4 px-4 py-1 hover:bg-neutral-50 lg:px-6"
+                >
                   <p className="truncate">
                     <HashIcon className="mr-0.5 inline size-4 shrink-0" />
                     <span className="font-semibold">{tag.name}</span>
@@ -91,10 +106,10 @@ const TagList = () => {
                   <p className="truncate text-[13px] leading-7 text-neutral-500">
                     {getNoteCountForTag(tag, notes)}
                   </p>
-                </div>
-              </Link>
-            )}
-          />
+                </Link>
+              )}
+            />
+          )}
         </div>
       }
     />
