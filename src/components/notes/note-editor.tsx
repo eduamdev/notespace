@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { useLocation, useParams } from "wouter";
 import { useDebouncedCallback } from "use-debounce";
 import { useNotes } from "@/hooks/use-notes";
@@ -7,6 +8,7 @@ import { EditorContent, mergeAttributes, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import Heading from "@tiptap/extension-heading";
+import { LoaderIcon } from "../icons/loader-icon";
 import { Note } from "@/models/note";
 
 interface NoteEditorProps {
@@ -17,7 +19,6 @@ const NoteEditor = ({ note }: NoteEditorProps) => {
   const { createItem, updateItem } = useNotes();
   const [title, setTitle] = useState(note?.title ?? "");
   const [isSaving, setIsSaving] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [location, setLocation] = useLocation();
 
   const { noteId, notebookId, tagId } = useParams<{
@@ -29,9 +30,9 @@ const NoteEditor = ({ note }: NoteEditorProps) => {
   const debouncedAutosave = useDebouncedCallback(() => {
     try {
       autosaveNote();
-      setError(null);
     } catch (error) {
-      setError("An error occurred while saving the note.");
+      toast.error("An error occurred while saving the note.");
+      console.error("An error occurred while saving the note.");
     } finally {
       setIsSaving(false);
     }
@@ -113,7 +114,7 @@ const NoteEditor = ({ note }: NoteEditorProps) => {
   }, [editor, note]);
 
   return (
-    <div className="grid size-full grid-cols-1 grid-rows-[72px_90px_1fr]">
+    <div className="grid size-full grid-cols-1 grid-rows-[72px_90px_1fr_70px]">
       <div className="px-4 py-5 lg:px-6">
         <label htmlFor="noteTitleInput" className="sr-only">
           Note title:
@@ -131,20 +132,29 @@ const NoteEditor = ({ note }: NoteEditorProps) => {
           className="w-full truncate rounded-md  text-2xl font-semibold text-black outline-none placeholder:font-medium"
         />
       </div>
-      <div className="overflow-hidden px-4 lg:-mx-7 lg:px-6">
-        <EditorToolbar editor={editor} />
+
+      <div className="border-y">
+        <div className="grid grid-cols-1 items-center justify-center overflow-hidden px-4 py-6 lg:px-6">
+          <EditorToolbar editor={editor} />
+        </div>
       </div>
+
       <div className="overflow-y-auto px-4 lg:px-6">
-        <div className="py-4">
+        <div className="pt-4">
           <EditorContent
             editor={editor}
             className="focus-visible:[&>.tiptap]:outline-none"
           />
         </div>
+      </div>
+
+      <div className="h-[70px] px-4 lg:px-6">
         {isSaving && (
-          <div className="my-4 text-sm text-neutral-500">Saving...</div>
+          <div className="flex h-full items-center justify-start gap-x-2">
+            <LoaderIcon className="inline size-[14px] shrink-0 animate-spin" />
+            <span className="font-serif text-neutral-500">Saving...</span>
+          </div>
         )}
-        {error && <div className="my-4 text-sm text-red-500">{error}</div>}
       </div>
     </div>
   );
