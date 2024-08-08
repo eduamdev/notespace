@@ -1,5 +1,5 @@
+import { ComponentType, SVGProps } from "react";
 import { Editor } from "@tiptap/react";
-
 import { Toggle } from "@/components/ui/toggle";
 import {
   Tooltip,
@@ -7,15 +7,13 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Separator } from "@/components/ui/separator";
-import { Heading2Icon } from "@/components/icons/heading2-icon";
-import { Heading3Icon } from "@/components/icons/heading3-icon";
+import { HeadingIcon } from "@/components/icons/heading-icon";
 import { BoldIcon } from "@/components/icons/bold-icon";
 import { ItalicIcon } from "@/components/icons/italic-icon";
 import { StrikethroughIcon } from "@/components/icons/strikethrough-icon";
-import { ListIcon } from "@/components/icons/list-icon";
-import { ListNumbersIcon } from "@/components/icons/list-numbers";
+import { UnorderedListIcon } from "@/components/icons/unordered-list-icon";
+import { OrderedListIcon } from "@/components/icons/ordered-list-icon";
 import { CodeIcon } from "@/components/icons/code-icon";
-import { ComponentType, SVGProps } from "react";
 
 interface ToolbarButtonProps {
   icon: ComponentType<SVGProps<SVGSVGElement>>;
@@ -59,16 +57,10 @@ function EditorToolbar({ editor }: { editor: Editor | null }) {
   return (
     <div className="mx-auto inline-flex items-center justify-center gap-x-2">
       <ToolbarButton
-        icon={Heading2Icon}
-        label="Heading Level 2"
+        icon={HeadingIcon}
+        label="Heading"
         onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
         isActive={editor.isActive("heading", { level: 2 })}
-      />
-      <ToolbarButton
-        icon={Heading3Icon}
-        label="Heading Level 3"
-        onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-        isActive={editor.isActive("heading", { level: 3 })}
       />
       <ToolbarButton
         icon={BoldIcon}
@@ -95,13 +87,13 @@ function EditorToolbar({ editor }: { editor: Editor | null }) {
       <Separator orientation="vertical" className="mx-4 h-5" />
 
       <ToolbarButton
-        icon={ListIcon}
+        icon={UnorderedListIcon}
         label="Bullet List"
         onClick={() => editor.chain().focus().toggleBulletList().run()}
         isActive={editor.isActive("bulletList")}
       />
       <ToolbarButton
-        icon={ListNumbersIcon}
+        icon={OrderedListIcon}
         label="Ordered List"
         onClick={() => editor.chain().focus().toggleOrderedList().run()}
         isActive={editor.isActive("orderedList")}

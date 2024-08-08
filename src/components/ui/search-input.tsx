@@ -28,7 +28,7 @@ const SearchInput = ({
       className="flex h-10 w-full items-center rounded-md border border-black/[0.12] bg-white px-3 shadow-sm shadow-black/[0.08] focus-within:ring-2 focus-within:ring-blue-600"
     >
       <SearchIcon
-        className="size-[18px] shrink-0 text-neutral-600"
+        className="size-4 shrink-0 text-neutral-600"
         aria-hidden="true"
       />
       <label htmlFor="search-input" className="sr-only">

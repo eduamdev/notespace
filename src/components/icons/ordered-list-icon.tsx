@@ -1,4 +1,4 @@
-export function ListNumbersIcon(props: React.HTMLAttributes<SVGElement>) {
+export function OrderedListIcon(props: React.HTMLAttributes<SVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
