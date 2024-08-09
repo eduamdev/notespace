@@ -129,30 +129,31 @@ const NoteEditor = ({ note }: NoteEditorProps) => {
         />
       </div>
 
-      <div className="border-y">
+      <div className="relative border-y">
         <div className="grid grid-cols-1 items-center justify-center overflow-hidden px-4 py-6 lg:px-6">
           <EditorToolbar editor={editor} />
         </div>
+        {isSaving && (
+          <div className="pointer-events-none absolute -bottom-7 right-0 z-20 h-7">
+            <div className="flex h-full items-center justify-start gap-x-2.5 border-y border-l bg-neutral-50 px-2.5">
+              <LoaderIcon className="inline size-[14px] shrink-0 animate-spin text-neutral-900" />
+              <span className="font-serif text-neutral-500">Saving...</span>
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="overflow-y-auto px-4 lg:px-6">
-        <div className="pb-12 pt-4">
+        <div className="pb-16 pt-8">
           <EditorContent
             editor={editor}
-            className="focus-visible:[&>.tiptap]:outline-none"
+            className="2xl:mx-auto 2xl:max-w-prose focus-visible:[&>.tiptap]:outline-none"
           />
         </div>
       </div>
 
       <div className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-end bg-gradient-to-t from-white pb-5 pt-12">
-        <div className="relative flex h-8 items-center justify-center px-4 lg:px-6">
-          {isSaving && (
-            <div className="flex h-full items-center justify-start gap-x-2.5 bg-white px-2">
-              <LoaderIcon className="inline size-[16px] shrink-0 animate-spin text-neutral-900" />
-              <span className="font-serif text-neutral-500">Saving...</span>
-            </div>
-          )}
-        </div>
+        <div className="relative flex h-8 items-center justify-center px-4 lg:px-6"></div>
       </div>
     </div>
   );

@@ -25,10 +25,10 @@ const SearchInput = ({
   return (
     <div
       onClick={handleFocus}
-      className="flex h-10 w-full items-center rounded-md border border-black/[0.12] bg-white px-3 shadow-sm shadow-black/[0.08] focus-within:ring-2 focus-within:ring-blue-600"
+      className="flex h-10 w-full items-center rounded-md border border-black/[0.04] bg-neutral-100 px-3 focus-within:ring-2 focus-within:ring-blue-600"
     >
       <SearchIcon
-        className="size-4 shrink-0 text-neutral-600"
+        className="size-[17px] shrink-0 text-neutral-600"
         aria-hidden="true"
       />
       <label htmlFor="search-input" className="sr-only">
@@ -43,7 +43,7 @@ const SearchInput = ({
         onChange={(e) => {
           onChange(e.target.value);
         }}
-        className="ml-2 w-full border-none outline-none placeholder:text-sm"
+        className="ml-2 w-full border-none bg-transparent text-neutral-800 outline-none placeholder:text-sm placeholder:text-neutral-500"
       />
     </div>
   );
