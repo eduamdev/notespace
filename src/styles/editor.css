@@ -1,0 +1,42 @@
+/* Placeholder (at the top) */
+.tiptap .is-editor-empty:first-child::before {
+  color: #a3a3a3;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+.tiptap b,
+.tiptap strong {
+  font-weight: bolder;
+}
+
+.tiptap p {
+  @apply leading-7;
+}
+.tiptap p:not(:first-child) {
+  @apply mt-4;
+}
+
+.tiptap ul,
+.tiptap ol {
+  padding-left: 10px;
+  @apply my-6 ml-6;
+}
+
+.tiptap ul {
+  list-style-type: disc;
+}
+
+.tiptap ol {
+  list-style-type: decimal;
+}
+
+.tiptap li {
+  margin-top: 0.25rem;
+}
+
+.tiptap code {
+  @apply relative rounded border px-[0.3rem] py-[0.2rem] font-mono text-sm;
+}

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useLocation, useParams } from "wouter";
+import "@/styles/editor.css";
 import { useDebouncedCallback } from "use-debounce";
 import { useNotes } from "@/hooks/use-notes";
 import EditorToolbar from "@/components/notes/editor-toolbar";
@@ -42,11 +43,6 @@ const NoteEditor = ({ note }: NoteEditorProps) => {
     extensions: [
       StarterKit.configure({
         heading: false,
-        paragraph: {
-          HTMLAttributes: {
-            class: "leading-8",
-          },
-        },
       }),
       Placeholder.configure({
         placeholder: "Start writing something ...",
@@ -59,8 +55,8 @@ const NoteEditor = ({ note }: NoteEditorProps) => {
             ? node.attrs.level
             : this.options.levels[0];
           const classes: Record<number, string> = {
-            2: "text-[20px] font-semibold text-black",
-            3: "text-lg font-semibold text-black",
+            2: "mt-8 text-[20px] font-semibold text-black",
+            3: "mt-6 text-lg font-semibold text-black",
           };
           return [
             // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
@@ -114,7 +110,7 @@ const NoteEditor = ({ note }: NoteEditorProps) => {
   }, [editor, note]);
 
   return (
-    <div className="grid size-full grid-cols-1 grid-rows-[72px_90px_1fr_70px]">
+    <div className="relative grid size-full grid-cols-1 grid-rows-[72px_90px_1fr]">
       <div className="px-4 py-5 lg:px-6">
         <label htmlFor="noteTitleInput" className="sr-only">
           Note title:
@@ -140,7 +136,7 @@ const NoteEditor = ({ note }: NoteEditorProps) => {
       </div>
 
       <div className="overflow-y-auto px-4 lg:px-6">
-        <div className="pt-4">
+        <div className="pb-12 pt-4">
           <EditorContent
             editor={editor}
             className="focus-visible:[&>.tiptap]:outline-none"
@@ -148,13 +144,15 @@ const NoteEditor = ({ note }: NoteEditorProps) => {
         </div>
       </div>
 
-      <div className="h-[70px] px-4 lg:px-6">
-        {isSaving && (
-          <div className="flex h-full items-center justify-start gap-x-2">
-            <LoaderIcon className="inline size-[14px] shrink-0 animate-spin" />
-            <span className="font-serif text-neutral-500">Saving...</span>
-          </div>
-        )}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-end bg-gradient-to-t from-white pb-5 pt-12">
+        <div className="relative flex h-8 items-center justify-center px-4 lg:px-6">
+          {isSaving && (
+            <div className="flex h-full items-center justify-start gap-x-2.5 bg-white px-2">
+              <LoaderIcon className="inline size-[16px] shrink-0 animate-spin text-neutral-900" />
+              <span className="font-serif text-neutral-500">Saving...</span>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

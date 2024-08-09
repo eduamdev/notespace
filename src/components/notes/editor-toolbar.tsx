@@ -100,9 +100,9 @@ function EditorToolbar({ editor }: { editor: Editor | null }) {
       />
       <ToolbarButton
         icon={CodeIcon}
-        label="Code Block"
-        onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-        isActive={editor.isActive("codeBlock")}
+        label="Code"
+        onClick={() => editor.chain().focus().toggleCode().run()}
+        isActive={editor.isActive("code")}
       />
     </div>
   );

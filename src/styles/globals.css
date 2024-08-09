@@ -35,12 +35,3 @@
     color: black;
   }
 }
-
-/* Placeholder (at the top) */
-.tiptap .is-editor-empty:first-child::before {
-  color: #a3a3a3;
-  content: attr(data-placeholder);
-  float: left;
-  height: 0;
-  pointer-events: none;
-}
