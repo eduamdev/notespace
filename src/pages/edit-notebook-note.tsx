@@ -1,9 +1,10 @@
+import { useParams } from "wouter";
+import { toast } from "sonner";
+import { useNotes } from "@/hooks/use-notes";
 import { ResponsiveLayout } from "@/components/layout/responsive-layout";
 import NoteEditor from "@/components/notes/note-editor";
 import NotebookDetails from "@/components/notes/notebook-details";
-import { useNotes } from "@/hooks/use-notes";
-import { toast } from "sonner";
-import { useParams } from "wouter";
+import { NoteEditorSkeleton } from "@/components/notes/note-editor-skeleton";
 
 export function EditNotebookNotePage() {
   const { noteId } = useParams<{ noteId: string }>();
@@ -17,10 +18,12 @@ export function EditNotebookNotePage() {
 
   return (
     <ResponsiveLayout
-      mobileMainContent={isLoading ? "loading..." : <NoteEditor note={note} />}
+      mobileMainContent={
+        isLoading ? <NoteEditorSkeleton /> : <NoteEditor note={note} />
+      }
       desktopMainContent={<NotebookDetails />}
       desktopSecondaryContent={
-        isLoading ? "loading..." : <NoteEditor note={note} />
+        isLoading ? <NoteEditorSkeleton /> : <NoteEditor note={note} />
       }
     />
   );
