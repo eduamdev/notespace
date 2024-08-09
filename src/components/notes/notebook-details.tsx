@@ -22,24 +22,28 @@ import ResponsiveModal from "../ui/responsive-modal";
 import NotebookForm from "./notebook-form";
 import { ListView } from "./list-view";
 import { NotebookIcon } from "../icons/notebook-icon";
+import { AlertSquareIcon } from "../icons/alert-square-icon";
+import { Skeleton } from "../ui/skeleton";
 
 const NotebookDetails = () => {
   const { notebookId } = useParams<{ notebookId: string }>();
-  const { singleItem: notebook, error } = useNotebooks(notebookId);
+  const { singleItem: notebook, error: notebookError } =
+    useNotebooks(notebookId);
   const {
     items: notes,
     updateItem: updateNote,
     deleteItem: deleteNote,
     isLoading,
+    error,
   } = useNotes();
   const [searchQuery, setSearchQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  if (error) {
+  if (notebookError) {
     toast.error("Error loading notebook data");
     console.error(
       `Error fetching notebook (notebook id: ${notebookId}):`,
-      error
+      notebookError
     );
   }
 
@@ -124,61 +128,74 @@ const NotebookDetails = () => {
       }
       body={
         <div className="py-4">
-          <div className="px-4 lg:px-6">
-            {isLoading && <p className="py-2">Loading...</p>}
-            {error && <p className="py-2">Error: {error.message}</p>}
-            {searchQuery && !filteredNotes.length && (
-              <p className="py-2 font-serif tracking-wide text-neutral-600">
-                No results found. Adjust your search and try again.
-              </p>
-            )}
-            {!searchQuery && !filteredNotes.length && (
-              <p className="py-2 font-serif tracking-wide text-neutral-600">
-                This notebook doesn&apos;t have any notes yet. Start adding
-                notes to capture your thoughts and ideas.
-              </p>
-            )}
-          </div>
-          <ItemList
-            items={filteredNotes}
-            renderItem={(note) => (
-              <div className="group/item relative">
-                <Link
-                  to={`/notebooks/${notebookId}/notes/${note.id}/edit`}
-                  className="grid  grid-cols-1 items-start justify-center gap-4 px-4 hover:bg-neutral-50 lg:px-6"
+          {error ? (
+            <p className="grid grid-cols-[auto_1fr] items-start gap-x-3 bg-red-50/50 px-4 py-3.5 text-sm font-medium text-red-500 lg:px-6">
+              <AlertSquareIcon className="size-4 shrink-0" />
+              <span className="font-semibold">Error: {error.message}</span>
+            </p>
+          ) : isLoading ? (
+            <div className="divide-y px-4 lg:px-6">
+              {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
+                <div
+                  key={item}
+                  className="grid grid-cols-1 items-start justify-center gap-2 py-5"
                 >
-                  <div className="relative block w-full overflow-hidden py-1">
-                    {note.title ? (
-                      <p className="truncate font-semibold text-black">
-                        {note.title}
-                      </p>
-                    ) : (
-                      <p className="truncate font-serif">[Untitled Note]</p>
-                    )}
-                    <p className="line-clamp-2 text-[15px] text-neutral-600">
-                      {note.contentText}
-                    </p>
-                    <p className="flex items-center justify-start gap-x-3 truncate text-[13px] leading-7 text-neutral-500">
-                      <span>
-                        {formatDistanceToNow(new Date(note.updatedAt), {
-                          addSuffix: true,
-                        })}
-                      </span>
-                      {note.isFavorite && (
-                        <StarIcon className="size-[13px] shrink-0 text-neutral-600" />
+                  <Skeleton className="h-[13px] w-1/3" />
+                  <Skeleton className="mt-0.5 h-[22px] w-full" />
+                </div>
+              ))}
+            </div>
+          ) : searchQuery && !filteredNotes.length ? (
+            <p className="px-4 py-2 font-serif tracking-wide text-neutral-600 lg:px-6">
+              No results found. Adjust your search and try again.
+            </p>
+          ) : !searchQuery && !filteredNotes.length ? (
+            <p className="px-4 py-2 font-serif tracking-wide text-neutral-600 lg:px-6">
+              This notebook doesn&apos;t have any notes yet. Start adding notes
+              to capture your thoughts and ideas.
+            </p>
+          ) : (
+            <ItemList
+              items={filteredNotes}
+              renderItem={(note) => (
+                <div className="group/item relative">
+                  <Link
+                    to={`/notebooks/${notebookId}/notes/${note.id}/edit`}
+                    className="grid  grid-cols-1 items-start justify-center gap-4 px-4 hover:bg-neutral-50 lg:px-6"
+                  >
+                    <div className="relative block w-full overflow-hidden py-1">
+                      {note.title ? (
+                        <p className="truncate font-semibold text-black">
+                          {note.title}
+                        </p>
+                      ) : (
+                        <p className="truncate font-serif">[Untitled Note]</p>
                       )}
-                    </p>
-                  </div>
-                </Link>
-                <NoteActions
-                  note={note}
-                  onFavoriteClick={handleFavoriteClick}
-                  onDeleteClick={handleDeleteClick}
-                />
-              </div>
-            )}
-            sortFn={sortNotesByUpdatedAtDescending}
-          />
+                      <p className="line-clamp-2 text-[15px] text-neutral-600">
+                        {note.contentText}
+                      </p>
+                      <p className="flex items-center justify-start gap-x-3 truncate text-[13px] leading-7 text-neutral-500">
+                        <span>
+                          {formatDistanceToNow(new Date(note.updatedAt), {
+                            addSuffix: true,
+                          })}
+                        </span>
+                        {note.isFavorite && (
+                          <StarIcon className="size-[13px] shrink-0 text-neutral-600" />
+                        )}
+                      </p>
+                    </div>
+                  </Link>
+                  <NoteActions
+                    note={note}
+                    onFavoriteClick={handleFavoriteClick}
+                    onDeleteClick={handleDeleteClick}
+                  />
+                </div>
+              )}
+              sortFn={sortNotesByUpdatedAtDescending}
+            />
+          )}
         </div>
       }
     />
