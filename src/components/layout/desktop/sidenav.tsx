@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/tooltip";
 import { useRoute } from "wouter";
 
-import Logo from "@/assets/logo.svg";
+import { LogoIcon } from "@/components/icons/logo-icon";
 import { NoteIcon } from "@/components/icons/note-icon";
 import { NotebookIcon } from "@/components/icons/notebook-icon";
 import { StarIcon } from "@/components/icons/star-icon";
@@ -28,11 +28,7 @@ function Sidenav() {
       <div className="flex h-full flex-col justify-between">
         <div>
           <div className="flex items-center justify-center pb-2 pt-5">
-            <img
-              src={Logo}
-              alt=""
-              className="inline-flex size-[26px] shrink-0"
-            />
+            <LogoIcon className="inline-flex size-[26px] shrink-0" />
           </div>
           <div className="py-7">
             <div className="mx-auto h-[2px] w-5 bg-neutral-950/10"></div>

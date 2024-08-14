@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import MobileMenu from "@/components/layout/mobile/menu";
 
-import Logo from "@/assets/logo.svg";
+import { LogoIcon } from "@/components/icons/logo-icon";
 import { cn } from "@/lib/utils";
 
 export default function MobileLayoutView({
@@ -28,11 +28,7 @@ export default function MobileLayoutView({
             <div className="py-5">
               <div className="px-4">
                 <div className="flex items-center justify-between">
-                  <img
-                    src={Logo}
-                    alt="App Logo"
-                    className="inline-flex size-[26px] shrink-0"
-                  />
+                  <LogoIcon className="inline-flex size-[26px] shrink-0" />
                   {!isDesktop && (
                     <MobileMenu open={open} onOpenChange={setOpen} />
                   )}
